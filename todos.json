@@ -39,6 +39,19 @@
       "delayCount": 0,
       "lastResetDate": "2026-07-30",
       "notified": false
+    },
+    {
+      "id": 999,
+      "text": "【测试】这是一条推送测试提醒",
+      "priority": "urgent",
+      "date": "",
+      "time": "12:08",
+      "done": false,
+      "type": "daily",
+      "reminder": true,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
     }
   ],
   "life": [
