@@ -1,0 +1,165 @@
+{
+  "work": [
+    {
+      "id": 1,
+      "text": "每月3号还款提醒",
+      "priority": "urgent",
+      "date": "",
+      "time": "09:00",
+      "done": false,
+      "type": "monthly",
+      "monthDay": 3,
+      "reminder": true,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    },
+    {
+      "id": 2,
+      "text": "早间工作梳理·列出今日重点",
+      "priority": "important",
+      "date": "",
+      "time": "09:00",
+      "done": false,
+      "type": "daily",
+      "reminder": true,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    },
+    {
+      "id": 3,
+      "text": "写每日工作日报",
+      "priority": "normal",
+      "date": "",
+      "time": "18:00",
+      "done": false,
+      "type": "daily",
+      "reminder": true,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    }
+  ],
+  "life": [
+    {
+      "id": 201,
+      "text": "每月查询公积金余额",
+      "priority": "normal",
+      "date": "",
+      "time": "10:00",
+      "done": false,
+      "type": "monthly",
+      "monthDay": 1,
+      "reminder": true,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    },
+    {
+      "id": 202,
+      "text": "早起打卡",
+      "priority": "important",
+      "date": "",
+      "time": "07:00",
+      "done": false,
+      "type": "daily",
+      "reminder": true,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    },
+    {
+      "id": 203,
+      "text": "内容创作·拍摄/剪辑",
+      "priority": "normal",
+      "date": "",
+      "time": "21:00",
+      "done": false,
+      "type": "daily",
+      "reminder": false,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    }
+  ],
+  "fitness": [
+    {
+      "id": 101,
+      "text": "游泳训练",
+      "priority": "important",
+      "date": "",
+      "time": "19:00",
+      "done": false,
+      "type": "weekly",
+      "weekdays": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "reminder": true,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    },
+    {
+      "id": 102,
+      "text": "力量训练",
+      "priority": "important",
+      "date": "",
+      "time": "19:00",
+      "done": false,
+      "type": "weekly",
+      "weekdays": [
+        2,
+        4
+      ],
+      "reminder": true,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    }
+  ],
+  "study": [
+    {
+      "id": 301,
+      "text": "考研复习·专业课题目练习",
+      "priority": "urgent",
+      "date": "",
+      "time": "20:00",
+      "done": false,
+      "type": "daily",
+      "reminder": true,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    },
+    {
+      "id": 302,
+      "text": "考研英语·单词背诵",
+      "priority": "important",
+      "date": "",
+      "time": "07:30",
+      "done": false,
+      "type": "daily",
+      "reminder": true,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    },
+    {
+      "id": 303,
+      "text": "硬笔练字·每日一字",
+      "priority": "normal",
+      "date": "",
+      "time": "12:30",
+      "done": false,
+      "type": "daily",
+      "reminder": false,
+      "delayCount": 0,
+      "lastResetDate": "2026-07-30",
+      "notified": false
+    }
+  ]
+}
