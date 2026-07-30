@@ -1,0 +1,29 @@
+name: Water Reminder
+on:
+  schedule:
+    - cron: '0 0,2,4,6,8,10,12,14 * * *'
+  workflow_dispatch:
+
+jobs:
+  water-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send water reminder
+        env:
+          BARK_KEY: ${{ secrets.BARK_KEY }}
+        run: |
+          python3 << 'PYEOF'
+          import urllib.request, urllib.parse, os
+          key = os.environ.get('BARK_KEY', '')
+          if not key:
+              print('BARK_KEY not set, skip')
+              exit(0)
+          title = urllib.parse.quote('💧 喝水提醒')
+          body = urllib.parse.quote('该喝水啦！今日目标1500-2000ml，保持健康每一天~')
+          url = f'https://api.day.app/{key}/{title}/{body}?group=Health&sound=bell'
+          try:
+              resp = urllib.request.urlopen(url, timeout=10)
+              print(f'Result: {resp.status}')
+          except Exception as e:
+              print(f'Error: {e}')
+          PYEOF
