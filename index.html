@@ -1167,6 +1167,271 @@ body {
 .modal-box .btn-row {
   display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;
 }
+
+/* ============ 🏊 游泳胸臀核心训练模块 ============ */
+.swimfit-tabs {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px;
+  padding: 6px; background: linear-gradient(135deg, #FFF0F5, #E0F6FF);
+  border-radius: 14px;
+}
+.swimfit-tab {
+  padding: 8px 14px; border: none; border-radius: 10px; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: #888; background: transparent;
+  transition: all 0.25s; white-space: nowrap;
+}
+.swimfit-tab:hover { background: rgba(255,182,193,0.2); color: #e91e63; }
+.swimfit-tab.active {
+  background: linear-gradient(135deg, #FFB6C1, #87CEEB); color: #fff;
+  box-shadow: 0 2px 12px rgba(255,182,193,0.4);
+}
+.swimfit-sub { animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* 统计概览条 */
+.sf-stats-bar {
+  display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.sf-stat-pill {
+  flex: 1; min-width: 110px; padding: 12px 14px; border-radius: 14px;
+  background: linear-gradient(135deg, #FFF0F5, #E0F6FF);
+  text-align: center; border: 1px solid rgba(255,182,193,0.3);
+}
+.sf-stat-pill .num { font-size: 24px; font-weight: 800; color: #e91e63; }
+.sf-stat-pill .label { font-size: 11px; color: #888; margin-top: 2px; }
+.sf-stat-pill.blue .num { color: #1e88e5; }
+.sf-stat-pill.yellow .num { color: #f9a825; }
+.sf-stat-pill.green .num { color: #43a047; }
+
+/* 训练卡片 */
+.sf-card {
+  background: var(--card-bg); border-radius: 16px; padding: 18px;
+  margin-bottom: 14px; box-shadow: var(--card-shadow);
+  border: 1px solid var(--border); transition: var(--transition);
+}
+.sf-card:hover { box-shadow: 0 4px 20px rgba(255,182,193,0.15); }
+.sf-card-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.sf-card-title .sf-icon { width: 28px; height: 28px; }
+
+/* 打卡任务项 */
+.sf-task {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+  border-radius: 12px; margin-bottom: 8px; cursor: pointer;
+  background: rgba(255,240,245,0.5); border: 1px solid rgba(255,182,193,0.2);
+  transition: all 0.2s;
+}
+.sf-task:hover { background: rgba(255,182,193,0.12); }
+.sf-task.done { background: rgba(152,211,152,0.12); border-color: rgba(152,211,152,0.3); }
+.sf-task.done .sf-task-name { text-decoration: line-through; color: var(--text-light); }
+.sf-task-check {
+  width: 26px; height: 26px; border-radius: 50%; border: 2px solid #FFB6C1;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: all 0.2s; font-size: 14px;
+}
+.sf-task.done .sf-task-check { background: linear-gradient(135deg, #FFB6C1, #87CEEB); border-color: transparent; color: #fff; }
+.sf-task-name { font-weight: 600; font-size: 14px; flex: 1; }
+.sf-task-detail { font-size: 12px; color: var(--text-light); }
+.sf-task-type {
+  padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+}
+.sf-type-swim { background: #E3F2FD; color: #1e88e5; }
+.sf-type-chest { background: #FCE4EC; color: #e91e63; }
+.sf-type-glute { background: #FCE4EC; color: #c2185b; }
+.sf-type-deadbug { background: #FFF8E1; color: #f9a825; }
+.sf-type-rest { background: #F3E5F5; color: #9c27b0; }
+
+/* 14天挑战进度条 */
+.sf-challenge-progress {
+  display: flex; gap: 4px; margin: 14px 0; flex-wrap: wrap;
+}
+.sf-day-dot {
+  width: 32px; height: 32px; border-radius: 10px; display: flex;
+  align-items: center; justify-content: center; font-size: 11px; font-weight: 700;
+  background: #f5f5f5; color: #aaa; transition: all 0.2s;
+}
+.sf-day-dot.done { background: linear-gradient(135deg, #FFB6C1, #87CEEB); color: #fff; }
+.sf-day-dot.today { border: 2px solid #e91e63; color: #e91e63; }
+.sf-day-dot.rest { background: #f3e5f5; color: #9c27b0; }
+
+/* 训练计划项 */
+.sf-plan-item {
+  background: var(--card-bg); border-radius: 14px; padding: 16px;
+  margin-bottom: 10px; border: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px; transition: var(--transition);
+}
+.sf-plan-item:hover { border-color: rgba(255,182,193,0.4); }
+.sf-plan-info { flex: 1; }
+.sf-plan-name { font-weight: 700; font-size: 15px; }
+.sf-plan-desc { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+.sf-plan-actions { display: flex; gap: 6px; }
+
+/* 历史记录时间线 */
+.sf-timeline { position: relative; padding-left: 24px; }
+.sf-timeline::before {
+  content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(180deg, #FFB6C1, #87CEEB);
+}
+.sf-timeline-item {
+  position: relative; margin-bottom: 16px; padding: 14px;
+  background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border);
+}
+.sf-timeline-item::before {
+  content: ''; position: absolute; left: -20px; top: 18px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: linear-gradient(135deg, #FFB6C1, #87CEEB);
+  border: 2px solid var(--card-bg);
+}
+
+/* 日历 */
+.sf-calendar { width: 100%; }
+.sf-cal-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+}
+.sf-cal-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+}
+.sf-cal-day-name {
+  text-align: center; font-size: 12px; font-weight: 700; color: var(--text-light); padding: 4px;
+}
+.sf-cal-day {
+  aspect-ratio: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; border-radius: 10px; cursor: pointer; font-size: 13px;
+  background: rgba(245,245,245,0.5); transition: all 0.2s; position: relative;
+}
+.sf-cal-day:hover { background: rgba(255,182,193,0.15); }
+.sf-cal-day.today { border: 2px solid #e91e63; font-weight: 700; }
+.sf-cal-day.has-event { background: linear-gradient(135deg, rgba(255,182,193,0.15), rgba(135,206,235,0.15)); }
+.sf-cal-dots { display: flex; gap: 2px; margin-top: 2px; }
+.sf-cal-dot { width: 5px; height: 5px; border-radius: 50%; }
+.sf-dot-swim { background: #1e88e5; }
+.sf-dot-chest { background: #e91e63; }
+.sf-dot-glute { background: #c2185b; }
+.sf-dot-deadbug { background: #f9a825; }
+
+/* 数据分析 */
+.sf-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.sf-stat-card {
+  padding: 18px; border-radius: 16px; text-align: center;
+  background: linear-gradient(135deg, #FFF0F5, #E0F6FF);
+  border: 1px solid rgba(255,182,193,0.2);
+}
+.sf-stat-card .icon { font-size: 28px; margin-bottom: 8px; }
+.sf-stat-card .value { font-size: 28px; font-weight: 800; }
+.sf-stat-card .desc { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+.sf-stat-card.pink .value { color: #e91e63; }
+.sf-stat-card.blue .value { color: #1e88e5; }
+.sf-stat-card.yellow .value { color: #f9a825; }
+.sf-stat-card.green .value { color: #43a047; }
+.sf-chart-box { background: var(--card-bg); border-radius: 14px; padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); }
+.sf-chart-box canvas { max-height: 260px; }
+
+/* 成就贴纸 */
+.sf-achievement-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+.sf-achievement {
+  text-align: center; padding: 16px 10px; border-radius: 16px; cursor: pointer;
+  transition: all 0.25s; position: relative;
+}
+.sf-achievement.unlocked {
+  background: linear-gradient(135deg, #FFF0F5, #E0F6FF);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.sf-achievement.unlocked:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 8px 24px rgba(255,182,193,0.3); }
+.sf-achievement.locked { filter: grayscale(1); opacity: 0.45; background: #f5f5f5; }
+.sf-achievement.locked:hover { opacity: 0.65; }
+.sf-achievement .sf-badge { width: 56px; height: 56px; margin: 0 auto 8px; }
+.sf-achievement .sf-ach-name { font-size: 12px; font-weight: 700; }
+.sf-achievement .sf-ach-desc { font-size: 10px; color: var(--text-light); margin-top: 2px; }
+
+/* 运动灵感库 */
+.sf-inspire-card {
+  background: var(--card-bg); border-radius: 14px; overflow: hidden;
+  margin-bottom: 12px; border: 1px solid var(--border); transition: var(--transition);
+}
+.sf-inspire-card:hover { border-color: rgba(255,182,193,0.4); }
+.sf-inspire-thumb { width: 100%; aspect-ratio: 16/9; background: #000; cursor: pointer; position: relative; }
+.sf-inspire-thumb iframe { width: 100%; height: 100%; border: none; }
+.sf-inspire-info { padding: 12px 14px; }
+.sf-inspire-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.sf-inspire-meta { font-size: 12px; color: var(--text-light); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.sf-inspire-tags { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+.sf-inspire-tag { padding: 2px 8px; border-radius: 20px; font-size: 11px; background: rgba(255,182,193,0.15); color: #e91e63; }
+
+/* 打卡成功弹窗 */
+.sf-celebrate {
+  position: fixed; inset: 0; z-index: 9999; display: none;
+  align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+}
+.sf-celebrate.show { display: flex; animation: fadeIn 0.3s; }
+.sf-celebrate-box {
+  background: linear-gradient(135deg, #FFF0F5, #E0F6FF);
+  border-radius: 24px; padding: 36px 40px; text-align: center;
+  max-width: 340px; animation: bounceIn 0.5s;
+  box-shadow: 0 20px 60px rgba(255,182,193,0.3);
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.sf-celebrate-badge { width: 80px; height: 80px; margin: 0 auto 16px; }
+.sf-celebrate-title { font-size: 22px; font-weight: 800; color: #e91e63; margin-bottom: 6px; }
+.sf-celebrate-msg { font-size: 14px; color: #666; margin-bottom: 20px; }
+.sf-celebrate-btn {
+  padding: 12px 36px; border: none; border-radius: 30px; cursor: pointer;
+  font-size: 16px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, #FFB6C1, #87CEEB);
+  box-shadow: 0 4px 16px rgba(255,182,193,0.4); transition: all 0.2s;
+}
+.sf-celebrate-btn:hover { transform: scale(1.05); }
+
+/* 筛选按钮 */
+.sf-filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.sf-filter-btn {
+  padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+  background: var(--card-bg); cursor: pointer; font-size: 13px; transition: all 0.2s;
+}
+.sf-filter-btn.active { background: linear-gradient(135deg, #FFB6C1, #87CEEB); color: #fff; border-color: transparent; }
+
+/* B站视频嵌入 */
+.sf-video-embed {
+  position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 12px;
+  overflow: hidden; margin-top: 10px; background: #000;
+}
+.sf-video-embed iframe { width: 100%; height: 100%; border: none; }
+
+/* 输入框 */
+.sf-input {
+  padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--card-bg); color: var(--text); font-size: 14px; outline: none;
+  transition: border-color 0.2s;
+}
+.sf-input:focus { border-color: #FFB6C1; box-shadow: 0 0 0 3px rgba(255,182,193,0.15); }
+
+/* 日历详情弹窗 */
+.sf-cal-detail {
+  position: fixed; inset: 0; z-index: 999; display: none;
+  align-items: center; justify-content: center; background: rgba(0,0,0,0.4);
+}
+.sf-cal-detail.show { display: flex; }
+.sf-cal-detail-box {
+  background: var(--card-bg); border-radius: 20px; padding: 24px;
+  max-width: 380px; width: 90%; max-height: 70vh; overflow-y: auto;
+}
+
+/* 深色模式适配 */
+[data-theme="luxe"] .sf-stat-pill,
+[data-theme="luxe"] .sf-stat-card,
+[data-theme="luxe"] .sf-celebrate-box {
+  background: rgba(22,23,40,0.8);
+}
+[data-theme="luxe"] .sf-task { background: rgba(255,255,255,0.03); }
+[data-theme="luxe"] .sf-task.done { background: rgba(52,211,153,0.1); }
+[data-theme="luxe"] .sf-cal-day { background: rgba(255,255,255,0.04); }
+[data-theme="luxe"] .sf-inspire-tag { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+[data-theme="luxe"] .sf-achievement.unlocked { background: rgba(22,23,40,0.6); }
+[data-theme="luxe"] .swimfit-tabs { background: rgba(22,23,40,0.6); }
+[data-theme="luxe"] .swimfit-tab.active { background: linear-gradient(135deg, #a78bfa, #60a5fa); }
 </style>
 <script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
 <script>
@@ -1239,6 +1504,9 @@ body {
     </button>
     <button class="nav-item" data-page="news" onclick="switchPage('news')">
       <span class="nav-icon">📰</span> 每日热点新闻
+    </button>
+    <button class="nav-item" data-page="swimfit" onclick="switchPage('swimfit')">
+      <span class="nav-icon">🏊</span> 游泳胸臀训练
     </button>
   </nav>
   <div class="sidebar-footer">
@@ -1658,6 +1926,30 @@ body {
     </div>
   </section>
 
+  <!-- ====== 模块8：游泳胸臀核心训练 ====== -->
+  <section class="module-page" id="page-swimfit">
+    <div class="page-header">
+      <div class="page-title"><span class="icon">🏊</span> 游泳胸臀核心训练</div>
+      <div class="page-subtitle">14天死虫式挑战 · 游泳+胸臀力量 · 成就解锁</div>
+    </div>
+    <div class="swimfit-tabs">
+      <button class="swimfit-tab active" data-sub="checkin" onclick="switchSwimFitTab('checkin')">📋 每日打卡</button>
+      <button class="swimfit-tab" data-sub="plan" onclick="switchSwimFitTab('plan')">📅 训练计划</button>
+      <button class="swimfit-tab" data-sub="history" onclick="switchSwimFitTab('history')">📜 历史记录</button>
+      <button class="swimfit-tab" data-sub="calendar" onclick="switchSwimFitTab('calendar')">📆 日历视图</button>
+      <button class="swimfit-tab" data-sub="stats" onclick="switchSwimFitTab('stats')">📊 数据分析</button>
+      <button class="swimfit-tab" data-sub="achievement" onclick="switchSwimFitTab('achievement')">🏆 成就奖励</button>
+      <button class="swimfit-tab" data-sub="inspire" onclick="switchSwimFitTab('inspire')">💡 运动灵感</button>
+    </div>
+    <div id="swimfit-checkin" class="swimfit-sub active"></div>
+    <div id="swimfit-plan" class="swimfit-sub" style="display:none"></div>
+    <div id="swimfit-history" class="swimfit-sub" style="display:none"></div>
+    <div id="swimfit-calendar" class="swimfit-sub" style="display:none"></div>
+    <div id="swimfit-stats" class="swimfit-sub" style="display:none"></div>
+    <div id="swimfit-achievement" class="swimfit-sub" style="display:none"></div>
+    <div id="swimfit-inspire" class="swimfit-sub" style="display:none"></div>
+  </section>
+
 </main>
 
 <!-- ==================== 弹窗容器 ==================== -->
@@ -1685,6 +1977,16 @@ let appData = {
   },
   todo: { work: [], life: [], fitness: [], study: [] },
   water: { date: '', amount: 0, records: [], lastReminderHour: -1 },
+  swimFit: {
+    checkins: {},
+    plans: [],
+    history: [],
+    achievements: [],
+    favorites: [],
+    challengeStart: '',
+    currentPlan: 'deadBug14',
+    settings: { waterReminderEnabled: true }
+  },
   health: {
     exercise: [], diet: [], body: []
   },
@@ -2070,6 +2372,7 @@ function switchPage(page) {
     if (page === 'health') { renderHealth(); renderHealthCharts(); }
     if (page === 'notes') renderNotes();
     if (page === 'news') renderNews();
+    if (page === 'swimfit') renderSwimFit();
   }, 100);
   saveData();
 }
@@ -3864,6 +4167,11 @@ function init() {
   setInterval(() => {
     if ((appData.currentPage || '') === 'news') refreshNews();
   }, 30 * 60 * 1000);
+
+  // 检查游泳胸臀训练成就
+  setTimeout(() => {
+    if (appData.swimFit) checkSwimFitAchievements();
+  }, 2000);
 }
 
 function checkStartupRisk() {
@@ -3876,6 +4184,847 @@ function checkStartupRisk() {
   if (today >= 1 && today <= 3) {
     showToast(`💳 每月3号还款日倒计时：还剩 ${Math.max(0, 3 - today)} 天`, 'warning');
   }
+}
+
+// ==================== 🏊 游泳胸臀核心训练模块 ====================
+
+// ---- 14天死虫式核心挑战计划 ----
+const SF_DEADBUG_PLAN = [
+  { day:1,  type:'deadbug', name:'死虫式', sets:3, reps:10, rest:30, note:'基础激活，注意呼吸节奏' },
+  { day:2,  type:'deadbug', name:'死虫式', sets:3, reps:10, rest:30, note:'保持腰部贴地' },
+  { day:3,  type:'deadbug', name:'死虫式', sets:3, reps:12, rest:30, note:'增加次数，控制核心' },
+  { day:4,  type:'rest',    name:'休息日', sets:0, reps:0, rest:0,  note:'拉伸放松，恢复体力' },
+  { day:5,  type:'deadbug', name:'死虫式', sets:3, reps:12, rest:30, note:'保持节奏，注意发力' },
+  { day:6,  type:'deadbug', name:'死虫式', sets:3, reps:12, rest:30, note:'核心收紧，呼吸均匀' },
+  { day:7,  type:'deadbug', name:'死虫式', sets:3, reps:15, rest:30, note:'第一周总结，增加次数' },
+  { day:8,  type:'rest',    name:'休息日', sets:0, reps:0, rest:0,  note:'充分休息，准备进阶' },
+  { day:9,  type:'deadbug', name:'死虫式', sets:4, reps:12, rest:20, note:'进阶训练，增加组数' },
+  { day:10, type:'deadbug', name:'死虫式', sets:4, reps:12, rest:20, note:'缩短休息，提升耐力' },
+  { day:11, type:'deadbug', name:'死虫式', sets:4, reps:15, rest:20, note:'增加次数，挑战极限' },
+  { day:12, type:'rest',    name:'休息日', sets:0, reps:0, rest:0,  note:'最后休息日，蓄力冲刺' },
+  { day:13, type:'deadbug', name:'死虫式', sets:4, reps:15, rest:15, note:'冲刺开始，全力以赴' },
+  { day:14, type:'deadbug', name:'死虫式', sets:5, reps:15, rest:15, note:'最终挑战，恭喜完成！' }
+];
+
+// ---- 游泳+胸臀力量训练计划 ----
+const SF_SWIM_CHEST_GLUTE = {
+  chest: [
+    { name:'跪姿俯卧撑', sets:3, reps:12, weight:'自重', note:'新手首选，注意核心收紧' },
+    { name:'弹力带夹胸', sets:3, reps:15, weight:'弹力带', note:'感受胸肌收缩' },
+    { name:'哑铃卧推', sets:3, reps:12, weight:'可选', note:'新手可用跪姿俯卧撑+墙壁夹胸替代' }
+  ],
+  glute: [
+    { name:'臀桥', sets:4, reps:20, weight:'自重', note:'顶峰收缩2秒' },
+    { name:'单腿臀桥', sets:3, reps:12, weight:'自重', note:'每侧3组，注意骨盆稳定' },
+    { name:'蚌式开合', sets:3, reps:20, weight:'自重', note:'每侧3组，感受臀中肌发力' }
+  ]
+};
+
+// ---- 12枚成就贴纸 ----
+const SF_ACHIEVEMENTS = [
+  { id:'db1', name:'初次激活核心', desc:'完成第一次死虫式打卡', icon:'🐛', category:'deadbug' },
+  { id:'db2', name:'连续训练3天', desc:'连续3天完成死虫式训练', icon:'🔥', category:'deadbug' },
+  { id:'db3', name:'核心强化达人', desc:'完成14天死虫式挑战', icon:'👑', category:'deadbug' },
+  { id:'db4', name:'核心坚持者', desc:'累计完成30天死虫式', icon:'💎', category:'deadbug' },
+  { id:'sw1', name:'初次下水', desc:'完成第一次游泳打卡', icon:'🏊', category:'swim' },
+  { id:'sw2', name:'连续游泳7天', desc:'连续7天完成游泳训练', icon:'🌊', category:'swim' },
+  { id:'sw3', name:'游泳达人', desc:'累计游泳10次', icon:'🐟', category:'swim' },
+  { id:'sw4', name:'长距离游泳', desc:'单次游泳距离≥2000米', icon:'🎯', category:'swim' },
+  { id:'cg1', name:'初次练胸', desc:'完成第一次胸部训练', icon:'💪', category:'chest' },
+  { id:'cg2', name:'连续练臀5天', desc:'连续5天完成臀部训练', icon:'🍑', category:'glute' },
+  { id:'cg3', name:'胸臀饱满达人', desc:'累计完成15次胸臀训练', icon:'⭐', category:'chest' },
+  { id:'cg4', name:'胸臀双修', desc:'同一天完成胸部+臀部训练', icon:'🌟', category:'chest' }
+];
+
+// ---- 8个B站运动灵感视频 ----
+const SF_INSPIRE_VIDEOS = [
+  { id:1, bv:'BV1GJ411x7h7', title:'【死虫式】3分钟学会核心训练正确姿势', up:'FITNESS健身狂人', tags:['死虫式','核心','教学'] },
+  { id:2, bv:'BV1L4411V7Qg', title:'零基础游泳教学｜从怕水到自由泳', up:'游泳教练阿杰', tags:['游泳','入门','自由泳'] },
+  { id:3, bv:'BV1H4411V7Xn', title:'胸部训练全套｜跪姿俯卧撑到哑铃卧推', up:'健身教练小王', tags:['胸部','力量','哑铃'] },
+  { id:4, bv:'BV1D4411V7Am', title:'臀部轰炸训练｜臀桥+蚌式开合详解', up:'瑜伽健身美美', tags:['臀部','臀桥','塑形'] },
+  { id:5, bv:'BV1x4411V7Dn', title:'核心进阶｜死虫式升级版挑战', up:'核心训练日记', tags:['死虫式','进阶','核心'] },
+  { id:6, bv:'BV1W4411V7Kn', title:'游泳姿势纠正｜自由泳常见错误', up:'专业游泳频道', tags:['游泳','姿势','纠正'] },
+  { id:7, bv:'BV1T4411V7Yn', title:'弹力带全身训练｜居家健身必备', up:'居家健身指南', tags:['弹力带','居家','力量'] },
+  { id:8, bv:'BV1S4411V7Zm', title:'哑铃训练指南｜胸臀腿全覆盖', up:'哑铃健身教室', tags:['哑铃','胸部','臀部'] }
+];
+
+// ---- SVG图标 ----
+const SF_ICONS = {
+  swim: '<svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="14" r="6" stroke="#1e88e5" stroke-width="2.5"/><path d="M8 28 Q14 24 20 28 T32 28 T44 28" stroke="#1e88e5" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M8 36 Q14 32 20 36 T32 36 T44 36" stroke="#87CEEB" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>',
+  dumbbell: '<svg viewBox="0 0 48 48" fill="none"><rect x="4" y="18" width="6" height="12" rx="2" fill="#e91e63"/><rect x="10" y="20" width="4" height="8" rx="1" fill="#e91e63"/><rect x="14" y="22" width="20" height="4" rx="1" fill="#c2185b"/><rect x="34" y="20" width="4" height="8" rx="1" fill="#e91e63"/><rect x="38" y="18" width="6" height="12" rx="2" fill="#e91e63"/></svg>',
+  deadbug: '<svg viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="24" rx="12" ry="8" stroke="#f9a825" stroke-width="2.5" fill="none"/><line x1="14" y1="18" x2="8" y2="12" stroke="#f9a825" stroke-width="2" stroke-linecap="round"/><line x1="34" y1="18" x2="40" y2="12" stroke="#f9a825" stroke-width="2" stroke-linecap="round"/><line x1="14" y1="30" x2="8" y2="36" stroke="#f9a825" stroke-width="2" stroke-linecap="round"/><line x1="34" y1="30" x2="40" y2="36" stroke="#f9a825" stroke-width="2" stroke-linecap="round"/><line x1="24" y1="16" x2="24" y2="32" stroke="#f9a825" stroke-width="2" stroke-linecap="round"/></svg>',
+  hourglass: '<svg viewBox="0 0 48 48" fill="none"><path d="M12 6 H36 V14 L24 24 L12 14 Z" stroke="#9c27b0" stroke-width="2.5" fill="none" stroke-linejoin="round"/><path d="M12 42 H36 V34 L24 24 L12 34 Z" stroke="#9c27b0" stroke-width="2.5" fill="none" stroke-linejoin="round"/><line x1="12" y1="6" x2="36" y2="6" stroke="#9c27b0" stroke-width="3" stroke-linecap="round"/><line x1="12" y1="42" x2="36" y2="42" stroke="#9c27b0" stroke-width="3" stroke-linecap="round"/></svg>',
+  trophy: '<svg viewBox="0 0 48 48" fill="none"><path d="M14 6 H34 V18 Q34 26 24 26 Q14 26 14 18 Z" stroke="#f9a825" stroke-width="2.5" fill="none"/><path d="M14 10 H8 V14 Q8 20 14 20" stroke="#f9a825" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M34 10 H40 V14 Q40 20 34 20" stroke="#f9a825" stroke-width="2.5" fill="none" stroke-linecap="round"/><line x1="24" y1="26" x2="24" y2="34" stroke="#f9a825" stroke-width="2.5"/><rect x="18" y="34" width="12" height="6" rx="1" stroke="#f9a825" stroke-width="2.5" fill="none"/><line x1="14" y1="42" x2="34" y2="42" stroke="#f9a825" stroke-width="3" stroke-linecap="round"/></svg>'
+};
+
+// ---- 子模块切换 ----
+function switchSwimFitTab(tab) {
+  document.querySelectorAll('.swimfit-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.swimfit-sub').forEach(s => s.style.display = 'none');
+  const btn = document.querySelector(`.swimfit-tab[data-sub="${tab}"]`);
+  const page = document.getElementById('swimfit-' + tab);
+  if (btn) btn.classList.add('active');
+  if (page) { page.style.display = 'block'; page.classList.add('active'); }
+  if (tab === 'checkin') renderSwimFitCheckin();
+  if (tab === 'plan') renderSwimFitPlan();
+  if (tab === 'history') renderSwimFitHistory();
+  if (tab === 'calendar') renderSwimFitCalendar();
+  if (tab === 'stats') renderSwimFitStats();
+  if (tab === 'achievement') renderSwimFitAchievements();
+  if (tab === 'inspire') renderSwimFitInspire();
+}
+
+// ---- 主渲染函数 ----
+function renderSwimFit() {
+  if (!appData.swimFit) appData.swimFit = { checkins:{}, plans:[], history:[], achievements:[], favorites:[], challengeStart:'', currentPlan:'deadBug14', settings:{} };
+  if (!appData.swimFit.checkins) appData.swimFit.checkins = {};
+  if (!appData.swimFit.plans) appData.swimFit.plans = [];
+  if (!appData.swimFit.history) appData.swimFit.history = [];
+  if (!appData.swimFit.achievements) appData.swimFit.achievements = [];
+  if (!appData.swimFit.favorites) appData.swimFit.favorites = [];
+  renderSwimFitCheckin();
+}
+
+// ---- 辅助函数 ----
+function sfTodayStr() { return new Date().toISOString().slice(0,10); }
+function sfGetTodayCheckin() {
+  const d = sfTodayStr();
+  if (!appData.swimFit.checkins[d]) {
+    appData.swimFit.checkins[d] = { deadBug:{done:false,sets:0,reps:0}, swim:{done:false,duration:0,distance:0,pace:''}, chestGlute:{chestDone:false,gluteDone:false,chestEx:[],gluteEx:[]} };
+  }
+  return appData.swimFit.checkins[d];
+}
+function sfGetChallengeDay() {
+  if (!appData.swimFit.challengeStart) return 0;
+  const start = new Date(appData.swimFit.challengeStart);
+  const today = new Date(sfTodayStr());
+  return Math.floor((today - start) / 86400000) + 1;
+}
+function sfGetConsecutiveDays() {
+  let count = 0;
+  let d = new Date();
+  while (true) {
+    const ds = d.toISOString().slice(0,10);
+    const c = appData.swimFit.checkins[ds];
+    if (c && (c.deadBug?.done || c.swim?.done || c.chestGlute?.chestDone || c.chestGlute?.gluteDone)) {
+      count++;
+      d.setDate(d.getDate() - 1);
+    } else break;
+  }
+  return count;
+}
+function sfGetTotalDuration() {
+  let total = 0;
+  Object.values(appData.swimFit.checkins).forEach(c => {
+    if (c.swim?.duration) total += c.swim.duration;
+    if (c.deadBug?.done) total += 10;
+    if (c.chestGlute?.chestDone) total += 20;
+    if (c.chestGlute?.gluteDone) total += 20;
+  });
+  return total;
+}
+function sfGetExerciseDays() {
+  return Object.values(appData.swimFit.checkins).filter(c =>
+    c.deadBug?.done || c.swim?.done || c.chestGlute?.chestDone || c.chestGlute?.gluteDone
+  ).length;
+}
+function sfGetCheckinRate() {
+  if (!appData.swimFit.challengeStart) return 0;
+  const totalDays = Math.max(1, sfGetChallengeDay());
+  return Math.min(100, Math.round(sfGetExerciseDays() / totalDays * 100));
+}
+function sfGetCalories() {
+  let cal = 0;
+  Object.values(appData.swimFit.checkins).forEach(c => {
+    if (c.swim?.done) cal += (c.swim.duration || 0) * 8;
+    if (c.deadBug?.done) cal += 40;
+    if (c.chestGlute?.chestDone) cal += 80;
+    if (c.chestGlute?.gluteDone) cal += 60;
+  });
+  return cal;
+}
+
+// ---- 每日打卡 ----
+function renderSwimFitCheckin() {
+  const container = document.getElementById('swimfit-checkin');
+  if (!container) return;
+  const today = sfGetTodayCheckin();
+  const challengeDay = sfGetChallengeDay();
+  const consecutive = sfGetConsecutiveDays();
+  const totalDuration = sfGetTotalDuration();
+  const todayCount = [today.deadBug?.done, today.swim?.done, today.chestGlute?.chestDone, today.chestGlute?.gluteDone].filter(Boolean).length;
+
+  let html = `
+  <!-- 统计概览 -->
+  <div class="sf-stats-bar">
+    <div class="sf-stat-pill"><div class="num">${todayCount}</div><div class="label">今日完成</div></div>
+    <div class="sf-stat-pill blue"><div class="num">${consecutive}</div><div class="label">连续打卡(天)</div></div>
+    <div class="sf-stat-pill yellow"><div class="num">${totalDuration}</div><div class="label">累计运动(分钟)</div></div>
+    <div class="sf-stat-pill green"><div class="num">${sfGetExerciseDays()}</div><div class="label">运动总天数</div></div>
+  </div>`;
+
+  // 14天挑战进度
+  if (appData.swimFit.challengeStart) {
+    html += `<div class="sf-card">
+      <div class="sf-card-title">${SF_ICONS.deadbug} 14天死虫式核心挑战 · 第${Math.min(14,Math.max(1,challengeDay))}天</div>
+      <div class="sf-challenge-progress">`;
+    SF_DEADBUG_PLAN.forEach((d, i) => {
+      const ds = new Date(appData.swimFit.challengeStart);
+      ds.setDate(ds.getDate() + i);
+      const dsStr = ds.toISOString().slice(0,10);
+      const ck = appData.swimFit.checkins[dsStr];
+      const isDone = ck && ck.deadBug?.done;
+      const isToday = (i + 1) === challengeDay;
+      const isRest = d.type === 'rest';
+      html += `<div class="sf-day-dot ${isDone?'done':''} ${isToday?'today':''} ${isRest?'rest':''}" title="Day${d.day}: ${d.name}">${d.day}</div>`;
+    });
+    html += `</div>`;
+    const todayPlan = SF_DEADBUG_PLAN[Math.min(13, Math.max(0, challengeDay - 1))];
+    if (todayPlan && todayPlan.type !== 'rest') {
+      html += `<div style="margin-top:10px;padding:10px 14px;background:rgba(255,248,225,0.5);border-radius:10px;font-size:13px">
+        📋 今日任务：${todayPlan.name} ${todayPlan.sets}组×${todayPlan.reps}次，组间休息${todayPlan.rest}秒
+        <br><span style="color:var(--text-light)">${todayPlan.note}</span>
+      </div>`;
+    } else if (todayPlan) {
+      html += `<div style="margin-top:10px;padding:10px 14px;background:rgba(243,229,245,0.5);border-radius:10px;font-size:13px">🧘 ${todayPlan.note}</div>`;
+    }
+    html += `</div>`;
+  } else {
+    html += `<div class="sf-card" style="text-align:center;padding:24px">
+      <div style="font-size:36px;margin-bottom:8px">🐛</div>
+      <div style="font-weight:700;margin-bottom:6px">14天死虫式核心挑战</div>
+      <div style="font-size:13px;color:var(--text-light);margin-bottom:14px">坚持14天，激活核心力量！含休息日标注</div>
+      <button class="sf-celebrate-btn" onclick="startChallenge()">🚀 开始挑战</button>
+    </div>`;
+  }
+
+  // 今日打卡任务
+  html += `<div class="sf-card">
+    <div class="sf-card-title">${SF_ICONS.hourglass} 今日训练打卡</div>`;
+
+  // 死虫式打卡
+  const dbPlan = challengeDay > 0 ? SF_DEADBUG_PLAN[Math.min(13, challengeDay - 1)] : null;
+  if (dbPlan && dbPlan.type !== 'rest') {
+    html += `<div class="sf-task ${today.deadBug?.done?'done':''}" onclick="toggleSFTask('deadBug')">
+      <div class="sf-task-check">${today.deadBug?.done?'✓':''}</div>
+      <div style="flex:1">
+        <div class="sf-task-name">${dbPlan.name} ${dbPlan.sets}组×${dbPlan.reps}次</div>
+        <div class="sf-task-detail">组间休息${dbPlan.rest}秒 · ${dbPlan.note}</div>
+      </div>
+      <span class="sf-task-type sf-type-deadbug">死虫式</span>
+    </div>`;
+  }
+
+  // 胸部训练
+  html += `<div class="sf-task ${today.chestGlute?.chestDone?'done':''}" onclick="toggleSFTask('chest')">
+    <div class="sf-task-check">${today.chestGlute?.chestDone?'✓':''}</div>
+    <div style="flex:1">
+      <div class="sf-task-name">胸部力量训练</div>
+      <div class="sf-task-detail">${SF_SWIM_CHEST_GLUTE.chest.map(e=>e.name+e.sets+'×'+e.reps).join(' · ')}</div>
+    </div>
+    <span class="sf-task-type sf-type-chest">胸部</span>
+  </div>`;
+
+  // 臀部训练
+  html += `<div class="sf-task ${today.chestGlute?.gluteDone?'done':''}" onclick="toggleSFTask('glute')">
+    <div class="sf-task-check">${today.chestGlute?.gluteDone?'✓':''}</div>
+    <div style="flex:1">
+      <div class="sf-task-name">臀部力量训练</div>
+      <div class="sf-task-detail">${SF_SWIM_CHEST_GLUTE.glute.map(e=>e.name+e.sets+'×'+e.reps).join(' · ')}</div>
+    </div>
+    <span class="sf-task-type sf-type-glute">臀部</span>
+  </div>`;
+
+  // 游泳打卡
+  html += `<div class="sf-task ${today.swim?.done?'done':''}" onclick="toggleSFTask('swim')">
+    <div class="sf-task-check">${today.swim?.done?'✓':''}</div>
+    <div style="flex:1">
+      <div class="sf-task-name">游泳训练</div>
+      <div class="sf-task-detail">先完成胸臀力量训练，再下水游泳</div>
+    </div>
+    <span class="sf-task-type sf-type-swim">游泳</span>
+  </div>`;
+
+  html += `</div>`;
+
+  // 游泳记录输入
+  if (today.swim?.done) {
+    html += `<div class="sf-card">
+      <div class="sf-card-title">${SF_ICONS.swim} 游泳数据记录</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px">
+        <div><label style="font-size:12px;color:var(--text-light)">时长(分钟)</label><input class="sf-input" id="sf-swim-duration" type="number" value="${today.swim.duration||''}" style="width:100%" placeholder="60"></div>
+        <div><label style="font-size:12px;color:var(--text-light)">距离(米)</label><input class="sf-input" id="sf-swim-distance" type="number" value="${today.swim.distance||''}" style="width:100%" placeholder="2000"></div>
+        <div><label style="font-size:12px;color:var(--text-light)">配速</label><input class="sf-input" id="sf-swim-pace" type="text" value="${today.swim.pace||''}" style="width:100%" placeholder="2:00/100m"></div>
+      </div>
+      <button class="sf-celebrate-btn" style="padding:8px 20px;font-size:14px" onclick="saveSwimRecord()">💾 保存游泳数据</button>
+    </div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+function startChallenge() {
+  appData.swimFit.challengeStart = sfTodayStr();
+  saveData();
+  showToast('🚀 14天死虫式挑战已开始！加油！');
+  renderSwimFitCheckin();
+}
+
+function toggleSFTask(type) {
+  const today = sfGetTodayCheckin();
+  let taskName = '', taskType = '';
+  if (type === 'deadBug') {
+    today.deadBug.done = !today.deadBug.done;
+    if (today.deadBug.done) { today.deadBug.sets = 3; today.deadBug.reps = 12; }
+    taskName = '死虫式'; taskType = 'deadbug';
+  } else if (type === 'chest') {
+    today.chestGlute.chestDone = !today.chestGlute.chestDone;
+    if (today.chestGlute.chestDone) today.chestGlute.chestEx = SF_SWIM_CHEST_GLUTE.chest;
+    taskName = '胸部训练'; taskType = 'chest';
+  } else if (type === 'glute') {
+    today.chestGlute.gluteDone = !today.chestGlute.gluteDone;
+    if (today.chestGlute.gluteDone) today.chestGlute.gluteEx = SF_SWIM_CHEST_GLUTE.glute;
+    taskName = '臀部训练'; taskType = 'glute';
+  } else if (type === 'swim') {
+    today.swim.done = !today.swim.done;
+    taskName = '游泳训练'; taskType = 'swim';
+  }
+
+  // 添加历史记录
+  if (type === 'deadBug' && today.deadBug.done) {
+    addSFHistory('deadbug', '死虫式', 10);
+  } else if (type === 'chest' && today.chestGlute.chestDone) {
+    addSFHistory('chest', '胸部力量训练', 20);
+  } else if (type === 'glute' && today.chestGlute.gluteDone) {
+    addSFHistory('glute', '臀部力量训练', 20);
+  } else if (type === 'swim' && today.swim.done) {
+    addSFHistory('swim', '游泳训练', today.swim.duration || 0);
+  }
+
+  saveData();
+  checkSwimFitAchievements();
+  renderSwimFitCheckin();
+
+  // 打卡成功弹窗
+  if ((type === 'deadBug' && today.deadBug.done) || (type === 'chest' && today.chestGlute.chestDone) ||
+      (type === 'glute' && today.chestGlute.gluteDone) || (type === 'swim' && today.swim.done)) {
+    showSFCelebration(taskName, taskType);
+  }
+}
+
+function saveSwimRecord() {
+  const today = sfGetTodayCheckin();
+  today.swim.duration = parseInt(document.getElementById('sf-swim-duration')?.value) || 0;
+  today.swim.distance = parseInt(document.getElementById('sf-swim-distance')?.value) || 0;
+  today.swim.pace = document.getElementById('sf-swim-pace')?.value || '';
+  // 更新历史记录中的游泳时长
+  const todayStr = sfTodayStr();
+  const hist = appData.swimFit.history.find(h => h.date === todayStr && h.type === 'swim');
+  if (hist) { hist.duration = today.swim.duration; hist.detail = `${today.swim.distance}m / ${today.swim.pace}`; }
+  saveData();
+  showToast('💾 游泳数据已保存！');
+  checkSwimFitAchievements();
+}
+
+function addSFHistory(type, name, duration) {
+  const todayStr = sfTodayStr();
+  // 避免重复添加
+  const existing = appData.swimFit.history.find(h => h.date === todayStr && h.type === type);
+  if (existing) return;
+  appData.swimFit.history.push({
+    id: Date.now(),
+    date: todayStr,
+    type: type,
+    name: name,
+    duration: duration,
+    detail: '',
+    planId: appData.swimFit.currentPlan || 'deadBug14'
+  });
+}
+
+// ---- 训练计划 ----
+function renderSwimFitPlan() {
+  const container = document.getElementById('swimfit-plan');
+  if (!container) return;
+  let html = `<div class="sf-card">
+    <div class="sf-card-title">📅 训练计划管理</div>
+    <button class="sf-celebrate-btn" style="padding:8px 20px;font-size:14px" onclick="showAddPlanForm()">+ 新建计划</button>
+  </div>`;
+
+  // 预设计划
+  html += `<div class="sf-card">
+    <div class="sf-card-title">⭐ 预设计划</div>
+    <div class="sf-plan-item">
+      <div class="sf-plan-info">
+        <div class="sf-plan-name">14天死虫式核心挑战</div>
+        <div class="sf-plan-desc">Day1-Day14 · 含休息日 · 每日死虫式组数次数详细规划</div>
+      </div>
+      <span class="sf-task-type sf-type-deadbug">死虫式</span>
+    </div>
+    <div class="sf-plan-item">
+      <div class="sf-plan-info">
+        <div class="sf-plan-name">游泳+胸臀力量训练</div>
+        <div class="sf-plan-desc">胸部：跪姿俯卧撑+弹力带夹胸+哑铃卧推 · 臀部：臀桥+单腿臀桥+蚌式开合</div>
+      </div>
+      <span class="sf-task-type sf-type-chest">胸臀</span>
+    </div>
+  </div>`;
+
+  // 自定义计划
+  if (appData.swimFit.plans.length > 0) {
+    html += `<div class="sf-card">
+      <div class="sf-card-title">📋 我的自定义计划</div>`;
+    appData.swimFit.plans.forEach(p => {
+      html += `<div class="sf-plan-item">
+        <div class="sf-plan-info">
+          <div class="sf-plan-name">${p.name}</div>
+          <div class="sf-plan-desc">${p.desc || ''} ${p.reminder ? '· ⏰ '+p.reminder : ''} ${p.reminderMsg ? '· '+p.reminderMsg : ''}</div>
+          ${p.bv ? `<div style="margin-top:6px"><button class="sf-filter-btn" style="font-size:11px;padding:2px 8px" onclick="togglePlanVideo('${p.id}')">▶ 观看训练视频</button></div>
+          <div id="plan-video-${p.id}" style="display:none"><div class="sf-video-embed"><iframe src="https://player.bilibili.com/player.html?bvid=${p.bv}&page=1&high_quality=1" scrolling="no" frameborder="0" allowfullscreen="true"></iframe></div></div>` : ''}
+        </div>
+        <div class="sf-plan-actions">
+          <button class="sf-filter-btn" style="font-size:12px;padding:4px 10px" onclick="deleteSFPlan(${p.id})">🗑️</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // 新建计划表单（隐藏）
+  html += `<div class="sf-card" id="sf-add-plan-form" style="display:none">
+    <div class="sf-card-title">➕ 新建训练计划</div>
+    <div style="display:grid;gap:10px">
+      <input class="sf-input" id="sf-plan-name" placeholder="计划名称（如：晨间核心训练）">
+      <input class="sf-input" id="sf-plan-desc" placeholder="计划描述">
+      <div style="display:flex;gap:10px">
+        <select class="sf-input" id="sf-plan-type" style="flex:1">
+          <option value="deadbug">死虫式</option>
+          <option value="swim">游泳</option>
+          <option value="chest">胸部训练</option>
+          <option value="glute">臀部训练</option>
+        </select>
+        <input class="sf-input" id="sf-plan-bv" placeholder="B站BV号（可选）" style="flex:1">
+      </div>
+      <div style="display:flex;gap:10px">
+        <input class="sf-input" id="sf-plan-reminder" type="time" style="flex:1" title="提醒时间">
+        <input class="sf-input" id="sf-plan-reminder-msg" placeholder="提醒内容" style="flex:2">
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="sf-celebrate-btn" style="padding:8px 20px;font-size:14px;flex:1" onclick="addSFPlan()">✅ 创建</button>
+        <button class="sf-filter-btn" style="padding:8px 20px;font-size:14px" onclick="document.getElementById('sf-add-plan-form').style.display='none'">取消</button>
+      </div>
+    </div>
+  </div>`;
+
+  container.innerHTML = html;
+}
+
+function showAddPlanForm() {
+  const form = document.getElementById('sf-add-plan-form');
+  if (form) form.style.display = '';
+}
+
+function addSFPlan() {
+  const name = document.getElementById('sf-plan-name')?.value.trim();
+  if (!name) { showToast('请输入计划名称', 'warning'); return; }
+  const plan = {
+    id: Date.now(),
+    name: name,
+    desc: document.getElementById('sf-plan-desc')?.value.trim() || '',
+    type: document.getElementById('sf-plan-type')?.value || 'deadbug',
+    bv: document.getElementById('sf-plan-bv')?.value.trim() || '',
+    reminder: document.getElementById('sf-plan-reminder')?.value || '',
+    reminderMsg: document.getElementById('sf-plan-reminder-msg')?.value.trim() || ''
+  };
+  appData.swimFit.plans.push(plan);
+  saveData();
+  showToast('✅ 计划已创建！');
+  renderSwimFitPlan();
+}
+
+function deleteSFPlan(id) {
+  appData.swimFit.plans = appData.swimFit.plans.filter(p => p.id !== id);
+  saveData();
+  renderSwimFitPlan();
+}
+
+function togglePlanVideo(id) {
+  const v = document.getElementById('plan-video-' + id);
+  if (v) v.style.display = v.style.display === 'none' ? 'block' : 'none';
+}
+
+// ---- 历史记录 ----
+let sfHistoryFilter = 'all';
+function renderSwimFitHistory() {
+  const container = document.getElementById('swimfit-history');
+  if (!container) return;
+  let history = [...appData.swimFit.history].reverse();
+  if (sfHistoryFilter !== 'all') history = history.filter(h => h.type === sfHistoryFilter);
+
+  let html = `<div class="sf-filter-bar">
+    <button class="sf-filter-btn ${sfHistoryFilter==='all'?'active':''}" onclick="sfHistoryFilter='all';renderSwimFitHistory()">全部</button>
+    <button class="sf-filter-btn ${sfHistoryFilter==='deadbug'?'active':''}" onclick="sfHistoryFilter='deadbug';renderSwimFitHistory()">死虫式</button>
+    <button class="sf-filter-btn ${sfHistoryFilter==='swim'?'active':''}" onclick="sfHistoryFilter='swim';renderSwimFitHistory()">游泳</button>
+    <button class="sf-filter-btn ${sfHistoryFilter==='chest'?'active':''}" onclick="sfHistoryFilter='chest';renderSwimFitHistory()">胸部</button>
+    <button class="sf-filter-btn ${sfHistoryFilter==='glute'?'active':''}" onclick="sfHistoryFilter='glute';renderSwimFitHistory()">臀部</button>
+  </div>`;
+
+  if (history.length === 0) {
+    html += `<div class="sf-card" style="text-align:center;padding:40px;color:var(--text-light)">
+      <div style="font-size:36px;margin-bottom:8px">📜</div>
+      <div>暂无历史记录，完成打卡后会自动记录</div>
+    </div>`;
+  } else {
+    html += `<div class="sf-timeline">`;
+    history.forEach(h => {
+      const typeClass = h.type === 'swim' ? 'sf-type-swim' : h.type === 'chest' ? 'sf-type-chest' : h.type === 'glute' ? 'sf-type-glute' : 'sf-type-deadbug';
+      const typeLabel = h.type === 'swim' ? '游泳' : h.type === 'chest' ? '胸部' : h.type === 'glute' ? '臀部' : '死虫式';
+      html += `<div class="sf-timeline-item">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-weight:700">${h.name}</span>
+          <span class="sf-task-type ${typeClass}">${typeLabel}</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-light)">
+          📅 ${h.date} ${h.duration ? '· ⏱ '+h.duration+'分钟' : ''} ${h.detail ? '· '+h.detail : ''}
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+// ---- 日历视图 ----
+let sfCalMonth = new Date().getMonth();
+let sfCalYear = new Date().getFullYear();
+function renderSwimFitCalendar() {
+  const container = document.getElementById('swimfit-calendar');
+  if (!container) return;
+  const monthNames = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+
+  let html = `<div class="sf-card">
+    <div class="sf-cal-header">
+      <button class="sf-filter-btn" onclick="sfCalMonth--;if(sfCalMonth<0){sfCalMonth=11;sfCalYear--;}renderSwimFitCalendar()">‹ 上月</button>
+      <div style="font-weight:700;font-size:16px">${sfCalYear}年 ${monthNames[sfCalMonth]}</div>
+      <button class="sf-filter-btn" onclick="sfCalMonth++;if(sfCalMonth>11){sfCalMonth=0;sfCalYear++;}renderSwimFitCalendar()">下月 ›</button>
+    </div>
+    <div class="sf-cal-grid">
+      <div class="sf-cal-day-name">日</div><div class="sf-cal-day-name">一</div><div class="sf-cal-day-name">二</div>
+      <div class="sf-cal-day-name">三</div><div class="sf-cal-day-name">四</div><div class="sf-cal-day-name">五</div><div class="sf-cal-day-name">六</div>`;
+
+  const firstDay = new Date(sfCalYear, sfCalMonth, 1).getDay();
+  const daysInMonth = new Date(sfCalYear, sfCalMonth + 1, 0).getDate();
+  const todayStr = sfTodayStr();
+
+  for (let i = 0; i < firstDay; i++) html += '<div></div>';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds = `${sfCalYear}-${String(sfCalMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const ck = appData.swimFit.checkins[ds];
+    const isToday = ds === todayStr;
+    const hasEvent = ck && (ck.deadBug?.done || ck.swim?.done || ck.chestGlute?.chestDone || ck.chestGlute?.gluteDone);
+    let dots = '';
+    if (ck) {
+      if (ck.swim?.done) dots += '<span class="sf-cal-dot sf-dot-swim"></span>';
+      if (ck.chestGlute?.chestDone) dots += '<span class="sf-cal-dot sf-dot-chest"></span>';
+      if (ck.chestGlute?.gluteDone) dots += '<span class="sf-cal-dot sf-dot-glute"></span>';
+      if (ck.deadBug?.done) dots += '<span class="sf-cal-dot sf-dot-deadbug"></span>';
+    }
+    html += `<div class="sf-cal-day ${isToday?'today':''} ${hasEvent?'has-event':''}" onclick="showCalDetail('${ds}')">
+      ${d}<div class="sf-cal-dots">${dots}</div>
+    </div>`;
+  }
+  html += `</div>
+    <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--text-light)">
+      <span><span class="sf-cal-dot sf-dot-swim" style="display:inline-block;vertical-align:middle"></span> 游泳</span>
+      <span><span class="sf-cal-dot sf-dot-chest" style="display:inline-block;vertical-align:middle"></span> 胸部</span>
+      <span><span class="sf-cal-dot sf-dot-glute" style="display:inline-block;vertical-align:middle"></span> 臀部</span>
+      <span><span class="sf-cal-dot sf-dot-deadbug" style="display:inline-block;vertical-align:middle"></span> 死虫式</span>
+    </div>
+  </div>`;
+
+  container.innerHTML = html;
+}
+
+function showCalDetail(dateStr) {
+  const ck = appData.swimFit.checkins[dateStr];
+  let detail = `<div class="sf-cal-detail show" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="sf-cal-detail-box">
+      <div style="font-weight:700;font-size:18px;margin-bottom:14px">📅 ${dateStr}</div>`;
+  if (!ck || (!ck.deadBug?.done && !ck.swim?.done && !ck.chestGlute?.chestDone && !ck.chestGlute?.gluteDone)) {
+    detail += '<div style="color:var(--text-light);text-align:center;padding:20px">这一天没有训练记录</div>';
+  } else {
+    if (ck.deadBug?.done) detail += '<div style="margin-bottom:8px">🐛 死虫式 ✅</div>';
+    if (ck.chestGlute?.chestDone) detail += '<div style="margin-bottom:8px">💪 胸部训练 ✅</div>';
+    if (ck.chestGlute?.gluteDone) detail += '<div style="margin-bottom:8px">🍑 臀部训练 ✅</div>';
+    if (ck.swim?.done) detail += `<div style="margin-bottom:8px">🏊 游泳 ✅ ${ck.swim.duration?'· '+ck.swim.duration+'分钟':''} ${ck.swim.distance?'· '+ck.swim.distance+'m':''}</div>`;
+  }
+  detail += `<button class="sf-filter-btn" style="margin-top:14px;width:100%" onclick="document.querySelector('.sf-cal-detail').classList.remove('show')">关闭</button>
+    </div>
+  </div>`;
+  // 移除旧的
+  const old = document.querySelector('.sf-cal-detail');
+  if (old) old.remove();
+  document.body.insertAdjacentHTML('beforeend', detail);
+}
+
+// ---- 数据分析 ----
+let sfChart1 = null, sfChart2 = null;
+function renderSwimFitStats() {
+  const container = document.getElementById('swimfit-stats');
+  if (!container) return;
+  const totalDuration = sfGetTotalDuration();
+  const exerciseDays = sfGetExerciseDays();
+  const checkinRate = sfGetCheckinRate();
+  const calories = sfGetCalories();
+
+  // 胸臀专项统计
+  let chestCount = 0, gluteCount = 0, swimCount = 0, deadbugCount = 0;
+  Object.values(appData.swimFit.checkins).forEach(c => {
+    if (c.deadBug?.done) deadbugCount++;
+    if (c.swim?.done) swimCount++;
+    if (c.chestGlute?.chestDone) chestCount++;
+    if (c.chestGlute?.gluteDone) gluteCount++;
+  });
+
+  let html = `<div class="sf-stats-grid">
+    <div class="sf-stat-card pink"><div class="icon">⏱️</div><div class="value">${totalDuration}</div><div class="desc">累计运动时长(分)</div></div>
+    <div class="sf-stat-card blue"><div class="icon">📅</div><div class="value">${exerciseDays}</div><div class="desc">运动天数</div></div>
+    <div class="sf-stat-card yellow"><div class="icon">📊</div><div class="value">${checkinRate}%</div><div class="desc">打卡完成率</div></div>
+    <div class="sf-stat-card green"><div class="icon">🔥</div><div class="value">${calories}</div><div class="desc">累计消耗卡路里</div></div>
+  </div>`;
+
+  // 胸臀专项数据
+  html += `<div class="sf-card">
+    <div class="sf-card-title">💪 胸臀训练专项数据</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="text-align:center;padding:14px;background:rgba(252,228,236,0.3);border-radius:12px">
+        <div style="font-size:28px;font-weight:800;color:#e91e63">${chestCount}</div>
+        <div style="font-size:12px;color:var(--text-light)">胸部训练次数</div>
+      </div>
+      <div style="text-align:center;padding:14px;background:rgba(252,228,236,0.3);border-radius:12px">
+        <div style="font-size:28px;font-weight:800;color:#c2185b">${gluteCount}</div>
+        <div style="font-size:12px;color:var(--text-light)">臀部训练次数</div>
+      </div>
+    </div>
+  </div>`;
+
+  // 图表
+  html += `<div class="sf-chart-box"><canvas id="sf-chart-trend"></canvas></div>`;
+  html += `<div class="sf-chart-box"><canvas id="sf-chart-pie"></canvas></div>`;
+
+  // 导出按钮
+  html += `<button class="sf-celebrate-btn" style="width:100%;padding:12px;font-size:14px" onclick="exportSwimFitExcel()">📥 导出数据为Excel表格</button>`;
+
+  container.innerHTML = html;
+
+  // 渲染图表
+  setTimeout(() => {
+    const trendCtx = document.getElementById('sf-chart-trend');
+    const pieCtx = document.getElementById('sf-chart-pie');
+    if (!trendCtx || !pieCtx) return;
+
+    // 最近7天运动时长趋势
+    const labels = [], data = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      const ds = d.toISOString().slice(0,10);
+      labels.push(d.getMonth()+1 + '/' + d.getDate());
+      const ck = appData.swimFit.checkins[ds];
+      let dur = 0;
+      if (ck) {
+        if (ck.swim?.done) dur += ck.swim.duration || 0;
+        if (ck.deadBug?.done) dur += 10;
+        if (ck.chestGlute?.chestDone) dur += 20;
+        if (ck.chestGlute?.gluteDone) dur += 20;
+      }
+      data.push(dur);
+    }
+
+    if (sfChart1) sfChart1.destroy();
+    sfChart1 = new Chart(trendCtx, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: '运动时长(分钟)', data, backgroundColor: 'rgba(255,182,193,0.6)', borderColor: '#FFB6C1', borderWidth: 2, borderRadius: 6 }] },
+      options: { responsive: true, plugins: { title: { display: true, text: '最近7天运动时长趋势', font: { size: 14 } } }, scales: { y: { beginAtZero: true } } }
+    });
+
+    if (sfChart2) sfChart2.destroy();
+    sfChart2 = new Chart(pieCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['死虫式', '游泳', '胸部训练', '臀部训练'],
+        datasets: [{ data: [deadbugCount, swimCount, chestCount, gluteCount], backgroundColor: ['#f9a825', '#1e88e5', '#e91e63', '#c2185b'], borderWidth: 0 }]
+      },
+      options: { responsive: true, plugins: { title: { display: true, text: '运动类型分布', font: { size: 14 } } } }
+    });
+  }, 100);
+}
+
+function exportSwimFitExcel() {
+  let csv = '\uFEFF日期,运动类型,运动名称,时长(分钟),详情,所属计划\n';
+  appData.swimFit.history.forEach(h => {
+    csv += `${h.date},${h.type},${h.name},${h.duration || ''},${h.detail || ''},${h.planId || ''}\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `游泳胸臀训练记录_${sfTodayStr()}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('📥 数据已导出！');
+}
+
+// ---- 成就奖励 ----
+function renderSwimFitAchievements() {
+  const container = document.getElementById('swimfit-achievement');
+  if (!container) return;
+  checkSwimFitAchievements();
+  let html = `<div class="sf-card">
+    <div class="sf-card-title">${SF_ICONS.trophy} 成就贴纸墙 (${appData.swimFit.achievements.length}/${SF_ACHIEVEMENTS.length})</div>
+    <div class="sf-achievement-grid">`;
+  SF_ACHIEVEMENTS.forEach(a => {
+    const unlocked = appData.swimFit.achievements.includes(a.id);
+    html += `<div class="sf-achievement ${unlocked?'unlocked':'locked'}" onclick="showAchievementDetail('${a.id}')">
+      <div style="font-size:36px;margin-bottom:4px">${a.icon}</div>
+      <div class="sf-ach-name">${a.name}</div>
+      <div class="sf-ach-desc">${unlocked ? '✅ 已解锁' : a.desc}</div>
+    </div>`;
+  });
+  html += `</div></div>`;
+  container.innerHTML = html;
+}
+
+function showAchievementDetail(id) {
+  const a = SF_ACHIEVEMENTS.find(x => x.id === id);
+  if (!a) return;
+  const unlocked = appData.swimFit.achievements.includes(id);
+  showToast(`${a.icon} ${a.name} - ${unlocked ? '已解锁！' : '解锁条件：' + a.desc}`, unlocked ? 'success' : 'warning');
+}
+
+function checkSwimFitAchievements() {
+  if (!appData.swimFit.achievements) appData.swimFit.achievements = [];
+  const unlocked = new Set(appData.swimFit.achievements);
+  const newlyUnlocked = [];
+
+  let dbCount = 0, swCount = 0, chestCount = 0, gluteCount = 0, dbConsec = 0, swConsec = 0, gluteConsec = 0;
+  let chestGluteSameDay = 0;
+  let maxSwimDist = 0;
+
+  const sortedDates = Object.keys(appData.swimFit.checkins).sort();
+  sortedDates.forEach(ds => {
+    const c = appData.swimFit.checkins[ds];
+    if (c.deadBug?.done) { dbCount++; dbConsec++; } else dbConsec = 0;
+    if (c.swim?.done) { swCount++; swConsec++; } else swConsec = 0;
+    if (c.chestGlute?.chestDone) { chestCount++; }
+    if (c.chestGlute?.gluteDone) { gluteCount++; gluteConsec++; } else gluteConsec = 0;
+    if (c.chestGlute?.chestDone && c.chestGlute?.gluteDone) chestGluteSameDay++;
+    if (c.swim?.distance > maxSwimDist) maxSwimDist = c.swim.distance;
+  });
+
+  // 检查各成就
+  if (dbCount >= 1 && !unlocked.has('db1')) { unlocked.add('db1'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='db1')); }
+  if (dbConsec >= 3 && !unlocked.has('db2')) { unlocked.add('db2'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='db2')); }
+  if (sfGetChallengeDay() >= 14 && !unlocked.has('db3')) { unlocked.add('db3'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='db3')); }
+  if (dbCount >= 30 && !unlocked.has('db4')) { unlocked.add('db4'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='db4')); }
+  if (swCount >= 1 && !unlocked.has('sw1')) { unlocked.add('sw1'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='sw1')); }
+  if (swConsec >= 7 && !unlocked.has('sw2')) { unlocked.add('sw2'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='sw2')); }
+  if (swCount >= 10 && !unlocked.has('sw3')) { unlocked.add('sw3'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='sw3')); }
+  if (maxSwimDist >= 2000 && !unlocked.has('sw4')) { unlocked.add('sw4'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='sw4')); }
+  if (chestCount >= 1 && !unlocked.has('cg1')) { unlocked.add('cg1'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='cg1')); }
+  if (gluteConsec >= 5 && !unlocked.has('cg2')) { unlocked.add('cg2'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='cg2')); }
+  if ((chestCount + gluteCount) >= 15 && !unlocked.has('cg3')) { unlocked.add('cg3'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='cg3')); }
+  if (chestGluteSameDay >= 1 && !unlocked.has('cg4')) { unlocked.add('cg4'); newlyUnlocked.push(SF_ACHIEVEMENTS.find(a=>a.id==='cg4')); }
+
+  appData.swimFit.achievements = [...unlocked];
+  saveData();
+
+  // 弹窗通知新解锁的成就
+  newlyUnlocked.forEach(a => {
+    setTimeout(() => showSFCelebration(a.name, 'achievement', a.icon, a.desc), 500);
+  });
+}
+
+function showSFCelebration(name, type, icon, desc) {
+  const old = document.getElementById('sf-celebrate-overlay');
+  if (old) old.remove();
+  let badge = '', title = '', msg = '';
+  if (type === 'achievement') {
+    badge = `<div style="font-size:60px;text-align:center">${icon || '🏆'}</div>`;
+    title = '🏆 成就解锁！';
+    msg = `${name}<br><span style="font-size:13px;color:var(--text-light)">${desc||''}</span>`;
+  } else {
+    const typeMap = { deadbug:'🐛', swim:'🏊', chest:'💪', glute:'🍑' };
+    badge = `<div style="font-size:60px;text-align:center">${typeMap[type]||'✅'}</div>`;
+    title = '太棒了！';
+    msg = `${name}打卡成功！`;
+  }
+  const html = `<div class="sf-celebrate show" id="sf-celebrate-overlay" onclick="if(event.target===this)this.remove()">
+    <div class="sf-celebrate-box">
+      ${badge}
+      <div class="sf-celebrate-title">${title}</div>
+      <div class="sf-celebrate-msg">${msg}</div>
+      <button class="sf-celebrate-btn" onclick="document.getElementById('sf-celebrate-overlay').remove()">太棒了！</button>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  // 自动关闭
+  setTimeout(() => { const el = document.getElementById('sf-celebrate-overlay'); if (el) el.remove(); }, 5000);
+}
+
+// ---- 运动灵感库 ----
+function renderSwimFitInspire() {
+  const container = document.getElementById('swimfit-inspire');
+  if (!container) return;
+  let html = `<div style="text-align:center;padding:10px 16px;background:linear-gradient(135deg,#FFF0F5,#E0F6FF);border-radius:12px;margin-bottom:14px;font-size:13px;color:#e91e63;font-weight:600">
+    📺 每日早上8:00更新 · 精选B站热门训练视频
+  </div>`;
+
+  SF_INSPIRE_VIDEOS.forEach(v => {
+    const fav = appData.swimFit.favorites.includes(v.id);
+    html += `<div class="sf-inspire-card">
+      <div class="sf-inspire-thumb" onclick="toggleInspireVideo(${v.id})" id="inspire-thumb-${v.id}" style="display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;cursor:pointer">
+        ▶ 点击播放
+      </div>
+      <div id="inspire-video-${v.id}" style="display:none">
+        <div class="sf-video-embed" style="margin:0;border-radius:0">
+          <iframe src="https://player.bilibili.com/player.html?bvid=${v.bv}&page=1&high_quality=1" scrolling="no" frameborder="0" allowfullscreen="true"></iframe>
+        </div>
+      </div>
+      <div class="sf-inspire-info">
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div class="sf-inspire-title" style="flex:1">${v.title}</div>
+          <button class="sf-filter-btn" style="font-size:12px;padding:4px 10px;flex-shrink:0" onclick="toggleFavorite(${v.id})">${fav?'❤️':'🤍'}</button>
+        </div>
+        <div class="sf-inspire-meta">UP主: ${v.up}</div>
+        <div class="sf-inspire-tags">${v.tags.map(t=>`<span class="sf-inspire-tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function toggleInspireVideo(id) {
+  const thumb = document.getElementById('inspire-thumb-' + id);
+  const video = document.getElementById('inspire-video-' + id);
+  if (thumb && video) {
+    if (video.style.display === 'none') {
+      thumb.style.display = 'none';
+      video.style.display = 'block';
+    } else {
+      thumb.style.display = 'flex';
+      video.style.display = 'none';
+    }
+  }
+}
+
+function toggleFavorite(id) {
+  const idx = appData.swimFit.favorites.indexOf(id);
+  if (idx >= 0) appData.swimFit.favorites.splice(idx, 1);
+  else appData.swimFit.favorites.push(id);
+  saveData();
+  renderSwimFitInspire();
 }
 
 // ==================== 数据导出/导入（跨设备同步） ====================
