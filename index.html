@@ -6,7 +6,7 @@
 <!-- 强制清理旧版 Service Worker 和缓存 -->
 <script>
 (function(){
-  var FORCE_VERSION = '20260729-v10';
+  var FORCE_VERSION = '20260730-v11';
   try {
     var cached = localStorage.getItem('_wb_force_ver');
     if (cached !== FORCE_VERSION) {
@@ -1432,6 +1432,47 @@ body {
 [data-theme="luxe"] .sf-achievement.unlocked { background: rgba(22,23,40,0.6); }
 [data-theme="luxe"] .swimfit-tabs { background: rgba(22,23,40,0.6); }
 [data-theme="luxe"] .swimfit-tab.active { background: linear-gradient(135deg, #a78bfa, #60a5fa); }
+
+/* ═══════════ 英语学习模块 ═══════════ */
+.en-word-card { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--bg); border-radius:10px; margin-bottom:6px; border:1px solid var(--border); }
+.en-word-card.done { opacity:0.5; border-color:var(--success); }
+.en-word-num { width:26px;height:26px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--accent-dark);flex-shrink:0 }
+.en-word-info { flex:1;min-width:0 }
+.en-word-text { font-size:16px;font-weight:600 }
+.en-word-phonetic { font-size:12px;color:var(--text-light);margin:2px 0 }
+.en-word-meaning { font-size:11px;color:var(--text-light) }
+.en-word-actions { display:flex;gap:4px;flex-shrink:0 }
+.en-stage-card { background:var(--card-bg);border-radius:12px;padding:14px;border:2px solid var(--border);position:relative }
+.en-stage-card.completed { border-color:var(--success);background:linear-gradient(135deg,var(--card-bg) 60%,rgba(156,200,160,0.08))}
+.en-stage-card.current { border-color:var(--accent-dark);box-shadow:var(--card-shadow)}
+.en-stage-num { width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;margin-bottom:6px }
+.en-stage-badge { position:absolute;top:10px;right:10px;font-size:18px }
+.en-badge-item { text-align:center;padding:8px 4px }
+.en-badge-icon { width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:24px;border:3px solid var(--border);background:var(--bg) }
+.en-badge-item.unlocked .en-badge-icon { border-color:#f0d890;background:linear-gradient(135deg,#fff8e1,#ffe082);animation:enBadgeGlow 2s infinite }
+@keyframes enBadgeGlow { 0%,100%{box-shadow:0 0 8px rgba(240,216,144,0.5)} 50%{box-shadow:0 0 20px rgba(240,216,144,0.8)} }
+.en-badge-item.locked .en-badge-icon { filter:grayscale(1);opacity:0.3 }
+.en-badge-name { font-size:11px;font-weight:600;margin-bottom:1px }
+.en-badge-desc { font-size:9px;color:var(--text-light) }
+.en-record-btn.recording { animation:enPulse 1.5s infinite;background:#f44 !important }
+@keyframes enPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,68,68,0.5)} 50%{box-shadow:0 0 0 18px rgba(255,68,68,0)} }
+.en-correction-item { display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);align-items:flex-start }
+.en-correction-icon { width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0 }
+.en-correction-icon.err { background:#fce;color:var(--danger) }
+.en-correction-icon.ok { background:#d1fae5;color:var(--success) }
+[data-theme="luxe"] .en-word-card { background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.05) }
+[data-theme="luxe"] .en-stage-card { background:rgba(22,23,40,0.6);border-color:rgba(255,255,255,0.06) }
+[data-theme="luxe"] .en-stage-card.current { border-color:rgba(139,92,246,0.4) }
+[data-theme="luxe"] .en-correction-icon.err { background:rgba(248,113,113,0.2) }
+[data-theme="luxe"] .en-correction-icon.ok { background:rgba(52,211,153,0.2) }
+
+/* 英语模块通用组件 */
+.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.stat-card { background:var(--card-bg); border-radius:12px; padding:14px; text-align:center; border:1px solid var(--border); }
+.stat-value { font-size:26px; font-weight:700; color:var(--accent-dark); }
+.stat-label { font-size:11px; color:var(--text-light); margin-top:2px; }
+.progress-bar { height:8px; border-radius:4px; background:var(--bg); overflow:hidden; }
+.progress-fill { height:100%; border-radius:4px; background:var(--accent); transition:width .5s ease; }
 </style>
 <script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
 <script>
@@ -1496,9 +1537,6 @@ body {
     <button class="nav-item" data-page="todo" onclick="switchPage('todo')">
       <span class="nav-icon">✅</span> 每日待办清单
     </button>
-    <button class="nav-item" data-page="health" onclick="switchPage('health')">
-      <span class="nav-icon">💪</span> 健身&健康管理
-    </button>
     <button class="nav-item" data-page="notes" onclick="switchPage('notes')">
       <span class="nav-icon">📝</span> 综合日常笔记
     </button>
@@ -1507,6 +1545,9 @@ body {
     </button>
     <button class="nav-item" data-page="swimfit" onclick="switchPage('swimfit')">
       <span class="nav-icon">🏊</span> 游泳胸臀训练
+    </button>
+    <button class="nav-item" data-page="english" onclick="switchPage('english')">
+      <span class="nav-icon">📖</span> 英语学习
     </button>
   </nav>
   <div class="sidebar-footer">
@@ -1747,95 +1788,7 @@ body {
     </div>
   </section>
 
-  <!-- ====== 模块4：健身&健康管理 ====== -->
-  <section class="module-page" id="page-health">
-    <div class="page-header">
-      <div class="page-title"><span class="icon">💪</span> 健身&健康管理</div>
-      <div class="page-subtitle">运动打卡 · 饮食记录 · 伤病养护 · 体重围度</div>
-    </div>
-    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap" id="health-subnav">
-      <button class="btn btn-sm btn-primary health-sub active" data-hsub="exercise" onclick="switchHealthSub('exercise')">🏊 运动打卡</button>
-      <button class="btn btn-sm btn-outline health-sub" data-hsub="diet" onclick="switchHealthSub('diet')">🥗 饮食记录</button>
-      <button class="btn btn-sm btn-outline health-sub" data-hsub="injury" onclick="switchHealthSub('injury')">🏥 伤病养护</button>
-      <button class="btn btn-sm btn-outline health-sub" data-hsub="body" onclick="switchHealthSub('body')">📏 体重围度</button>
-    </div>
-
-    <div id="health-sub-exercise" class="health-sub-page">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><span class="icon">🏊</span> 运动打卡��</div>
-          <div>
-            <span style="font-size:11px;color:var(--text-light)">计划：每周4次游泳 + 2次力量训练</span>
-            <button class="btn btn-sm btn-primary" style="margin-left:8px" onclick="openExerciseEdit()">+ 打卡</button>
-          </div>
-        </div>
-        <div style="overflow-x:auto">
-          <table class="data-table" id="exercise-table">
-            <thead><tr><th>日期</th><th>运动类型</th><th>时长</th><th>训练内容</th><th>难点备注</th><th></th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div class="chart-box"><h4>📊 每周运动统计</h4><canvas id="exercise-chart"></canvas></div>
-        <div class="card" style="background:#fffdf5">
-          <div class="card-title" style="color:#c0a040">🏥 训练前伤病提醒</div>
-          <div style="font-size:12px;color:var(--text-light);line-height:1.8" id="injury-reminder">
-            ⚠️ 左脚踝距腓前韧带旧伤 — 避免急停变向<br>
-            ⚠️ 腰椎间盘突出 — 避免大重量深蹲/硬拉<br>
-            ⚠️ 静脉曲张 — 游泳后抬腿10分钟
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="health-sub-diet" class="health-sub-page" style="display:none">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><span class="icon">🥗</span> 饮食记录</div>
-          <button class="btn btn-sm btn-primary" onclick="openDietEdit()">+ 记录</button>
-        </div>
-        <div style="overflow-x:auto">
-          <table class="data-table" id="diet-table">
-            <thead><tr><th>日期</th><th>餐次</th><th>内容</th><th>类型</th><th>备注</th><th></th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div id="health-sub-injury" class="health-sub-page" style="display:none">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><span class="icon">🏥</span> 伤病养护备忘</div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
-          <div class="card" style="background:#fff8f5"><h4 style="color:var(--risk-text)">🦶 左脚踝旧伤</h4><p style="font-size:12px;color:var(--text-light)">距腓前韧带 · 避免急停、跳跃落地不稳 · 训练前充分热身脚踝</p></div>
-          <div class="card" style="background:#f5f8ff"><h4 style="color:#6888c0">🦴 腰椎间盘突出</h4><p style="font-size:12px;color:var(--text-light)">避免大重量 · 游泳自由泳最佳 · 每日麦肯基伸展</p></div>
-          <div class="card" style="background:#f5fff5"><h4 style="color:#609860">🦵 静脉曲张</h4><p style="font-size:12px;color:var(--text-light)">穿戴压力袜 · 游泳后抬腿10分钟 · 避免久站久坐</p></div>
-          <div class="card" style="background:#fff5fa"><h4 style="color:#b87098">🩸 腺肌症经期记录</h4><p style="font-size:12px;color:var(--text-light)">记录周期、疼痛等级 · 避免冰冷饮食 · 经期暂停高强度训练</p></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="health-sub-body" class="health-sub-page" style="display:none">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><span class="icon">📏</span> 体重围度台账</div>
-          <button class="btn btn-sm btn-primary" onclick="openBodyEdit()">+ 记录</button>
-        </div>
-        <div style="overflow-x:auto">
-          <table class="data-table" id="body-table">
-            <thead><tr><th>日期</th><th>体重(kg)</th><th>胸围(cm)</th><th>臀围(cm)</th><th>备注</th><th></th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="chart-box"><h4>📈 体重&围度趋势</h4><canvas id="body-chart"></canvas></div>
-    </div>
-  </section>
-
-  <!-- ====== 模块5：综合日常笔记 ====== -->
+  <!-- ====== 模块4：综合日常笔记 ====== -->
   <section class="module-page" id="page-notes">
     <div class="page-header">
       <div class="page-title"><span class="icon">📝</span> 综合日常笔记区</div>
@@ -1900,7 +1853,7 @@ body {
     </div>
   </section>
 
-  <!-- ====== 模块7：每日热点新闻 ====== -->
+  <!-- ====== 模块5：每日热点新闻 ====== -->
   <section class="module-page" id="page-news">
     <div class="module-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
       <div>
@@ -1926,7 +1879,7 @@ body {
     </div>
   </section>
 
-  <!-- ====== 模块8：游泳胸臀核心训练 ====== -->
+  <!-- ====== 模块6：游泳胸臀核心训练 ====== -->
   <section class="module-page" id="page-swimfit">
     <div class="page-header">
       <div class="page-title"><span class="icon">🏊</span> 游泳胸臀核心训练</div>
@@ -1948,6 +1901,135 @@ body {
     <div id="swimfit-stats" class="swimfit-sub" style="display:none"></div>
     <div id="swimfit-achievement" class="swimfit-sub" style="display:none"></div>
     <div id="swimfit-inspire" class="swimfit-sub" style="display:none"></div>
+  </section>
+
+  <!-- ====== 模块7：零基础英语学习 ====== -->
+  <section class="module-page" id="page-english">
+    <div class="page-header">
+      <div class="page-title"><span class="icon">📖</span> 零基础英语学习</div>
+      <div class="page-subtitle">6个月进阶方案 · 先讲后练 · 音标打底 · AI纠错</div>
+    </div>
+    <div class="swimfit-tabs" id="englishTabs">
+      <button class="swimfit-tab active" data-esub="plan" onclick="switchEnglishTab('plan')">📅 学习规划</button>
+      <button class="swimfit-tab" data-esub="course" onclick="switchEnglishTab('course')">📚 课程中心</button>
+      <button class="swimfit-tab" data-esub="practice" onclick="switchEnglishTab('practice')">🎙️ 朗读练习</button>
+      <button class="swimfit-tab" data-esub="dash" onclick="switchEnglishTab('dash')">📊 数据看板</button>
+      <button class="swimfit-tab" data-esub="badges" onclick="switchEnglishTab('badges')">🏆 成就徽章</button>
+    </div>
+
+    <!-- ========== 学习规划 ========== -->
+    <div id="english-plan" class="swimfit-sub active">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-weight:600;font-size:15px">📅 6个月总进度</span>
+          <span id="en-overall-percent" style="font-weight:700;color:var(--accent-dark)">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="en-overall-bar" style="width:0%"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--text-light)">
+          <span>🎯 开始：<span id="en-start-date">未设置</span></span><span>📆 预计完成：<span id="en-end-date">--</span></span>
+        </div>
+      </div>
+      <div id="en-stage-grid" style="display:grid;gap:10px;margin-top:12px"></div>
+      <div class="card">
+        <div style="font-weight:600;margin-bottom:10px">⚙️ 学习设置</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <span style="font-size:13px;color:var(--text-light)">每日时长：</span>
+          <select id="en-daily-time" onchange="enSaveSettings()" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)">
+            <option value="15">15分钟</option><option value="30" selected>30分钟</option><option value="45">45分钟</option><option value="60">60分钟</option><option value="90">90分钟</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px">
+          <span style="font-size:13px;color:var(--text-light)">提醒时间：</span>
+          <input type="time" id="en-remind-time" value="20:00" onchange="enSaveSettings()" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)">
+          <select id="en-remind-repeat" onchange="enSaveSettings()" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card-bg);color:var(--text)">
+            <option value="daily">每天</option><option value="weekday">工作日</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="enRequestNotify()" style="margin-top:10px">🔔 开启学习提醒</button>
+        <div style="margin-top:10px">
+          <span style="font-size:13px;color:var(--text-light)">手动调整阶段：</span>
+          <select id="en-manual-stage" onchange="enAdjustStage()" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card-bg);color:var(--text);margin-left:6px">
+            <option value="1">第1个月 - 48个音标</option><option value="2">第2个月 - 基础单词</option><option value="3">第3个月 - 日常短句</option><option value="4">第4个月 - 场景对话</option><option value="5">第5个月 - 短文朗读</option><option value="6">第6个月 - 自由对话</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 课程中心 ========== -->
+    <div id="english-course" class="swimfit-sub" style="display:none">
+      <!-- 阶段选择器 -->
+      <div class="sf-filter-bar" id="en-course-stage-filter" style="margin-top:12px;flex-wrap:wrap">
+        <button class="sf-filter-btn active" data-stage="1" onclick="enSwitchCourseStage(1)">🎵 音标</button>
+        <button class="sf-filter-btn" data-stage="2" onclick="enSwitchCourseStage(2)">📝 单词</button>
+        <button class="sf-filter-btn" data-stage="3" onclick="enSwitchCourseStage(3)">💬 短句</button>
+        <button class="sf-filter-btn" data-stage="4" onclick="enSwitchCourseStage(4)">🎭 场景</button>
+        <button class="sf-filter-btn" data-stage="5" onclick="enSwitchCourseStage(5)">📖 短文</button>
+        <button class="sf-filter-btn" data-stage="6" onclick="enSwitchCourseStage(6)">🗣️ 对话</button>
+      </div>
+      <!-- 课程列表 -->
+      <div id="en-lesson-list" style="margin-top:12px"></div>
+      <!-- 课程详情 -->
+      <div id="en-lesson-detail" style="display:none;margin-top:12px"></div>
+    </div>
+
+    <!-- ========== 朗读练习 ========== -->
+    <div id="english-practice" class="swimfit-sub" style="display:none">
+      <div class="card" style="margin-top:12px">
+        <div style="font-weight:600;margin-bottom:8px">🎙️ 朗读纠错</div>
+        <div class="sf-filter-bar" id="en-record-mode">
+          <button class="sf-filter-btn active" data-mode="word">单词</button>
+          <button class="sf-filter-btn" data-mode="sentence">短句</button>
+          <button class="sf-filter-btn" data-mode="dialogue">对话</button>
+        </div>
+        <div class="sf-filter-bar" id="en-record-diff">
+          <button class="sf-filter-btn active" data-diff="easy">简单</button>
+          <button class="sf-filter-btn" data-diff="medium">中等</button>
+          <button class="sf-filter-btn" data-diff="hard">困难</button>
+        </div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:20px;font-weight:600;padding:16px;background:var(--bg);border-radius:12px;margin:8px 0" id="en-record-text">点击麦克风开始朗读</div>
+        <button class="btn btn-sm btn-outline" onclick="enNextText()" style="margin:0 auto">🔄 换一句</button>
+        <canvas id="en-wave-canvas" style="width:100%;height:80px;border-radius:10px;background:var(--bg);margin:10px 0"></canvas>
+        <button id="en-record-btn" onclick="enToggleRecord()" style="width:72px;height:72px;border-radius:50%;border:none;background:var(--danger);display:flex;align-items:center;justify-content:center;margin:10px auto;cursor:pointer;box-shadow:0 4px 20px rgba(240,160,160,0.3);transition:all .3s">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+        </button>
+        <div style="font-size:12px;color:var(--text-light)" id="en-record-hint">轻按开始，朗读后再次点击结束</div>
+      </div>
+      <div class="card" id="en-correction-box" style="display:none">
+        <div style="font-weight:600;margin-bottom:8px">📊 AI纠错结果</div>
+        <div style="text-align:center;margin-bottom:8px"><span style="font-size:36px;font-weight:700;color:var(--success)" id="en-score">0</span><span style="color:var(--text-light)">分</span></div>
+        <div id="en-correction-detail"></div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          <button class="btn btn-sm btn-outline" onclick="enPlaySlow()">🔊 慢速示范</button>
+          <button class="btn btn-sm btn-outline" onclick="enRetry()">🔄 重新朗读</button>
+          <button class="btn btn-sm btn-outline" onclick="enAddWrong()">📌 加入错题夹</button>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-weight:600;margin-bottom:8px">📌 错题夹 <span style="font-size:12px;color:var(--text-light)">(<span id="en-wrong-count">0</span>)</span></div>
+        <div id="en-wrong-list" style="max-height:200px;overflow-y:auto"><p style="color:var(--text-light);text-align:center;padding:16px;font-size:13px">暂无错题</p></div>
+      </div>
+    </div>
+
+    <!-- ========== 数据看板 ========== -->
+    <div id="english-dash" class="swimfit-sub" style="display:none">
+      <div class="stat-grid" style="margin-top:12px">
+        <div class="stat-card"><div class="stat-value" id="en-stat-streak">0</div><div class="stat-label">🔥 连续打卡(天)</div></div>
+        <div class="stat-card"><div class="stat-value" id="en-stat-words">0</div><div class="stat-label">📚 掌握单词</div></div>
+        <div class="stat-card"><div class="stat-value" id="en-stat-acc">0%</div><div class="stat-label">🎯 发音准确率</div></div>
+        <div class="stat-card"><div class="stat-value" id="en-stat-hours">0h</div><div class="stat-label">⏱️ 总学习时长</div></div>
+        <div class="stat-card"><div class="stat-value" id="en-stat-lessons">0</div><div class="stat-label">📖 已完成课程</div></div>
+      </div>
+      <div class="card" style="margin-top:12px"><div style="font-weight:600;margin-bottom:8px">📈 准确率变化</div><div style="height:200px"><canvas id="en-acc-chart"></canvas></div></div>
+      <div class="card"><div style="font-weight:600;margin-bottom:8px">📊 本周统计</div><div style="height:200px"><canvas id="en-week-chart"></canvas></div></div>
+      <button class="btn btn-outline" onclick="enExport()" style="width:100%">📥 导出学习数据</button>
+    </div>
+
+    <!-- ========== 成就徽章 ========== -->
+    <div id="english-badges" class="swimfit-sub" style="display:none">
+      <div class="card" style="margin-top:12px"><div style="font-weight:600;margin-bottom:10px">🏆 成就徽章</div><div id="en-badge-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"></div></div>
+    </div>
   </section>
 
 </main>
@@ -1987,9 +2069,7 @@ let appData = {
     currentPlan: 'deadBug14',
     settings: { waterReminderEnabled: true }
   },
-  health: {
-    exercise: [], diet: [], body: []
-  },
+
   notes: {
     skincare: [], comm: [], mood: [], life: [],
     learnColumns: [
@@ -1998,6 +2078,16 @@ let appData = {
       { id:'english', name:'美式英语口语', icon:'🗣️', desc:'satisfaction/expectation · 职场短句跟读 · 发音自测', progress:0, days:0, videos:[], exercises:[], exerciseCompleted:false, lastCheckinDate:'' },
       { id:'calligraphy', name:'硬笔练字', icon:'✍️', desc:'零基础控笔训练 · 基本笔画 · 偏旁部首 · 间架结构 · 每日一字', progress:0, days:0, videos:[], exercises:[], exerciseCompleted:false, lastCheckinDate:'' }
     ]
+  },
+  english: {
+    currentStage: 1, stageProgress: {1:0,2:0,3:0,4:0,5:0,6:0},
+    startDate: '', dailyTime: 30, remindTime: '20:00', remindRepeat: 'daily',
+    masteredWords: [], wordHistory: {}, lessonProgress: {},
+    streak: 0, lastStudyDate: '', totalMinutes: 0,
+    accuracyHistory: {}, achievements: {}, wrongBook: [],
+    recordCount: 0, correctedCount: 0, notificationsEnabled: false,
+    wordLevel: 'all', recordMode: 'word', recordDiff: 'easy',
+    speed: 1, currentEnglishTab: 'plan'
   },
   theme: 'default',
   currentPage: 'debt'
@@ -2202,7 +2292,6 @@ function refreshCurrentView() {
   if (page === 'debt') { renderDebt(); renderDebtChart(); }
   if (page === 'work') renderWork();
   if (page === 'todo') renderTodos();
-  if (page === 'health') { renderHealth(); renderHealthCharts(); }
   if (page === 'notes') renderNotes();
 }
 
@@ -2369,10 +2458,10 @@ function switchPage(page) {
     if (page === 'debt') { renderDebt(); renderDebtChart(); }
     if (page === 'work') renderWork();
     if (page === 'todo') renderTodos();
-    if (page === 'health') { renderHealth(); renderHealthCharts(); }
     if (page === 'notes') renderNotes();
     if (page === 'news') renderNews();
     if (page === 'swimfit') renderSwimFit();
+    if (page === 'english') renderEnglish();
   }, 100);
   saveData();
 }
@@ -2389,18 +2478,6 @@ function switchWorkSub(sub) {
   if (sub === 'performance') renderPerformance();
   if (sub === 'sop') renderSOP();
   if (sub === 'courseware') renderCourseware();
-}
-
-function switchHealthSub(hsub) {
-  document.querySelectorAll('.health-sub-page').forEach(p => p.style.display = 'none');
-  document.querySelectorAll('.health-sub').forEach(b => { b.className = 'btn btn-sm btn-outline health-sub'; });
-  const pageEl = document.getElementById('health-sub-' + hsub);
-  const btnEl = document.querySelector(`[data-hsub="${hsub}"]`);
-  if (pageEl) pageEl.style.display = 'block';
-  if (btnEl) btnEl.className = 'btn btn-sm btn-primary health-sub active';
-  if (hsub === 'exercise') { renderExercise(); renderExerciseChart(); }
-  if (hsub === 'diet') renderDiet();
-  if (hsub === 'body') { renderBody(); renderBodyChart(); }
 }
 
 function switchNotesSub(nsub) {
@@ -2430,7 +2507,6 @@ function switchTheme(theme) {
   setTimeout(() => {
     const page = appData.currentPage;
     if (page === 'debt') renderDebtChart();
-    if (page === 'health') renderHealthCharts();
   }, 200);
 }
 
@@ -3368,12 +3444,12 @@ function onTodoTypeChange() {
   document.getElementById('todo-date-group').style.display = type === 'oneshot' ? '' : 'none';
 }
 
-// ==================== 模块7：每日热点新闻 ====================
+// ==================== 模块5：每日热点新闻 ====================
 let newsData = null;
 // 优先使用localStorage缓存（可能是上次打开时获取的实时数据），其次用内嵌快照
 let _cachedNews = null;
 try { const _cn = JSON.parse(localStorage.getItem('cachedNews') || 'null'); if (_cn && _cn.data && (Date.now() - _cn.time < 6*3600*1000)) _cachedNews = _cn.data; } catch(e) {}
-let EMBEDDED_NEWS = {"weibo": {"icon": "🔍", "name": "微博热搜", "color": "#E6162D", "items": [{"title": "豆包究竟见过多少人的糗事", "url": "https://s.weibo.com/weibo?q=%E8%B1%86%E5%8C%85%E7%A9%B6%E7%AB%9F%E8%A7%81%E8%BF%87%E5%A4%9A%E5%B0%91%E4%BA%BA%E7%9A%84%E7%B3%97%E4%BA%8B", "sourceName": "微博热搜", "rank": 1, "time": "🔥 393691"}, {"title": "凤囚凰 古偶烂片史上难以逾越的高峰", "url": "https://s.weibo.com/weibo?q=%E5%87%A4%E5%9B%9A%E5%87%B0%20%E5%8F%A4%E5%81%B6%E7%83%82%E7%89%87%E5%8F%B2%E4%B8%8A%E9%9A%BE%E4%BB%A5%E9%80%BE%E8%B6%8A%E7%9A%84%E9%AB%98%E5%B3%B0", "sourceName": "微博热搜", "rank": 2, "time": "🔥 166695"}, {"title": "长江十年行", "url": "https://s.weibo.com/weibo?q=%E9%95%BF%E6%B1%9F%E5%8D%81%E5%B9%B4%E8%A1%8C", "sourceName": "微博热搜", "rank": 3, "time": "🔥 142447"}, {"title": "陈伟霆九门老九门出场对比", "url": "https://s.weibo.com/weibo?q=%E9%99%88%E4%BC%9F%E9%9C%86%E4%B9%9D%E9%97%A8%E8%80%81%E4%B9%9D%E9%97%A8%E5%87%BA%E5%9C%BA%E5%AF%B9%E6%AF%94", "sourceName": "微博热搜", "rank": 4, "time": "🔥 135880"}, {"title": "日元全线飙升", "url": "https://s.weibo.com/weibo?q=%E6%97%A5%E5%85%83%E5%85%A8%E7%BA%BF%E9%A3%99%E5%8D%87", "sourceName": "微博热搜", "rank": 5, "time": "🔥 114326"}, {"title": "小米澎程N90价格", "url": "https://s.weibo.com/weibo?q=%E5%B0%8F%E7%B1%B3%E6%BE%8E%E7%A8%8BN90%E4%BB%B7%E6%A0%BC", "sourceName": "微博热搜", "rank": 6, "time": "🔥 106430"}, {"title": "曝BLG联系不到Bin", "url": "https://s.weibo.com/weibo?q=%E6%9B%9DBLG%E8%81%94%E7%B3%BB%E4%B8%8D%E5%88%B0Bin", "sourceName": "微博热搜", "rank": 7, "time": "🔥 102735"}, {"title": "浪7结束了但没完全结束", "url": "https://s.weibo.com/weibo?q=%E6%B5%AA7%E7%BB%93%E6%9D%9F%E4%BA%86%E4%BD%86%E6%B2%A1%E5%AE%8C%E5%85%A8%E7%BB%93%E6%9D%9F", "sourceName": "微博热搜", "rank": 8, "time": "🔥 95951"}, {"title": "莲子切开里面有个小娃娃", "url": "https://s.weibo.com/weibo?q=%E8%8E%B2%E5%AD%90%E5%88%87%E5%BC%80%E9%87%8C%E9%9D%A2%E6%9C%89%E4%B8%AA%E5%B0%8F%E5%A8%83%E5%A8%83", "sourceName": "微博热搜", "rank": 9, "time": "🔥 95890"}, {"title": "王腾买了小米N90Max", "url": "https://s.weibo.com/weibo?q=%E7%8E%8B%E8%85%BE%E4%B9%B0%E4%BA%86%E5%B0%8F%E7%B1%B3N90Max", "sourceName": "微博热搜", "rank": 10, "time": "🔥 95480"}, {"title": "陕西公公强奸儿媳案二审维持原判", "url": "https://s.weibo.com/weibo?q=%E9%99%95%E8%A5%BF%E5%85%AC%E5%85%AC%E5%BC%BA%E5%A5%B8%E5%84%BF%E5%AA%B3%E6%A1%88%E4%BA%8C%E5%AE%A1%E7%BB%B4%E6%8C%81%E5%8E%9F%E5%88%A4", "sourceName": "微博热搜", "rank": 11, "time": "🔥 95205"}, {"title": "尹新月 赵丽颖", "url": "https://s.weibo.com/weibo?q=%E5%B0%B9%E6%96%B0%E6%9C%88%20%E8%B5%B5%E4%B8%BD%E9%A2%96", "sourceName": "微博热搜", "rank": 12, "time": "🔥 94748"}, {"title": "洪水中锁死狮子该不该", "url": "https://s.weibo.com/weibo?q=%E6%B4%AA%E6%B0%B4%E4%B8%AD%E9%94%81%E6%AD%BB%E7%8B%AE%E5%AD%90%E8%AF%A5%E4%B8%8D%E8%AF%A5", "sourceName": "微博热搜", "rank": 13, "time": "🔥 94495"}, {"title": "泰国部长称不欢迎给他人造成损害的游客", "url": "https://s.weibo.com/weibo?q=%E6%B3%B0%E5%9B%BD%E9%83%A8%E9%95%BF%E7%A7%B0%E4%B8%8D%E6%AC%A2%E8%BF%8E%E7%BB%99%E4%BB%96%E4%BA%BA%E9%80%A0%E6%88%90%E6%8D%9F%E5%AE%B3%E7%9A%84%E6%B8%B8%E5%AE%A2", "sourceName": "微博热搜", "rank": 14, "time": "🔥 94449"}, {"title": "多囊卵巢综合征为什么要更名", "url": "https://s.weibo.com/weibo?q=%E5%A4%9A%E5%9B%8A%E5%8D%B5%E5%B7%A2%E7%BB%BC%E5%90%88%E5%BE%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9B%B4%E5%90%8D", "sourceName": "微博热搜", "rank": 15, "time": "🔥 94199"}, {"title": "日元", "url": "https://s.weibo.com/weibo?q=%E6%97%A5%E5%85%83", "sourceName": "微博热搜", "rank": 16, "time": "🔥 93991"}, {"title": "披荆斩棘阵容", "url": "https://s.weibo.com/weibo?q=%E6%8A%AB%E8%8D%86%E6%96%A9%E6%A3%98%E9%98%B5%E5%AE%B9", "sourceName": "微博热搜", "rank": 17, "time": "🔥 93924"}, {"title": "白玉兰自己也在回味", "url": "https://s.weibo.com/weibo?q=%E7%99%BD%E7%8E%89%E5%85%B0%E8%87%AA%E5%B7%B1%E4%B9%9F%E5%9C%A8%E5%9B%9E%E5%91%B3", "sourceName": "微博热搜", "rank": 18, "time": "🔥 93684"}, {"title": "读者说抄袭晋江法务就来了", "url": "https://s.weibo.com/weibo?q=%E8%AF%BB%E8%80%85%E8%AF%B4%E6%8A%84%E8%A2%AD%E6%99%8B%E6%B1%9F%E6%B3%95%E5%8A%A1%E5%B0%B1%E6%9D%A5%E4%BA%86", "sourceName": "微博热搜", "rank": 19, "time": "🔥 93464"}, {"title": "重庆彭水山体崩塌致51人遇难10人失联", "url": "https://s.weibo.com/weibo?q=%E9%87%8D%E5%BA%86%E5%BD%AD%E6%B0%B4%E5%B1%B1%E4%BD%93%E5%B4%A9%E5%A1%8C%E8%87%B451%E4%BA%BA%E9%81%87%E9%9A%BE10%E4%BA%BA%E5%A4%B1%E8%81%94", "sourceName": "微博热搜", "rank": 20, "time": "🔥 93446"}]}, "douyin": {"icon": "🎵", "name": "抖音热点", "color": "#161823", "items": [{"title": "解放军两次警告日方不能自称海军", "url": "https://www.douyin.com/search/%E8%A7%A3%E6%94%BE%E5%86%9B%E4%B8%A4%E6%AC%A1%E8%AD%A6%E5%91%8A%E6%97%A5%E6%96%B9%E4%B8%8D%E8%83%BD%E8%87%AA%E7%A7%B0%E6%B5%B7%E5%86%9B", "sourceName": "抖音热点", "rank": 1, "time": "🔥 11564280"}, {"title": "我的暑期限定solotrip", "url": "https://www.douyin.com/search/%E6%88%91%E7%9A%84%E6%9A%91%E6%9C%9F%E9%99%90%E5%AE%9Asolotrip", "sourceName": "抖音热点", "rank": 2, "time": "🔥 11100857"}, {"title": "规模以上文化企业营收同比增长", "url": "https://www.douyin.com/search/%E8%A7%84%E6%A8%A1%E4%BB%A5%E4%B8%8A%E6%96%87%E5%8C%96%E4%BC%81%E4%B8%9A%E8%90%A5%E6%94%B6%E5%90%8C%E6%AF%94%E5%A2%9E%E9%95%BF", "sourceName": "抖音热点", "rank": 3, "time": "🔥 11100445"}, {"title": "当彝族元素走进日常穿搭", "url": "https://www.douyin.com/search/%E5%BD%93%E5%BD%9D%E6%97%8F%E5%85%83%E7%B4%A0%E8%B5%B0%E8%BF%9B%E6%97%A5%E5%B8%B8%E7%A9%BF%E6%90%AD", "sourceName": "抖音热点", "rank": 4, "time": "🔥 11058897"}, {"title": "吴宜泽6:5战胜墨菲", "url": "https://www.douyin.com/search/%E5%90%B4%E5%AE%9C%E6%B3%BD6%3A5%E6%88%98%E8%83%9C%E5%A2%A8%E8%8F%B2", "sourceName": "抖音热点", "rank": 5, "time": "🔥 10481882"}, {"title": "Hyrox成都站我来啦", "url": "https://www.douyin.com/search/Hyrox%E6%88%90%E9%83%BD%E7%AB%99%E6%88%91%E6%9D%A5%E5%95%A6", "sourceName": "抖音热点", "rank": 6, "time": "🔥 10473230"}, {"title": "九江文旅主打一个听劝", "url": "https://www.douyin.com/search/%E4%B9%9D%E6%B1%9F%E6%96%87%E6%97%85%E4%B8%BB%E6%89%93%E4%B8%80%E4%B8%AA%E5%90%AC%E5%8A%9D", "sourceName": "抖音热点", "rank": 7, "time": "🔥 9200751"}, {"title": "洛阳的大盘鸡把我香迷糊了", "url": "https://www.douyin.com/search/%E6%B4%9B%E9%98%B3%E7%9A%84%E5%A4%A7%E7%9B%98%E9%B8%A1%E6%8A%8A%E6%88%91%E9%A6%99%E8%BF%B7%E7%B3%8A%E4%BA%86", "sourceName": "抖音热点", "rank": 8, "time": "🔥 9184734"}, {"title": "美联储维持利率不变", "url": "https://www.douyin.com/search/%E7%BE%8E%E8%81%94%E5%82%A8%E7%BB%B4%E6%8C%81%E5%88%A9%E7%8E%87%E4%B8%8D%E5%8F%98", "sourceName": "抖音热点", "rank": 9, "time": "🔥 9184412"}, {"title": "多方回应智驾小蓝灯被禁用", "url": "https://www.douyin.com/search/%E5%A4%9A%E6%96%B9%E5%9B%9E%E5%BA%94%E6%99%BA%E9%A9%BE%E5%B0%8F%E8%93%9D%E7%81%AF%E8%A2%AB%E7%A6%81%E7%94%A8", "sourceName": "抖音热点", "rank": 10, "time": "🔥 9183348"}, {"title": "二十届五中全会10月召开", "url": "https://www.douyin.com/search/%E4%BA%8C%E5%8D%81%E5%B1%8A%E4%BA%94%E4%B8%AD%E5%85%A8%E4%BC%9A10%E6%9C%88%E5%8F%AC%E5%BC%80", "sourceName": "抖音热点", "rank": 11, "time": "🔥 9181538"}, {"title": "赵心童淘汰罗伯逊晋级半决赛", "url": "https://www.douyin.com/search/%E8%B5%B5%E5%BF%83%E7%AB%A5%E6%B7%98%E6%B1%B0%E7%BD%97%E4%BC%AF%E9%80%8A%E6%99%8B%E7%BA%A7%E5%8D%8A%E5%86%B3%E8%B5%9B", "sourceName": "抖音热点", "rank": 12, "time": "🔥 9157276"}, {"title": "柯洁回应再夺王中王争霸赛冠军", "url": "https://www.douyin.com/search/%E6%9F%AF%E6%B4%81%E5%9B%9E%E5%BA%94%E5%86%8D%E5%A4%BA%E7%8E%8B%E4%B8%AD%E7%8E%8B%E4%BA%89%E9%9C%B8%E8%B5%9B%E5%86%A0%E5%86%9B", "sourceName": "抖音热点", "rank": 13, "time": "🔥 9151454"}, {"title": "俄宣布恰索夫亚尔战役终结", "url": "https://www.douyin.com/search/%E4%BF%84%E5%AE%A3%E5%B8%83%E6%81%B0%E7%B4%A2%E5%A4%AB%E4%BA%9A%E5%B0%94%E6%88%98%E5%BD%B9%E7%BB%88%E7%BB%93", "sourceName": "抖音热点", "rank": 14, "time": "🔥 9072388"}, {"title": "小米澎程发布会", "url": "https://www.douyin.com/search/%E5%B0%8F%E7%B1%B3%E6%BE%8E%E7%A8%8B%E5%8F%91%E5%B8%83%E4%BC%9A", "sourceName": "抖音热点", "rank": 15, "time": "🔥 9066970"}, {"title": "鹰角嘉年华", "url": "https://www.douyin.com/search/%E9%B9%B0%E8%A7%92%E5%98%89%E5%B9%B4%E5%8D%8E", "sourceName": "抖音热点", "rank": 16, "time": "🔥 8848480"}, {"title": "鸣潮穗穗上线", "url": "https://www.douyin.com/search/%E9%B8%A3%E6%BD%AE%E7%A9%97%E7%A9%97%E4%B8%8A%E7%BA%BF", "sourceName": "抖音热点", "rank": 17, "time": "🔥 8631992"}, {"title": "看金靖访谈像是上了一课", "url": "https://www.douyin.com/search/%E7%9C%8B%E9%87%91%E9%9D%96%E8%AE%BF%E8%B0%88%E5%83%8F%E6%98%AF%E4%B8%8A%E4%BA%86%E4%B8%80%E8%AF%BE", "sourceName": "抖音热点", "rank": 18, "time": "🔥 8477426"}, {"title": "全网都在挑战这个扇风舞", "url": "https://www.douyin.com/search/%E5%85%A8%E7%BD%91%E9%83%BD%E5%9C%A8%E6%8C%91%E6%88%98%E8%BF%99%E4%B8%AA%E6%89%87%E9%A3%8E%E8%88%9E", "sourceName": "抖音热点", "rank": 19, "time": "🔥 8365896"}, {"title": "八月要走上坡路了", "url": "https://www.douyin.com/search/%E5%85%AB%E6%9C%88%E8%A6%81%E8%B5%B0%E4%B8%8A%E5%9D%A1%E8%B7%AF%E4%BA%86", "sourceName": "抖音热点", "rank": 20, "time": "🔥 8187927"}]}, "toutiao": {"icon": "📰", "name": "今日头条", "color": "#ED1C24", "items": [{"title": "基金已经在抄底了", "url": "https://www.toutiao.com/trending/7667859329187446825", "sourceName": "今日头条", "rank": 1, "time": "🔥 12373375"}, {"title": "解放军两次警告日方不能自称海军", "url": "https://www.toutiao.com/trending/7667674880024428570", "sourceName": "今日头条", "rank": 2, "time": "🔥 11195893"}, {"title": "一组数据读懂我国能源转型新趋势", "url": "https://www.toutiao.com/article/7668250705069687346", "sourceName": "今日头条", "rank": 3, "time": "🔥 10130463"}, {"title": "1.55升“哑铃矿泉水”走红 厂家回应", "url": "https://www.toutiao.com/trending/7667350103325196342", "sourceName": "今日头条", "rank": 4, "time": "🔥 9166422"}, {"title": "小米澎程N90 Max预售价29.99万元", "url": "https://www.toutiao.com/trending/7668228760780406838", "sourceName": "今日头条", "rank": 5, "time": "🔥 8294121"}, {"title": "重庆彭水山体崩塌致51人遇难10人失联", "url": "https://www.toutiao.com/trending/7668338615017016882", "sourceName": "今日头条", "rank": 6, "time": "🔥 7504831"}, {"title": "日本震后老年人睡地板民众哭喊怕余震", "url": "https://www.toutiao.com/trending/7668024656082964010", "sourceName": "今日头条", "rank": 7, "time": "🔥 6790652"}, {"title": "雷军：澎程从北京到上海无需补能", "url": "https://www.toutiao.com/trending/7667821306465599529", "sourceName": "今日头条", "rank": 8, "time": "🔥 6144436"}, {"title": "歼15试飞遇险距甲板边缘5米刹停", "url": "https://www.toutiao.com/trending/7668024656082767402", "sourceName": "今日头条", "rank": 9, "time": "🔥 5559716"}, {"title": "男生每天躺玩手机超5小时患血栓", "url": "https://www.toutiao.com/trending/7668165665089683519", "sourceName": "今日头条", "rank": 10, "time": "🔥 5030639"}, {"title": "“河南南阳楼房被冲进河中”不实", "url": "https://www.toutiao.com/trending/7667779479867047945", "sourceName": "今日头条", "rank": 11, "time": "🔥 4551910"}, {"title": "中国向伊朗提供400枚导弹？外交部回应", "url": "https://www.toutiao.com/trending/7668128346190053385", "sourceName": "今日头条", "rank": 12, "time": "🔥 4118738"}, {"title": "“公公强奸儿媳案”二审维持原判", "url": "https://www.toutiao.com/trending/7668278439698972678", "sourceName": "今日头条", "rank": 13, "time": "🔥 3726789"}, {"title": "长沙天马德馨园7-0中国足球小将蓝队", "url": "https://www.toutiao.com/trending/7667752219152711690", "sourceName": "今日头条", "rank": 14, "time": "🔥 3372138"}, {"title": "曾舜晞吴老狗上线4分钟热度破亿", "url": "https://www.toutiao.com/trending/7667496401576312838", "sourceName": "今日头条", "rank": 15, "time": "🔥 3051236"}, {"title": "政治局会议释放哪些重要经济信号", "url": "https://www.toutiao.com/trending/7668295382706687507", "sourceName": "今日头条", "rank": 16, "time": "🔥 2760873"}, {"title": "宇树科技：8月10日打新", "url": "https://www.toutiao.com/trending/7667763686765019190", "sourceName": "今日头条", "rank": 17, "time": "🔥 2498141"}, {"title": "李小璐与女儿甜馨聊择偶观", "url": "https://www.toutiao.com/trending/7667153273358434345", "sourceName": "今日头条", "rank": 18, "time": "🔥 2260411"}, {"title": "作者分享《王的猜想》怎么写出来的", "url": "https://www.toutiao.com/trending/7667699802049789994", "sourceName": "今日头条", "rank": 19, "time": "🔥 2045305"}, {"title": "杨振宁遗孀翁帆赴新疆喀什看望老兵", "url": "https://www.toutiao.com/trending/7667516744528822315", "sourceName": "今日头条", "rank": 20, "time": "🔥 1850668"}]}, "zhihu": {"icon": "💡", "name": "知乎热榜", "color": "#0084FF", "items": [{"title": "小米澎程技术发布会上发布了什么值得关注的新技术？有哪些亮点？", "url": "https://www.zhihu.com/question/2066129660551722919", "sourceName": "知乎热榜", "rank": 1, "time": ""}, {"title": "如何评价小米澎程 N90 Max 预售价29.99万元、N70 Max 预售价25.99万元？", "url": "https://www.zhihu.com/question/2066257961672864074", "sourceName": "知乎热榜", "rank": 2, "time": ""}, {"title": "1.5万机票退票仅退432元，曝光后获全额退款，问题出在哪？这次胜利能否撬动天价退票费规则？", "url": "https://www.zhihu.com/question/2066088472851341477", "sourceName": "知乎热榜", "rank": 3, "time": ""}, {"title": "媒体称三大运营商将于 7 月 31 日前全面取消网络代理渠道，释放了哪些行业信号？对消费者有什么影响？", "url": "https://www.zhihu.com/question/2065771256972932835", "sourceName": "知乎热榜", "rank": 4, "time": ""}, {"title": "如何评价影视飓风发十周年激励金，在职年限越长奖励越高，最低发半个月工资？这种激励方式值得推广吗？", "url": "https://www.zhihu.com/question/2066121761117004785", "sourceName": "知乎热榜", "rank": 5, "time": ""}, {"title": "孙悟空被火焰山切糕烫到，是不是意味着，这只猴子没有金钢之躯？", "url": "https://www.zhihu.com/question/1936761762335663228", "sourceName": "知乎热榜", "rank": 6, "time": ""}, {"title": "猫要是一辈子只呆在家里会不会很可悲？", "url": "https://www.zhihu.com/question/1912983496344974934", "sourceName": "知乎热榜", "rank": 7, "time": ""}, {"title": "如何看待爆火的莫氏鸡煲参加《一饭封神 2》首轮被淘汰？新荣记创始人称「技术含量不高」，这个评价在理吗？", "url": "https://www.zhihu.com/question/2065849620689679885", "sourceName": "知乎热榜", "rank": 8, "time": ""}, {"title": "菲尔兹奖如何防止高龄数学家将自己的成果偷偷传授给不满 40 岁的年轻数学家以获奖？", "url": "https://www.zhihu.com/question/2065614516616950087", "sourceName": "知乎热榜", "rank": 9, "time": ""}, {"title": "我发现很多农村教堂并没有发鸡蛋，那为什么还有那么多老头老太太去信？", "url": "https://www.zhihu.com/question/2065207564342654038", "sourceName": "知乎热榜", "rank": 10, "time": ""}, {"title": "2026乒超联赛王楚钦/周启豪1-2林诗栋/赵钊彦，如何评价这场比赛？", "url": "https://www.zhihu.com/question/2066151298727204798", "sourceName": "知乎热榜", "rank": 11, "time": ""}, {"title": "如何看待董宇辉与周星驰的直播互动？", "url": "https://www.zhihu.com/question/2065928846315205455", "sourceName": "知乎热榜", "rank": 12, "time": ""}, {"title": "彭水山体崩塌的 00 后网格员龚宝冬遗骸被找到，因组织群众转移未及时撤离遇难，他的行为让你哪些感触？", "url": "https://www.zhihu.com/question/2065832666918645764", "sourceName": "知乎热榜", "rank": 13, "time": ""}, {"title": "SK海力士跌超 17%，创最大跌幅纪录，AI 芯片投资热潮下，芯片巨头海力士股价为啥崩了？", "url": "https://www.zhihu.com/question/2065810199877611641", "sourceName": "知乎热榜", "rank": 14, "time": ""}, {"title": "如何看待 2026 年 7 月 29 日《蜘蛛侠：崭新之日》预测票房大幅下降至 15.6 亿人民币？", "url": "https://www.zhihu.com/question/2065493257627423324", "sourceName": "知乎热榜", "rank": 15, "time": ""}, {"title": "北大数院澄清王虹推荐信、保研等传闻，称其具备保研资格且获数院多位老师推荐信，为什么此前谣言能广泛传播？", "url": "https://www.zhihu.com/question/2065760409827665215", "sourceName": "知乎热榜", "rank": 16, "time": ""}, {"title": "孙继海和董路所带领的少年足球队相互交手的结果说明了什么？", "url": "https://www.zhihu.com/question/2065418706516289153", "sourceName": "知乎热榜", "rank": 17, "time": ""}, {"title": "如何看待《年会不能停2！》点映排片已经被《蜘蛛侠》《八仙！》等影片压制到不足 0.1%，会选择撤档吗？", "url": "https://www.zhihu.com/question/2065844223958692335", "sourceName": "知乎热榜", "rank": 18, "time": ""}, {"title": "嵊州杯王中王围棋争霸赛决赛，柯洁击败党毅飞夺冠，如何评价本场对局，柯洁状态回升，有机会再夺世冠吗？", "url": "https://www.zhihu.com/question/2066207792684164089", "sourceName": "知乎热榜", "rank": 19, "time": ""}, {"title": "乐事薯片生产废料被洗白成「毛粉」流向市场，用「毛粉」生产食用淀粉是否合规？是否存在食品安全问题？", "url": "https://www.zhihu.com/question/2065806972587356861", "sourceName": "知乎热榜", "rank": 20, "time": ""}]}, "news60s": {"icon": "📢", "name": "每天60秒读懂世界", "color": "#FF6600", "items": [{"title": "宁夏固原发现战国时期 3740 毫升粮食酒遗存，距今已 2300 年，基本保存完整，挥发较少", "url": "https://www.baidu.com/s?wd=%E5%AE%81%E5%A4%8F%E5%9B%BA%E5%8E%9F%E5%8F%91%E7%8E%B0%E6%88%98%E5%9B%BD%E6%97%B6%E6%9C%9F%203740%20%E6%AF%AB%E5%8D%87%E7%B2%AE%E9%A3%9F%E9%85%92%E9%81%97%E5%AD%98%EF%BC%8C%E8%B7%9D%E4%BB%8A%E5%B7%B2%202300%20%E5%B9%B4%EF%BC%8C%E5%9F%BA%E6%9C%AC%E4%BF%9D%E5%AD%98%E5%AE%8C%E6%95%B4%EF%BC%8C%E6%8C%A5%E5%8F%91%E8%BE%83%E5%B0%91", "sourceName": "每天60秒读懂世界", "rank": 1, "time": ""}, {"title": "2026 年上半年全国社会物流总额为 181.1 万亿元，同比增长 5.1%", "url": "https://www.baidu.com/s?wd=2026%20%E5%B9%B4%E4%B8%8A%E5%8D%8A%E5%B9%B4%E5%85%A8%E5%9B%BD%E7%A4%BE%E4%BC%9A%E7%89%A9%E6%B5%81%E6%80%BB%E9%A2%9D%E4%B8%BA%20181.1%20%E4%B8%87%E4%BA%BF%E5%85%83%EF%BC%8C%E5%90%8C%E6%AF%94%E5%A2%9E%E9%95%BF%205.1%25", "sourceName": "每天60秒读懂世界", "rank": 2, "time": ""}, {"title": "智驾 “小蓝灯” 因不符合国标被禁用，业内表示属实，新认证车型将不再搭载", "url": "https://www.baidu.com/s?wd=%E6%99%BA%E9%A9%BE%20%E2%80%9C%E5%B0%8F%E8%93%9D%E7%81%AF%E2%80%9D%20%E5%9B%A0%E4%B8%8D%E7%AC%A6%E5%90%88%E5%9B%BD%E6%A0%87%E8%A2%AB%E7%A6%81%E7%94%A8%EF%BC%8C%E4%B8%9A%E5%86%85%E8%A1%A8%E7%A4%BA%E5%B1%9E%E5%AE%9E%EF%BC%8C%E6%96%B0%E8%AE%A4%E8%AF%81%E8%BD%A6%E5%9E%8B%E5%B0%86%E4%B8%8D%E5%86%8D%E6%90%AD%E8%BD%BD", "sourceName": "每天60秒读懂世界", "rank": 3, "time": ""}, {"title": "我国消费金融公司去年共发放个人消费贷款 5.24 万亿元，服务客户 5.81 亿人次", "url": "https://www.baidu.com/s?wd=%E6%88%91%E5%9B%BD%E6%B6%88%E8%B4%B9%E9%87%91%E8%9E%8D%E5%85%AC%E5%8F%B8%E5%8E%BB%E5%B9%B4%E5%85%B1%E5%8F%91%E6%94%BE%E4%B8%AA%E4%BA%BA%E6%B6%88%E8%B4%B9%E8%B4%B7%E6%AC%BE%205.24%20%E4%B8%87%E4%BA%BF%E5%85%83%EF%BC%8C%E6%9C%8D%E5%8A%A1%E5%AE%A2%E6%88%B7%205.81%20%E4%BA%BF%E4%BA%BA%E6%AC%A1", "sourceName": "每天60秒读懂世界", "rank": 4, "time": ""}, {"title": "江苏全面修订未成年人保护条例，设立 “网络保护” 专章，拟明确不得诱导未成年人盲目追星、盲目消费", "url": "https://www.baidu.com/s?wd=%E6%B1%9F%E8%8B%8F%E5%85%A8%E9%9D%A2%E4%BF%AE%E8%AE%A2%E6%9C%AA%E6%88%90%E5%B9%B4%E4%BA%BA%E4%BF%9D%E6%8A%A4%E6%9D%A1%E4%BE%8B%EF%BC%8C%E8%AE%BE%E7%AB%8B%20%E2%80%9C%E7%BD%91%E7%BB%9C%E4%BF%9D%E6%8A%A4%E2%80%9D%20%E4%B8%93%E7%AB%A0%EF%BC%8C%E6%8B%9F%E6%98%8E%E7%A1%AE%E4%B8%8D%E5%BE%97%E8%AF%B1%E5%AF%BC%E6%9C%AA%E6%88%90%E5%B9%B4%E4%BA%BA%E7%9B%B2%E7%9B%AE%E8%BF%BD%E6%98%9F%E3%80%81%E7%9B%B2%E7%9B%AE%E6%B6%88%E8%B4%B9", "sourceName": "每天60秒读懂世界", "rank": 5, "time": ""}, {"title": "《反网络暴力法（征求意见稿）》拟明确：煽动网暴将被列入黑名单", "url": "https://www.baidu.com/s?wd=%E3%80%8A%E5%8F%8D%E7%BD%91%E7%BB%9C%E6%9A%B4%E5%8A%9B%E6%B3%95%EF%BC%88%E5%BE%81%E6%B1%82%E6%84%8F%E8%A7%81%E7%A8%BF%EF%BC%89%E3%80%8B%E6%8B%9F%E6%98%8E%E7%A1%AE%EF%BC%9A%E7%85%BD%E5%8A%A8%E7%BD%91%E6%9A%B4%E5%B0%86%E8%A2%AB%E5%88%97%E5%85%A5%E9%BB%91%E5%90%8D%E5%8D%95", "sourceName": "每天60秒读懂世界", "rank": 6, "time": ""}, {"title": "最高法明确：参加单位支持的全日制教育后不返岗，须担违约责任", "url": "https://www.baidu.com/s?wd=%E6%9C%80%E9%AB%98%E6%B3%95%E6%98%8E%E7%A1%AE%EF%BC%9A%E5%8F%82%E5%8A%A0%E5%8D%95%E4%BD%8D%E6%94%AF%E6%8C%81%E7%9A%84%E5%85%A8%E6%97%A5%E5%88%B6%E6%95%99%E8%82%B2%E5%90%8E%E4%B8%8D%E8%BF%94%E5%B2%97%EF%BC%8C%E9%A1%BB%E6%8B%85%E8%BF%9D%E7%BA%A6%E8%B4%A3%E4%BB%BB", "sourceName": "每天60秒读懂世界", "rank": 7, "time": ""}, {"title": "广西日报王虹特稿《王的猜想》火了，一份报纸被炒到 65 元，报社最新回应：在加急赶印", "url": "https://www.baidu.com/s?wd=%E5%B9%BF%E8%A5%BF%E6%97%A5%E6%8A%A5%E7%8E%8B%E8%99%B9%E7%89%B9%E7%A8%BF%E3%80%8A%E7%8E%8B%E7%9A%84%E7%8C%9C%E6%83%B3%E3%80%8B%E7%81%AB%E4%BA%86%EF%BC%8C%E4%B8%80%E4%BB%BD%E6%8A%A5%E7%BA%B8%E8%A2%AB%E7%82%92%E5%88%B0%2065%20%E5%85%83%EF%BC%8C%E6%8A%A5%E7%A4%BE%E6%9C%80%E6%96%B0%E5%9B%9E%E5%BA%94%EF%BC%9A%E5%9C%A8%E5%8A%A0%E6%80%A5%E8%B5%B6%E5%8D%B0", "sourceName": "每天60秒读懂世界", "rank": 8, "time": ""}, {"title": "Kimi 完成 F 轮超 35 亿美元融资，投后估值涨至 350 亿美元", "url": "https://www.baidu.com/s?wd=Kimi%20%E5%AE%8C%E6%88%90%20F%20%E8%BD%AE%E8%B6%85%2035%20%E4%BA%BF%E7%BE%8E%E5%85%83%E8%9E%8D%E8%B5%84%EF%BC%8C%E6%8A%95%E5%90%8E%E4%BC%B0%E5%80%BC%E6%B6%A8%E8%87%B3%20350%20%E4%BA%BF%E7%BE%8E%E5%85%83", "sourceName": "每天60秒读懂世界", "rank": 9, "time": ""}, {"title": "美国 FCC 宣布禁止进口人形机器人，中方：保护主义提升不了美国竞争力", "url": "https://www.baidu.com/s?wd=%E7%BE%8E%E5%9B%BD%20FCC%20%E5%AE%A3%E5%B8%83%E7%A6%81%E6%AD%A2%E8%BF%9B%E5%8F%A3%E4%BA%BA%E5%BD%A2%E6%9C%BA%E5%99%A8%E4%BA%BA%EF%BC%8C%E4%B8%AD%E6%96%B9%EF%BC%9A%E4%BF%9D%E6%8A%A4%E4%B8%BB%E4%B9%89%E6%8F%90%E5%8D%87%E4%B8%8D%E4%BA%86%E7%BE%8E%E5%9B%BD%E7%AB%9E%E4%BA%89%E5%8A%9B", "sourceName": "每天60秒读懂世界", "rank": 10, "time": ""}, {"title": "OpenAI 模型被发现入侵另一家公司，奥特曼呼吁放缓 AI 开发速度", "url": "https://www.baidu.com/s?wd=OpenAI%20%E6%A8%A1%E5%9E%8B%E8%A2%AB%E5%8F%91%E7%8E%B0%E5%85%A5%E4%BE%B5%E5%8F%A6%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%EF%BC%8C%E5%A5%A5%E7%89%B9%E6%9B%BC%E5%91%BC%E5%90%81%E6%94%BE%E7%BC%93%20AI%20%E5%BC%80%E5%8F%91%E9%80%9F%E5%BA%A6", "sourceName": "每天60秒读懂世界", "rank": 11, "time": ""}, {"title": "韩国股市年内触发 9 次熔断机制，创全球主要市场纪录，散户损失严重，韩国财政部长道歉", "url": "https://www.baidu.com/s?wd=%E9%9F%A9%E5%9B%BD%E8%82%A1%E5%B8%82%E5%B9%B4%E5%86%85%E8%A7%A6%E5%8F%91%209%20%E6%AC%A1%E7%86%94%E6%96%AD%E6%9C%BA%E5%88%B6%EF%BC%8C%E5%88%9B%E5%85%A8%E7%90%83%E4%B8%BB%E8%A6%81%E5%B8%82%E5%9C%BA%E7%BA%AA%E5%BD%95%EF%BC%8C%E6%95%A3%E6%88%B7%E6%8D%9F%E5%A4%B1%E4%B8%A5%E9%87%8D%EF%BC%8C%E9%9F%A9%E5%9B%BD%E8%B4%A2%E6%94%BF%E9%83%A8%E9%95%BF%E9%81%93%E6%AD%89", "sourceName": "每天60秒读懂世界", "rank": 12, "time": ""}, {"title": "韩国自研战机 KF-21 结项，首架量产机将于今年 9 月交付韩国空军", "url": "https://www.baidu.com/s?wd=%E9%9F%A9%E5%9B%BD%E8%87%AA%E7%A0%94%E6%88%98%E6%9C%BA%20KF-21%20%E7%BB%93%E9%A1%B9%EF%BC%8C%E9%A6%96%E6%9E%B6%E9%87%8F%E4%BA%A7%E6%9C%BA%E5%B0%86%E4%BA%8E%E4%BB%8A%E5%B9%B4%209%20%E6%9C%88%E4%BA%A4%E4%BB%98%E9%9F%A9%E5%9B%BD%E7%A9%BA%E5%86%9B", "sourceName": "每天60秒读懂世界", "rank": 13, "time": ""}, {"title": "日本人口时隔 42 年再次跌破 1.2 亿，较上年减少约 91.7 万人，创 1968 年开始统计以来最大年度降幅", "url": "https://www.baidu.com/s?wd=%E6%97%A5%E6%9C%AC%E4%BA%BA%E5%8F%A3%E6%97%B6%E9%9A%94%2042%20%E5%B9%B4%E5%86%8D%E6%AC%A1%E8%B7%8C%E7%A0%B4%201.2%20%E4%BA%BF%EF%BC%8C%E8%BE%83%E4%B8%8A%E5%B9%B4%E5%87%8F%E5%B0%91%E7%BA%A6%2091.7%20%E4%B8%87%E4%BA%BA%EF%BC%8C%E5%88%9B%201968%20%E5%B9%B4%E5%BC%80%E5%A7%8B%E7%BB%9F%E8%AE%A1%E4%BB%A5%E6%9D%A5%E6%9C%80%E5%A4%A7%E5%B9%B4%E5%BA%A6%E9%99%8D%E5%B9%85", "sourceName": "每天60秒读懂世界", "rank": 14, "time": ""}, {"title": "国际足联拟出售部分 “世界杯股权”，欧足联怒了：出卖 “足球灵魂”，考虑抵制世界杯", "url": "https://www.baidu.com/s?wd=%E5%9B%BD%E9%99%85%E8%B6%B3%E8%81%94%E6%8B%9F%E5%87%BA%E5%94%AE%E9%83%A8%E5%88%86%20%E2%80%9C%E4%B8%96%E7%95%8C%E6%9D%AF%E8%82%A1%E6%9D%83%E2%80%9D%EF%BC%8C%E6%AC%A7%E8%B6%B3%E8%81%94%E6%80%92%E4%BA%86%EF%BC%9A%E5%87%BA%E5%8D%96%20%E2%80%9C%E8%B6%B3%E7%90%83%E7%81%B5%E9%AD%82%E2%80%9D%EF%BC%8C%E8%80%83%E8%99%91%E6%8A%B5%E5%88%B6%E4%B8%96%E7%95%8C%E6%9D%AF", "sourceName": "每天60秒读懂世界", "rank": 15, "time": ""}]}}; // 内嵌新闻数据（自动更新）（自动更新）（免网络请求）
+let EMBEDDED_NEWS = {"weibo": {"icon": "🔍", "name": "微博热搜", "color": "#E6162D", "items": [{"title": "1.5万元机票仅退432元后续", "url": "https://s.weibo.com/weibo?q=1.5%E4%B8%87%E5%85%83%E6%9C%BA%E7%A5%A8%E4%BB%85%E9%80%80432%E5%85%83%E5%90%8E%E7%BB%AD", "sourceName": "微博热搜", "time": "🔥 1389764", "rank": 1}, {"title": "天价退票费全额退了", "url": "https://s.weibo.com/weibo?q=%E5%A4%A9%E4%BB%B7%E9%80%80%E7%A5%A8%E8%B4%B9%E5%85%A8%E9%A2%9D%E9%80%80%E4%BA%86", "sourceName": "微博热搜", "time": "🔥 1068292", "rank": 2}, {"title": "天链三号01星发射成功", "url": "https://s.weibo.com/weibo?q=%E5%A4%A9%E9%93%BE%E4%B8%89%E5%8F%B701%E6%98%9F%E5%8F%91%E5%B0%84%E6%88%90%E5%8A%9F", "sourceName": "微博热搜", "time": "🔥 887742", "rank": 3}, {"title": "白鹿周翊然透明爱人MV亲了", "url": "https://s.weibo.com/weibo?q=%E7%99%BD%E9%B9%BF%E5%91%A8%E7%BF%8A%E7%84%B6%E9%80%8F%E6%98%8E%E7%88%B1%E4%BA%BAMV%E4%BA%B2%E4%BA%86", "sourceName": "微博热搜", "time": "🔥 822926", "rank": 4}, {"title": "17岁小将爆冷击败世界冠军蒯曼", "url": "https://s.weibo.com/weibo?q=17%E5%B2%81%E5%B0%8F%E5%B0%86%E7%88%86%E5%86%B7%E5%87%BB%E8%B4%A5%E4%B8%96%E7%95%8C%E5%86%A0%E5%86%9B%E8%92%AF%E6%9B%BC", "sourceName": "微博热搜", "time": "🔥 718552", "rank": 5}, {"title": "网友曝胖东来直饮水成免费取水点", "url": "https://s.weibo.com/weibo?q=%E7%BD%91%E5%8F%8B%E6%9B%9D%E8%83%96%E4%B8%9C%E6%9D%A5%E7%9B%B4%E9%A5%AE%E6%B0%B4%E6%88%90%E5%85%8D%E8%B4%B9%E5%8F%96%E6%B0%B4%E7%82%B9", "sourceName": "微博热搜", "time": "🔥 511169", "rank": 6}, {"title": "A股科技退潮", "url": "https://s.weibo.com/weibo?q=A%E8%82%A1%E7%A7%91%E6%8A%80%E9%80%80%E6%BD%AE", "sourceName": "微博热搜", "time": "🔥 499421", "rank": 7}, {"title": "阿根廷队3人或面临长期禁赛", "url": "https://s.weibo.com/weibo?q=%E9%98%BF%E6%A0%B9%E5%BB%B7%E9%98%9F3%E4%BA%BA%E6%88%96%E9%9D%A2%E4%B8%B4%E9%95%BF%E6%9C%9F%E7%A6%81%E8%B5%9B", "sourceName": "微博热搜", "time": "🔥 441047", "rank": 8}, {"title": "张雅琪 花少", "url": "https://s.weibo.com/weibo?q=%E5%BC%A0%E9%9B%85%E7%90%AA%20%E8%8A%B1%E5%B0%91", "sourceName": "微博热搜", "time": "🔥 433476", "rank": 9}, {"title": "18楼坠楼女孩苏醒男友欲闯病房", "url": "https://s.weibo.com/weibo?q=18%E6%A5%BC%E5%9D%A0%E6%A5%BC%E5%A5%B3%E5%AD%A9%E8%8B%8F%E9%86%92%E7%94%B7%E5%8F%8B%E6%AC%B2%E9%97%AF%E7%97%85%E6%88%BF", "sourceName": "微博热搜", "time": "🔥 429976", "rank": 10}, {"title": "李昊道歉", "url": "https://s.weibo.com/weibo?q=%E6%9D%8E%E6%98%8A%E9%81%93%E6%AD%89", "sourceName": "微博热搜", "time": "🔥 417778", "rank": 11}, {"title": "关晓彤背链", "url": "https://s.weibo.com/weibo?q=%E5%85%B3%E6%99%93%E5%BD%A4%E8%83%8C%E9%93%BE", "sourceName": "微博热搜", "time": "🔥 416241", "rank": 12}, {"title": "罗技中国区营收喜人 曾侮辱顾客是狗", "url": "https://s.weibo.com/weibo?q=%E7%BD%97%E6%8A%80%E4%B8%AD%E5%9B%BD%E5%8C%BA%E8%90%A5%E6%94%B6%E5%96%9C%E4%BA%BA%20%E6%9B%BE%E4%BE%AE%E8%BE%B1%E9%A1%BE%E5%AE%A2%E6%98%AF%E7%8B%97", "sourceName": "微博热搜", "time": "🔥 408685", "rank": 13}, {"title": "周润发降价卖房", "url": "https://s.weibo.com/weibo?q=%E5%91%A8%E6%B6%A6%E5%8F%91%E9%99%8D%E4%BB%B7%E5%8D%96%E6%88%BF", "sourceName": "微博热搜", "time": "🔥 394399", "rank": 14}, {"title": "小区电梯失控从31楼下坠到负2楼", "url": "https://s.weibo.com/weibo?q=%E5%B0%8F%E5%8C%BA%E7%94%B5%E6%A2%AF%E5%A4%B1%E6%8E%A7%E4%BB%8E31%E6%A5%BC%E4%B8%8B%E5%9D%A0%E5%88%B0%E8%B4%9F2%E6%A5%BC", "sourceName": "微博热搜", "time": "🔥 391727", "rank": 15}, {"title": "张馨予比基尼", "url": "https://s.weibo.com/weibo?q=%E5%BC%A0%E9%A6%A8%E4%BA%88%E6%AF%94%E5%9F%BA%E5%B0%BC", "sourceName": "微博热搜", "time": "🔥 385320", "rank": 16}, {"title": "关晓彤的腿屏幕快装不下了", "url": "https://s.weibo.com/weibo?q=%E5%85%B3%E6%99%93%E5%BD%A4%E7%9A%84%E8%85%BF%E5%B1%8F%E5%B9%95%E5%BF%AB%E8%A3%85%E4%B8%8D%E4%B8%8B%E4%BA%86", "sourceName": "微博热搜", "time": "🔥 351946", "rank": 17}, {"title": "雷军晒小米机器人工作视频", "url": "https://s.weibo.com/weibo?q=%E9%9B%B7%E5%86%9B%E6%99%92%E5%B0%8F%E7%B1%B3%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B7%A5%E4%BD%9C%E8%A7%86%E9%A2%91", "sourceName": "微博热搜", "time": "🔥 217592", "rank": 18}, {"title": "白鹿猫的树合作新歌MV", "url": "https://s.weibo.com/weibo?q=%E7%99%BD%E9%B9%BF%E7%8C%AB%E7%9A%84%E6%A0%91%E5%90%88%E4%BD%9C%E6%96%B0%E6%AD%8CMV", "sourceName": "微博热搜", "time": "🔥 217586", "rank": 19}, {"title": "不抠字眼是一种认知高的表现", "url": "https://s.weibo.com/weibo?q=%E4%B8%8D%E6%8A%A0%E5%AD%97%E7%9C%BC%E6%98%AF%E4%B8%80%E7%A7%8D%E8%AE%A4%E7%9F%A5%E9%AB%98%E7%9A%84%E8%A1%A8%E7%8E%B0", "sourceName": "微博热搜", "time": "🔥 217066", "rank": 20}]}, "douyin": {"icon": "🎵", "name": "抖音热点", "color": "#161823", "items": [{"title": "赵心童6:2战胜丁俊晖晋级八强", "url": "https://www.douyin.com/search/%E8%B5%B5%E5%BF%83%E7%AB%A56%3A2%E6%88%98%E8%83%9C%E4%B8%81%E4%BF%8A%E6%99%96%E6%99%8B%E7%BA%A7%E5%85%AB%E5%BC%BA", "sourceName": "抖音热点", "time": "🔥 12112549", "rank": 1}, {"title": "美联储维持利率不变", "url": "https://www.douyin.com/search/%E7%BE%8E%E8%81%94%E5%82%A8%E7%BB%B4%E6%8C%81%E5%88%A9%E7%8E%87%E4%B8%8D%E5%8F%98", "sourceName": "抖音热点", "time": "🔥 11602344", "rank": 2}, {"title": "2026年度总票房突破220亿元", "url": "https://www.douyin.com/search/2026%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%A5%A8%E6%88%BF%E7%AA%81%E7%A0%B4220%E4%BA%BF%E5%85%83", "sourceName": "抖音热点", "time": "🔥 11102227", "rank": 3}, {"title": "台风白海豚或直奔浙江沿海", "url": "https://www.douyin.com/search/%E5%8F%B0%E9%A3%8E%E7%99%BD%E6%B5%B7%E8%B1%9A%E6%88%96%E7%9B%B4%E5%A5%94%E6%B5%99%E6%B1%9F%E6%B2%BF%E6%B5%B7", "sourceName": "抖音热点", "time": "🔥 11099615", "rank": 4}, {"title": "汉服魅力不分国界", "url": "https://www.douyin.com/search/%E6%B1%89%E6%9C%8D%E9%AD%85%E5%8A%9B%E4%B8%8D%E5%88%86%E5%9B%BD%E7%95%8C", "sourceName": "抖音热点", "time": "🔥 10339782", "rank": 5}, {"title": "让旅行回忆替我们降降温吧", "url": "https://www.douyin.com/search/%E8%AE%A9%E6%97%85%E8%A1%8C%E5%9B%9E%E5%BF%86%E6%9B%BF%E6%88%91%E4%BB%AC%E9%99%8D%E9%99%8D%E6%B8%A9%E5%90%A7", "sourceName": "抖音热点", "time": "🔥 10316829", "rank": 6}, {"title": "半个抖音的知识博主都去四川了", "url": "https://www.douyin.com/search/%E5%8D%8A%E4%B8%AA%E6%8A%96%E9%9F%B3%E7%9A%84%E7%9F%A5%E8%AF%86%E5%8D%9A%E4%B8%BB%E9%83%BD%E5%8E%BB%E5%9B%9B%E5%B7%9D%E4%BA%86", "sourceName": "抖音热点", "time": "🔥 9184296", "rank": 7}, {"title": "旅行第一天vs最后一天", "url": "https://www.douyin.com/search/%E6%97%85%E8%A1%8C%E7%AC%AC%E4%B8%80%E5%A4%A9vs%E6%9C%80%E5%90%8E%E4%B8%80%E5%A4%A9", "sourceName": "抖音热点", "time": "🔥 9179503", "rank": 8}, {"title": "徒步的尽头是高山草甸", "url": "https://www.douyin.com/search/%E5%BE%92%E6%AD%A5%E7%9A%84%E5%B0%BD%E5%A4%B4%E6%98%AF%E9%AB%98%E5%B1%B1%E8%8D%89%E7%94%B8", "sourceName": "抖音热点", "time": "🔥 9146107", "rank": 9}, {"title": "国家助学贷款怎么申请", "url": "https://www.douyin.com/search/%E5%9B%BD%E5%AE%B6%E5%8A%A9%E5%AD%A6%E8%B4%B7%E6%AC%BE%E6%80%8E%E4%B9%88%E7%94%B3%E8%AF%B7", "sourceName": "抖音热点", "time": "🔥 9133742", "rank": 10}, {"title": "美股三大指数集体收跌", "url": "https://www.douyin.com/search/%E7%BE%8E%E8%82%A1%E4%B8%89%E5%A4%A7%E6%8C%87%E6%95%B0%E9%9B%86%E4%BD%93%E6%94%B6%E8%B7%8C", "sourceName": "抖音热点", "time": "🔥 8987994", "rank": 11}, {"title": "韩国股市暴跌背后的真相", "url": "https://www.douyin.com/search/%E9%9F%A9%E5%9B%BD%E8%82%A1%E5%B8%82%E6%9A%B4%E8%B7%8C%E8%83%8C%E5%90%8E%E7%9A%84%E7%9C%9F%E7%9B%B8", "sourceName": "抖音热点", "time": "🔥 8975838", "rank": 12}, {"title": "回到了2018的夏天", "url": "https://www.douyin.com/search/%E5%9B%9E%E5%88%B0%E4%BA%862018%E7%9A%84%E5%A4%8F%E5%A4%A9", "sourceName": "抖音热点", "time": "🔥 8858624", "rank": 13}, {"title": "Kimi K3为何全量开源", "url": "https://www.douyin.com/search/Kimi%20K3%E4%B8%BA%E4%BD%95%E5%85%A8%E9%87%8F%E5%BC%80%E6%BA%90", "sourceName": "抖音热点", "time": "🔥 8735996", "rank": 14}, {"title": "重庆失联00后网格员确认遇难", "url": "https://www.douyin.com/search/%E9%87%8D%E5%BA%86%E5%A4%B1%E8%81%9400%E5%90%8E%E7%BD%91%E6%A0%BC%E5%91%98%E7%A1%AE%E8%AE%A4%E9%81%87%E9%9A%BE", "sourceName": "抖音热点", "time": "🔥 8524100", "rank": 15}, {"title": "内马尔宣布退出巴西国家队", "url": "https://www.douyin.com/search/%E5%86%85%E9%A9%AC%E5%B0%94%E5%AE%A3%E5%B8%83%E9%80%80%E5%87%BA%E5%B7%B4%E8%A5%BF%E5%9B%BD%E5%AE%B6%E9%98%9F", "sourceName": "抖音热点", "time": "🔥 7837130", "rank": 16}, {"title": "抖音乒乓百分大战下次见", "url": "https://www.douyin.com/search/%E6%8A%96%E9%9F%B3%E4%B9%92%E4%B9%93%E7%99%BE%E5%88%86%E5%A4%A7%E6%88%98%E4%B8%8B%E6%AC%A1%E8%A7%81", "sourceName": "抖音热点", "time": "🔥 7800771", "rank": 17}, {"title": "天才女友定档0802", "url": "https://www.douyin.com/search/%E5%A4%A9%E6%89%8D%E5%A5%B3%E5%8F%8B%E5%AE%9A%E6%A1%A30802", "sourceName": "抖音热点", "time": "🔥 7798047", "rank": 18}, {"title": "五颜六色是中国的夏日底色", "url": "https://www.douyin.com/search/%E4%BA%94%E9%A2%9C%E5%85%AD%E8%89%B2%E6%98%AF%E4%B8%AD%E5%9B%BD%E7%9A%84%E5%A4%8F%E6%97%A5%E5%BA%95%E8%89%B2", "sourceName": "抖音热点", "time": "🔥 7783544", "rank": 19}, {"title": "伊朗武装部队警告特朗普", "url": "https://www.douyin.com/search/%E4%BC%8A%E6%9C%97%E6%AD%A6%E8%A3%85%E9%83%A8%E9%98%9F%E8%AD%A6%E5%91%8A%E7%89%B9%E6%9C%97%E6%99%AE", "sourceName": "抖音热点", "time": "🔥 7781789", "rank": 20}]}, "toutiao": {"icon": "📰", "name": "今日头条", "color": "#ED1C24", "items": [{"title": "记者用两个非常惨烈形容日本震后现场", "url": "https://www.toutiao.com/trending/7668085321384529418", "sourceName": "今日头条", "time": "🔥 10848995", "rank": 1}, {"title": "1万5机票仅退432元后续：已全额退还", "url": "https://www.toutiao.com/trending/7667884087520103999", "sourceName": "今日头条", "time": "🔥 9816576", "rank": 2}, {"title": "“新新三样”成中国出口新名片", "url": "https://www.toutiao.com/article/7667914350790705700", "sourceName": "今日头条", "time": "🔥 8882406", "rank": 3}, {"title": "50℃热穹顶东移 北方也要蒸桑拿了", "url": "https://www.toutiao.com/trending/7667812091130314794", "sourceName": "今日头条", "time": "🔥 8037133", "rank": 4}, {"title": "莫氏鸡煲上厨综首轮遭淘汰", "url": "https://www.toutiao.com/trending/7667914720745311782", "sourceName": "今日头条", "time": "🔥 7272299", "rank": 5}, {"title": "女子试衣被店员掀帘走光负责人道歉", "url": "https://www.toutiao.com/trending/7667937192027750442", "sourceName": "今日头条", "time": "🔥 6580248", "rank": 6}, {"title": "《功夫女足》在表达什么", "url": "https://www.toutiao.com/trending/7667446932851556406", "sourceName": "今日头条", "time": "🔥 5954054", "rank": 7}, {"title": "美媒称美军正在对伊朗进行空袭", "url": "https://www.toutiao.com/trending/7668100922215501318", "sourceName": "今日头条", "time": "🔥 5387451", "rank": 8}, {"title": "物业费批量下调背后", "url": "https://www.toutiao.com/trending/7667110338990817318", "sourceName": "今日头条", "time": "🔥 4874767", "rank": 9}, {"title": "空警-600试飞细节公开", "url": "https://www.toutiao.com/trending/7667795968833830975", "sourceName": "今日头条", "time": "🔥 4410872", "rank": 10}, {"title": "“喀什经开区零地价供地免租金”不实", "url": "https://www.toutiao.com/trending/7667552628020641834", "sourceName": "今日头条", "time": "🔥 3991122", "rank": 11}, {"title": "枣庄造氢能电动车一满瓶跑100公里", "url": "https://www.toutiao.com/trending/7667945073175232566", "sourceName": "今日头条", "time": "🔥 3611316", "rank": 12}, {"title": "周星驰回应何时会再度演戏", "url": "https://www.toutiao.com/trending/7666995586457108522", "sourceName": "今日头条", "time": "🔥 3267654", "rank": 13}, {"title": "王祖蓝问李昊怎么变胖了", "url": "https://www.toutiao.com/trending/7667855159587061802", "sourceName": "今日头条", "time": "🔥 2956696", "rank": 14}, {"title": "空军女飞拦截外国军机画面首次曝光", "url": "https://www.toutiao.com/trending/7667533638947422249", "sourceName": "今日头条", "time": "🔥 2675329", "rank": 15}, {"title": "山体崩塌失联00后网格员确认遇难", "url": "https://www.toutiao.com/trending/7667344545587429417", "sourceName": "今日头条", "time": "🔥 2420738", "rank": 16}, {"title": "77岁老人因领鸡蛋买了120多盒羊奶", "url": "https://www.toutiao.com/trending/7667506785406156826", "sourceName": "今日头条", "time": "🔥 2190374", "rank": 17}, {"title": "日本小将2034杯输球痛哭半小时", "url": "https://www.toutiao.com/trending/7667180084453998628", "sourceName": "今日头条", "time": "🔥 1981932", "rank": 18}, {"title": "日竟在“731”这天成立新“特高课”", "url": "https://www.toutiao.com/trending/7666992454939787270", "sourceName": "今日头条", "time": "🔥 1793326", "rank": 19}, {"title": "金正恩半蹲问候参战老兵和战时立功者", "url": "https://www.toutiao.com/trending/7668094124616076838", "sourceName": "今日头条", "time": "🔥 1622669", "rank": 20}]}, "zhihu": {"icon": "💡", "name": "知乎热榜", "color": "#0084FF", "items": [{"title": "雷军称增程市场大有可为且小米做增程不晚，这一观点站得住脚吗？小米为何选择此时布局增程车型？", "url": "https://www.zhihu.com/question/2065799308067041337", "sourceName": "知乎热榜", "time": "", "rank": 1}, {"title": "长鑫存储vs长江存储，一个做内存，一个做闪存，谁更厉害？", "url": "https://www.zhihu.com/question/2061092161337177252", "sourceName": "知乎热榜", "time": "", "rank": 2}, {"title": "曝多家AI公司大量收购旧书训练模型后销毁，此前先例被法院认定合理，这会成为常态吗？可能带来哪些影响？", "url": "https://www.zhihu.com/question/2065707692950123437", "sourceName": "知乎热榜", "time": "", "rank": 3}, {"title": "多位用户称美团账户凌晨遭异地批量盗刷，客服称已核销无法退款，什么情况？这笔损失该由谁承担？", "url": "https://www.zhihu.com/question/2065804781247887148", "sourceName": "知乎热榜", "time": "", "rank": 4}, {"title": "香港 26 岁交易员被拘捕，挪用 5000 万港元豪赌两倍做多海力士，巨亏 1.5 亿，如何看待此事？", "url": "https://www.zhihu.com/question/2065738421474271320", "sourceName": "知乎热榜", "time": "", "rank": 5}, {"title": "美国将对购买俄油气的国家征收100%二级关税、同时延长伊朗制裁，如何看待此举？将带来哪些影响？", "url": "https://www.zhihu.com/question/2065729116125521259", "sourceName": "知乎热榜", "time": "", "rank": 6}, {"title": "为什么ChatGPT已经发布4年了，社会总生产力纹丝不动？", "url": "https://www.zhihu.com/question/2065583157664018461", "sourceName": "知乎热榜", "time": "", "rank": 7}, {"title": "如何评价博主「听泉赏宝」自曝炒股亏光父母积蓄遭拉黑？你有没有因为钱的事跟父母翻过脸？", "url": "https://www.zhihu.com/question/2065588413684831719", "sourceName": "知乎热榜", "time": "", "rank": 8}, {"title": "为什么现在都是站在截教一方而把元始天尊描写成坏人？", "url": "https://www.zhihu.com/question/12199984100", "sourceName": "知乎热榜", "time": "", "rank": 9}, {"title": "为什么广西日报特稿《王的猜想》能获得这么多认同？", "url": "https://www.zhihu.com/question/2065044616043131031", "sourceName": "知乎热榜", "time": "", "rank": 10}, {"title": "麦、福、教培都被扭曲成骂人的词，如何看待脏话外溢这一现象？脏话以象形和谐音方式出现，可能会有哪些影响？", "url": "https://www.zhihu.com/question/2065564412899845853", "sourceName": "知乎热榜", "time": "", "rank": 11}, {"title": "日本技术人员拆解宇树机器人后称「赶不上中国」，从螺丝到整机，中国机器人供应链优势体现在哪些环节？", "url": "https://www.zhihu.com/question/2064993421949755491", "sourceName": "知乎热榜", "time": "", "rank": 12}, {"title": "网红私占宁波无人岛直播改造被查处，个人可以开发利用无居民海岛吗？荒岛为何不能随意建房、居住？", "url": "https://www.zhihu.com/question/2065709716009743417", "sourceName": "知乎热榜", "time": "", "rank": 13}, {"title": "钢铁侠、蜘蛛侠、蝙蝠侠，是不是就是“美漫三巨头”？", "url": "https://www.zhihu.com/question/2065521778198421619", "sourceName": "知乎热榜", "time": "", "rank": 14}, {"title": "四川网友认为麻辣烫是川菜，东北网友认为麻辣烫是东北菜，谁是对的？", "url": "https://www.zhihu.com/question/2061765916732478472", "sourceName": "知乎热榜", "time": "", "rank": 15}, {"title": "国家安全机关提醒打印机的废旧硒鼓可能泄密，这是如何发生的？哪些办公设备也存在类似风险？", "url": "https://www.zhihu.com/question/2065732271441539585", "sourceName": "知乎热榜", "time": "", "rank": 16}, {"title": "西游记原著里，最惨的一个人物是谁？", "url": "https://www.zhihu.com/question/1896081051639583956", "sourceName": "知乎热榜", "time": "", "rank": 17}, {"title": "美联储今年连续第五次维持利率不变，但投票结果从一致通过变成9票对3票，内部发生了什么？9月会加息吗？", "url": "https://www.zhihu.com/question/2066063922856027842", "sourceName": "知乎热榜", "time": "", "rank": 18}, {"title": "OpenAI、Anthropic 等上千员工联名请愿美政府控制 AI 发展速度，反映了什么？有何影响？", "url": "https://www.zhihu.com/question/2065729146383071132", "sourceName": "知乎热榜", "time": "", "rank": 19}, {"title": "美联储主席沃什或暂缓加息，此决定背后主要出于哪些考量？", "url": "https://www.zhihu.com/question/2065957695853745288", "sourceName": "知乎热榜", "time": "", "rank": 20}]}, "news60s": {"icon": "📢", "name": "每天60秒读懂世界", "color": "#FF6600", "items": [{"title": "宁夏固原发现战国时期 3740 毫升粮食酒遗存，距今已 2300 年，基本保存完整，挥发较少", "url": "https://www.baidu.com/s?wd=%E5%AE%81%E5%A4%8F%E5%9B%BA%E5%8E%9F%E5%8F%91%E7%8E%B0%E6%88%98%E5%9B%BD%E6%97%B6%E6%9C%9F%203740%20%E6%AF%AB%E5%8D%87%E7%B2%AE%E9%A3%9F%E9%85%92%E9%81%97%E5%AD%98%EF%BC%8C%E8%B7%9D%E4%BB%8A%E5%B7%B2%202300%20%E5%B9%B4%EF%BC%8C%E5%9F%BA%E6%9C%AC%E4%BF%9D%E5%AD%98%E5%AE%8C%E6%95%B4%EF%BC%8C%E6%8C%A5%E5%8F%91%E8%BE%83%E5%B0%91", "sourceName": "每天60秒读懂世界", "rank": 1, "time": ""}, {"title": "2026 年上半年全国社会物流总额为 181.1 万亿元，同比增长 5.1%", "url": "https://www.baidu.com/s?wd=2026%20%E5%B9%B4%E4%B8%8A%E5%8D%8A%E5%B9%B4%E5%85%A8%E5%9B%BD%E7%A4%BE%E4%BC%9A%E7%89%A9%E6%B5%81%E6%80%BB%E9%A2%9D%E4%B8%BA%20181.1%20%E4%B8%87%E4%BA%BF%E5%85%83%EF%BC%8C%E5%90%8C%E6%AF%94%E5%A2%9E%E9%95%BF%205.1%25", "sourceName": "每天60秒读懂世界", "rank": 2, "time": ""}, {"title": "智驾 “小蓝灯” 因不符合国标被禁用，业内表示属实，新认证车型将不再搭载", "url": "https://www.baidu.com/s?wd=%E6%99%BA%E9%A9%BE%20%E2%80%9C%E5%B0%8F%E8%93%9D%E7%81%AF%E2%80%9D%20%E5%9B%A0%E4%B8%8D%E7%AC%A6%E5%90%88%E5%9B%BD%E6%A0%87%E8%A2%AB%E7%A6%81%E7%94%A8%EF%BC%8C%E4%B8%9A%E5%86%85%E8%A1%A8%E7%A4%BA%E5%B1%9E%E5%AE%9E%EF%BC%8C%E6%96%B0%E8%AE%A4%E8%AF%81%E8%BD%A6%E5%9E%8B%E5%B0%86%E4%B8%8D%E5%86%8D%E6%90%AD%E8%BD%BD", "sourceName": "每天60秒读懂世界", "rank": 3, "time": ""}, {"title": "我国消费金融公司去年共发放个人消费贷款 5.24 万亿元，服务客户 5.81 亿人次", "url": "https://www.baidu.com/s?wd=%E6%88%91%E5%9B%BD%E6%B6%88%E8%B4%B9%E9%87%91%E8%9E%8D%E5%85%AC%E5%8F%B8%E5%8E%BB%E5%B9%B4%E5%85%B1%E5%8F%91%E6%94%BE%E4%B8%AA%E4%BA%BA%E6%B6%88%E8%B4%B9%E8%B4%B7%E6%AC%BE%205.24%20%E4%B8%87%E4%BA%BF%E5%85%83%EF%BC%8C%E6%9C%8D%E5%8A%A1%E5%AE%A2%E6%88%B7%205.81%20%E4%BA%BF%E4%BA%BA%E6%AC%A1", "sourceName": "每天60秒读懂世界", "rank": 4, "time": ""}, {"title": "江苏全面修订未成年人保护条例，设立 “网络保护” 专章，拟明确不得诱导未成年人盲目追星、盲目消费", "url": "https://www.baidu.com/s?wd=%E6%B1%9F%E8%8B%8F%E5%85%A8%E9%9D%A2%E4%BF%AE%E8%AE%A2%E6%9C%AA%E6%88%90%E5%B9%B4%E4%BA%BA%E4%BF%9D%E6%8A%A4%E6%9D%A1%E4%BE%8B%EF%BC%8C%E8%AE%BE%E7%AB%8B%20%E2%80%9C%E7%BD%91%E7%BB%9C%E4%BF%9D%E6%8A%A4%E2%80%9D%20%E4%B8%93%E7%AB%A0%EF%BC%8C%E6%8B%9F%E6%98%8E%E7%A1%AE%E4%B8%8D%E5%BE%97%E8%AF%B1%E5%AF%BC%E6%9C%AA%E6%88%90%E5%B9%B4%E4%BA%BA%E7%9B%B2%E7%9B%AE%E8%BF%BD%E6%98%9F%E3%80%81%E7%9B%B2%E7%9B%AE%E6%B6%88%E8%B4%B9", "sourceName": "每天60秒读懂世界", "rank": 5, "time": ""}, {"title": "《反网络暴力法（征求意见稿）》拟明确：煽动网暴将被列入黑名单", "url": "https://www.baidu.com/s?wd=%E3%80%8A%E5%8F%8D%E7%BD%91%E7%BB%9C%E6%9A%B4%E5%8A%9B%E6%B3%95%EF%BC%88%E5%BE%81%E6%B1%82%E6%84%8F%E8%A7%81%E7%A8%BF%EF%BC%89%E3%80%8B%E6%8B%9F%E6%98%8E%E7%A1%AE%EF%BC%9A%E7%85%BD%E5%8A%A8%E7%BD%91%E6%9A%B4%E5%B0%86%E8%A2%AB%E5%88%97%E5%85%A5%E9%BB%91%E5%90%8D%E5%8D%95", "sourceName": "每天60秒读懂世界", "rank": 6, "time": ""}, {"title": "最高法明确：参加单位支持的全日制教育后不返岗，须担违约责任", "url": "https://www.baidu.com/s?wd=%E6%9C%80%E9%AB%98%E6%B3%95%E6%98%8E%E7%A1%AE%EF%BC%9A%E5%8F%82%E5%8A%A0%E5%8D%95%E4%BD%8D%E6%94%AF%E6%8C%81%E7%9A%84%E5%85%A8%E6%97%A5%E5%88%B6%E6%95%99%E8%82%B2%E5%90%8E%E4%B8%8D%E8%BF%94%E5%B2%97%EF%BC%8C%E9%A1%BB%E6%8B%85%E8%BF%9D%E7%BA%A6%E8%B4%A3%E4%BB%BB", "sourceName": "每天60秒读懂世界", "rank": 7, "time": ""}, {"title": "广西日报王虹特稿《王的猜想》火了，一份报纸被炒到 65 元，报社最新回应：在加急赶印", "url": "https://www.baidu.com/s?wd=%E5%B9%BF%E8%A5%BF%E6%97%A5%E6%8A%A5%E7%8E%8B%E8%99%B9%E7%89%B9%E7%A8%BF%E3%80%8A%E7%8E%8B%E7%9A%84%E7%8C%9C%E6%83%B3%E3%80%8B%E7%81%AB%E4%BA%86%EF%BC%8C%E4%B8%80%E4%BB%BD%E6%8A%A5%E7%BA%B8%E8%A2%AB%E7%82%92%E5%88%B0%2065%20%E5%85%83%EF%BC%8C%E6%8A%A5%E7%A4%BE%E6%9C%80%E6%96%B0%E5%9B%9E%E5%BA%94%EF%BC%9A%E5%9C%A8%E5%8A%A0%E6%80%A5%E8%B5%B6%E5%8D%B0", "sourceName": "每天60秒读懂世界", "rank": 8, "time": ""}, {"title": "Kimi 完成 F 轮超 35 亿美元融资，投后估值涨至 350 亿美元", "url": "https://www.baidu.com/s?wd=Kimi%20%E5%AE%8C%E6%88%90%20F%20%E8%BD%AE%E8%B6%85%2035%20%E4%BA%BF%E7%BE%8E%E5%85%83%E8%9E%8D%E8%B5%84%EF%BC%8C%E6%8A%95%E5%90%8E%E4%BC%B0%E5%80%BC%E6%B6%A8%E8%87%B3%20350%20%E4%BA%BF%E7%BE%8E%E5%85%83", "sourceName": "每天60秒读懂世界", "rank": 9, "time": ""}, {"title": "美国 FCC 宣布禁止进口人形机器人，中方：保护主义提升不了美国竞争力", "url": "https://www.baidu.com/s?wd=%E7%BE%8E%E5%9B%BD%20FCC%20%E5%AE%A3%E5%B8%83%E7%A6%81%E6%AD%A2%E8%BF%9B%E5%8F%A3%E4%BA%BA%E5%BD%A2%E6%9C%BA%E5%99%A8%E4%BA%BA%EF%BC%8C%E4%B8%AD%E6%96%B9%EF%BC%9A%E4%BF%9D%E6%8A%A4%E4%B8%BB%E4%B9%89%E6%8F%90%E5%8D%87%E4%B8%8D%E4%BA%86%E7%BE%8E%E5%9B%BD%E7%AB%9E%E4%BA%89%E5%8A%9B", "sourceName": "每天60秒读懂世界", "rank": 10, "time": ""}, {"title": "OpenAI 模型被发现入侵另一家公司，奥特曼呼吁放缓 AI 开发速度", "url": "https://www.baidu.com/s?wd=OpenAI%20%E6%A8%A1%E5%9E%8B%E8%A2%AB%E5%8F%91%E7%8E%B0%E5%85%A5%E4%BE%B5%E5%8F%A6%E4%B8%80%E5%AE%B6%E5%85%AC%E5%8F%B8%EF%BC%8C%E5%A5%A5%E7%89%B9%E6%9B%BC%E5%91%BC%E5%90%81%E6%94%BE%E7%BC%93%20AI%20%E5%BC%80%E5%8F%91%E9%80%9F%E5%BA%A6", "sourceName": "每天60秒读懂世界", "rank": 11, "time": ""}, {"title": "韩国股市年内触发 9 次熔断机制，创全球主要市场纪录，散户损失严重，韩国财政部长道歉", "url": "https://www.baidu.com/s?wd=%E9%9F%A9%E5%9B%BD%E8%82%A1%E5%B8%82%E5%B9%B4%E5%86%85%E8%A7%A6%E5%8F%91%209%20%E6%AC%A1%E7%86%94%E6%96%AD%E6%9C%BA%E5%88%B6%EF%BC%8C%E5%88%9B%E5%85%A8%E7%90%83%E4%B8%BB%E8%A6%81%E5%B8%82%E5%9C%BA%E7%BA%AA%E5%BD%95%EF%BC%8C%E6%95%A3%E6%88%B7%E6%8D%9F%E5%A4%B1%E4%B8%A5%E9%87%8D%EF%BC%8C%E9%9F%A9%E5%9B%BD%E8%B4%A2%E6%94%BF%E9%83%A8%E9%95%BF%E9%81%93%E6%AD%89", "sourceName": "每天60秒读懂世界", "rank": 12, "time": ""}, {"title": "韩国自研战机 KF-21 结项，首架量产机将于今年 9 月交付韩国空军", "url": "https://www.baidu.com/s?wd=%E9%9F%A9%E5%9B%BD%E8%87%AA%E7%A0%94%E6%88%98%E6%9C%BA%20KF-21%20%E7%BB%93%E9%A1%B9%EF%BC%8C%E9%A6%96%E6%9E%B6%E9%87%8F%E4%BA%A7%E6%9C%BA%E5%B0%86%E4%BA%8E%E4%BB%8A%E5%B9%B4%209%20%E6%9C%88%E4%BA%A4%E4%BB%98%E9%9F%A9%E5%9B%BD%E7%A9%BA%E5%86%9B", "sourceName": "每天60秒读懂世界", "rank": 13, "time": ""}, {"title": "日本人口时隔 42 年再次跌破 1.2 亿，较上年减少约 91.7 万人，创 1968 年开始统计以来最大年度降幅", "url": "https://www.baidu.com/s?wd=%E6%97%A5%E6%9C%AC%E4%BA%BA%E5%8F%A3%E6%97%B6%E9%9A%94%2042%20%E5%B9%B4%E5%86%8D%E6%AC%A1%E8%B7%8C%E7%A0%B4%201.2%20%E4%BA%BF%EF%BC%8C%E8%BE%83%E4%B8%8A%E5%B9%B4%E5%87%8F%E5%B0%91%E7%BA%A6%2091.7%20%E4%B8%87%E4%BA%BA%EF%BC%8C%E5%88%9B%201968%20%E5%B9%B4%E5%BC%80%E5%A7%8B%E7%BB%9F%E8%AE%A1%E4%BB%A5%E6%9D%A5%E6%9C%80%E5%A4%A7%E5%B9%B4%E5%BA%A6%E9%99%8D%E5%B9%85", "sourceName": "每天60秒读懂世界", "rank": 14, "time": ""}, {"title": "国际足联拟出售部分 “世界杯股权”，欧足联怒了：出卖 “足球灵魂”，考虑抵制世界杯", "url": "https://www.baidu.com/s?wd=%E5%9B%BD%E9%99%85%E8%B6%B3%E8%81%94%E6%8B%9F%E5%87%BA%E5%94%AE%E9%83%A8%E5%88%86%20%E2%80%9C%E4%B8%96%E7%95%8C%E6%9D%AF%E8%82%A1%E6%9D%83%E2%80%9D%EF%BC%8C%E6%AC%A7%E8%B6%B3%E8%81%94%E6%80%92%E4%BA%86%EF%BC%9A%E5%87%BA%E5%8D%96%20%E2%80%9C%E8%B6%B3%E7%90%83%E7%81%B5%E9%AD%82%E2%80%9D%EF%BC%8C%E8%80%83%E8%99%91%E6%8A%B5%E5%88%B6%E4%B8%96%E7%95%8C%E6%9D%AF", "sourceName": "每天60秒读懂世界", "rank": 15, "time": ""}]}}; // 内嵌新闻数据（免网络请求）
 
 let newsActiveSource = 'all';
 
@@ -3560,184 +3636,7 @@ function filterNews(sourceId) {
   renderNews();
 }
 
-// ==================== 模块4：健身&健康管理 ====================
-function renderHealth() {
-  renderExercise();
-}
-
-function renderExercise() {
-  const tbody = document.querySelector('#exercise-table tbody');
-  tbody.innerHTML = appData.health.exercise.map(e => `
-    <tr>
-      <td>${e.date}</td><td>${e.type}</td><td>${e.duration}分钟</td>
-      <td>${e.content}</td><td>${e.note || ''}</td>
-      <td><button class="btn btn-sm btn-outline" onclick="deleteExercise(${e.id})" style="color:var(--danger);border-color:var(--danger)">删除</button></td>
-    </tr>
-  `).join('');
-}
-
-function renderExerciseChart() {
-  const ctx = document.getElementById('exercise-chart');
-  if (!ctx) return;
-  const existing = Chart.getChart('exercise-chart');
-  if (existing) existing.destroy();
-  const records = appData.health.exercise;
-  const days = ['周一','周二','周三','周四','周五','周六','周日'];
-  const swimCounts = days.map((_, i) => records.filter(r => {
-    const d = new Date(r.date); return d.getDay() === i + 1 && r.type.includes('游泳');
-  }).length);
-  const gymCounts = days.map((_, i) => records.filter(r => {
-    const d = new Date(r.date); return d.getDay() === i + 1 && r.type.includes('力量');
-  }).length);
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: days,
-      datasets: [
-        { label:'游泳', data:swimCounts, backgroundColor:getComputedStyle(document.body).getPropertyValue('--chart-color-1').trim()||'#c4a8d0', borderRadius:6 },
-        { label:'力量训练', data:gymCounts, backgroundColor:getComputedStyle(document.body).getPropertyValue('--chart-color-2').trim()||'#f0c8c8', borderRadius:6 }
-      ]
-    },
-    options: { responsive:true, maintainAspectRatio:true, plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:16,usePointStyle:true}}} }
-  });
-}
-
-function renderDiet() {
-  const tbody = document.querySelector('#diet-table tbody');
-  tbody.innerHTML = appData.health.diet.map(d => {
-    const isSpicy = d.content.includes('辣') || d.content.includes('火锅') || d.content.includes('烧烤');
-    const isAlcohol = d.content.includes('酒') || d.content.includes('啤');
-    return `
-      <tr class="${isSpicy || isAlcohol ? 'risk-row' : ''}">
-        <td>${d.date}</td><td>${d.meal}</td><td>${d.content}</td>
-        <td>${d.category}</td><td>${d.note || ''}</td>
-        <td><button class="btn btn-sm btn-outline" onclick="deleteDiet(${d.id})" style="color:var(--danger);border-color:var(--danger)">删除</button></td>
-      </tr>
-    `;
-  }).join('');
-
-  // 辛辣/酒精风险检测
-  const recent = appData.health.diet.filter(d => {
-    const days = (new Date() - new Date(d.date)) / 86400000;
-    const isRisk = d.content.includes('辣') || d.content.includes('酒') || d.content.includes('啤') || d.content.includes('火锅');
-    return days < 3 && isRisk;
-  });
-  if (recent.length >= 2) {
-    showToast('🌸 近期辛辣/酒精摄入较频繁，注意玫瑰痤疮护理：精简护肤+屏障修护+避免刺激', 'warning');
-  }
-}
-
-function renderBody() {
-  const tbody = document.querySelector('#body-table tbody');
-  tbody.innerHTML = appData.health.body.map(b => `
-    <tr>
-      <td>${b.date}</td><td>${b.weight}</td><td>${b.chest}</td><td>${b.hip}</td><td>${b.note || ''}</td>
-      <td><button class="btn btn-sm btn-outline" onclick="deleteBody(${b.id})" style="color:var(--danger);border-color:var(--danger)">删除</button></td>
-    </tr>
-  `).join('');
-}
-
-function renderBodyChart() {
-  const ctx = document.getElementById('body-chart');
-  if (!ctx) return;
-  const existing = Chart.getChart('body-chart');
-  if (existing) existing.destroy();
-  const records = [...appData.health.body].sort((a, b) => new Date(a.date) - new Date(b.date));
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: records.map(r => r.date),
-      datasets: [
-        { label:'体重(kg)', data:records.map(r => r.weight), borderColor:getComputedStyle(document.body).getPropertyValue('--chart-color-1').trim()||'#c4a8d0', tension:0.3, pointRadius:4 },
-        { label:'胸围(cm)', data:records.map(r => r.chest), borderColor:getComputedStyle(document.body).getPropertyValue('--chart-color-2').trim()||'#f0c8c8', tension:0.3, pointRadius:4 },
-        { label:'臀围(cm)', data:records.map(r => r.hip), borderColor:getComputedStyle(document.body).getPropertyValue('--chart-color-3').trim()||'#c8d8f0', tension:0.3, pointRadius:4 }
-      ]
-    },
-    options: { responsive:true, maintainAspectRatio:true, plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:16,usePointStyle:true}}} }
-  });
-}
-
-function renderHealthCharts() {
-  if (document.getElementById('health-sub-exercise')?.style.display !== 'none') renderExerciseChart();
-  if (document.getElementById('health-sub-body')?.style.display !== 'none') renderBodyChart();
-}
-
-function openExerciseEdit() {
-  openModal('🏊 运动打卡', `
-    <div class="form-group"><label>日期</label><input type="date" id="ex-date" value="${new Date().toISOString().split('T')[0]}"></div>
-    <div class="form-group"><label>运动类型</label><select id="ex-type"><option>🏊 游泳</option><option>🏋️ 力量训练</option><option>🧘 瑜伽/拉伸</option><option>🏃 有氧</option></select></div>
-    <div class="form-group"><label>时长 (分钟)</label><input type="number" id="ex-duration" value="60"></div>
-    <div class="form-group"><label>训练内容</label><input type="text" id="ex-content" placeholder="如：自由泳1000m+蛙泳500m"></div>
-    <div class="form-group"><label>难点备注</label><input type="text" id="ex-note"></div>
-  `, () => {
-    appData.health.exercise.push({
-      id: Date.now(), date: document.getElementById('ex-date').value,
-      type: document.getElementById('ex-type').value,
-      duration: parseInt(document.getElementById('ex-duration').value) || 0,
-      content: document.getElementById('ex-content').value,
-      note: document.getElementById('ex-note').value
-    });
-    saveData(); renderExercise(); renderExerciseChart();
-    showToast('运动打卡成功 💪');
-  });
-}
-
-function deleteExercise(id) {
-  appData.health.exercise = appData.health.exercise.filter(e => e.id !== id);
-  saveData(); renderExercise(); renderExerciseChart();
-}
-
-function openDietEdit() {
-  openModal('🥗 饮食记录', `
-    <div class="form-group"><label>日期</label><input type="date" id="diet-date" value="${new Date().toISOString().split('T')[0]}"></div>
-    <div class="form-group"><label>餐次</label><select id="diet-meal"><option>早餐</option><option>午餐</option><option>晚餐</option><option>加餐/补给</option></select></div>
-    <div class="form-group"><label>内容</label><input type="text" id="diet-content" placeholder="如：香蕉+水煮蛋+生菜"></div>
-    <div class="form-group"><label>类型</label><select id="diet-category"><option>日常饮食</option><option>游泳补给</option><option>外卖</option><option>聚餐</option><option>饮酒</option></select></div>
-    <div class="form-group"><label>备注</label><input type="text" id="diet-note"></div>
-  `, () => {
-    appData.health.diet.push({
-      id: Date.now(), date: document.getElementById('diet-date').value,
-      meal: document.getElementById('diet-meal').value,
-      content: document.getElementById('diet-content').value,
-      category: document.getElementById('diet-category').value,
-      note: document.getElementById('diet-note').value
-    });
-    saveData(); renderDiet();
-    showToast('饮食记录已保存 🥗');
-  });
-}
-
-function deleteDiet(id) {
-  appData.health.diet = appData.health.diet.filter(d => d.id !== id);
-  saveData(); renderDiet();
-}
-
-function openBodyEdit() {
-  openModal('📏 体重围度记录', `
-    <div class="form-group"><label>日期</label><input type="date" id="body-date" value="${new Date().toISOString().split('T')[0]}"></div>
-    <div class="form-group"><label>体重 (kg)</label><input type="number" id="body-weight" step="0.1"></div>
-    <div class="form-group"><label>胸围 (cm)</label><input type="number" id="body-chest" step="0.1"></div>
-    <div class="form-group"><label>臀围 (cm)</label><input type="number" id="body-hip" step="0.1"></div>
-    <div class="form-group"><label>备注</label><input type="text" id="body-note"></div>
-  `, () => {
-    appData.health.body.push({
-      id: Date.now(), date: document.getElementById('body-date').value,
-      weight: parseFloat(document.getElementById('body-weight').value) || 0,
-      chest: parseFloat(document.getElementById('body-chest').value) || 0,
-      hip: parseFloat(document.getElementById('body-hip').value) || 0,
-      note: document.getElementById('body-note').value
-    });
-    saveData(); renderBody(); renderBodyChart();
-    showToast('围度数据已记录 📏');
-  });
-}
-
-function deleteBody(id) {
-  appData.health.body = appData.health.body.filter(b => b.id !== id);
-  saveData(); renderBody(); renderBodyChart();
-}
-
-// ==================== 模块5：综合日常笔记 ====================
+// ==================== 模块4：综合日常笔记 ====================
 function renderNotes() {
   renderLearnColumns();
 }
@@ -4172,6 +4071,9 @@ function init() {
   setTimeout(() => {
     if (appData.swimFit) checkSwimFitAchievements();
   }, 2000);
+
+  // 英语通知恢复
+  if(appData.english.notificationsEnabled && 'Notification' in window && Notification.permission==='granted'){enScheduleRemind();}
 }
 
 function checkStartupRisk() {
@@ -5027,6 +4929,819 @@ function toggleFavorite(id) {
   renderSwimFitInspire();
 }
 
+// ==================== 📖 零基础英语学习模块 ====================
+
+// ===== 课程数据 =====
+const EN_COURSES = {
+  1: {
+    title: '48个国际音标', subtitle: '第1个月 - 发音基础（重中之重）',
+    desc: '学好48个音标是英语发音的根基。每个音标都要掌握：舌位（舌头放在哪里）、口型（嘴张多大）、声带是否震动。',
+    lessons: [
+      {id:'1-1',title:'前元音 /iː/ /ɪ/ /e/ /æ/',lecture:`<h4>📖 课堂讲解：前元音</h4>
+<p>前元音发音时，舌头的最高点都在舌前部，舌尖抵住下齿。</p>
+<div class="card" style="background:#f0f7ff;margin:10px 0"><b>/iː/ 长元音「衣」</b><br>🔹 舌位：舌前部抬得很高，靠近硬腭，舌尖抵下齿<br>🔹 口型：嘴角向两边拉开，像微笑一样<br>🔹 嘴唇：扁平，几乎不圆<br>🔹 声带：震动<br>🔹 类似中文"衣"但更长更紧张<br>🔸 例词：<b>see /siː/</b> 看见 · <b>eat /iːt/</b> 吃 · <b>he /hiː/</b> 他 · <b>green /ɡriːn/</b> 绿色</div>
+<div class="card" style="background:#f5f8ff;margin:10px 0"><b>/ɪ/ 短元音「衣(短)」</b><br>🔹 舌位：比/iː/稍低稍后，舌头肌肉放松<br>🔹 口型：嘴角稍微拉开，但不如/iː/那么宽<br>🔹 <span style="color:var(--danger)">⚠️ 常见错误：中国人常把/ɪ/发成"衣"，其实应该更短更放松</span><br>🔸 例词：<b>big /bɪɡ/</b> 大的 · <b>fish /fɪʃ/</b> 鱼 · <b>it /ɪt/</b> 它 · <b>six /sɪks/</b> 六</div>
+<div class="card" style="background:#f8f5ff;margin:10px 0"><b>/e/ 短元音「欸」</b><br>🔹 舌位：舌前部稍抬起，舌尖抵下齿<br>🔹 口型：上下齿之间可放一个食指<br>🔹 <span style="color:var(--danger)">⚠️ 注意：不是中文的"爱"，嘴巴不要张太大</span><br>🔸 例词：<b>red /red/</b> 红色 · <b>bed /bed/</b> 床 · <b>ten /ten/</b> 十 · <b>egg /eɡ/</b> 鸡蛋</div>
+<div class="card" style="background:#fff5f5;margin:10px 0"><b>/æ/ 短元音「安(张嘴)」</b><br>🔹 舌位：舌前部最低，舌尖抵下齿<br>🔹 口型：嘴巴张大，上下齿之间可放食指+中指<br>🔹 <span style="color:var(--danger)">⚠️ 这个音中文里没有！必须把嘴张大，很多人发不到位</span><br>🔸 例词：<b>cat /kæt/</b> 猫 · <b>apple /æpl/</b> 苹果 · <b>bad /bæd/</b> 坏的 · <b>map /mæp/</b> 地图</div>`,
+        practice:[{w:'see',p:'/siː/',m:'看见'},{w:'big',p:'/bɪɡ/',m:'大的'},{w:'red',p:'/red/',m:'红色'},{w:'cat',p:'/kæt/',m:'猫'},{w:'eat',p:'/iːt/',m:'吃'},{w:'fish',p:'/fɪʃ/',m:'鱼'},{w:'bed',p:'/bed/',m:'床'},{w:'apple',p:'/æpl/',m:'苹果'},{w:'green',p:'/ɡriːn/',m:'绿色'},{w:'it',p:'/ɪt/',m:'它'}],
+        tips:'前元音的核心是<b>舌尖始终抵住下齿</b>，靠舌前部高低变化来区分。晚上对着镜子练，看嘴型对不对！'},
+
+      {id:'1-2',title:'中元音 /ɜː/ /ə/ /ʌ/',lecture:`<h4>📖 课堂讲解：中元音</h4>
+<p>中元音发音时，舌头的最高点在舌中部，舌头自然平放。</p>
+<div class="card" style="background:#f0f7ff;margin:10px 0"><b>/ɜː/ 长元音「厄(长)」</b><br>🔹 舌位：舌中部抬起，舌尖离开下齿<br>🔹 口型：嘴唇向两边微微拉开，不圆唇<br>🔹 声带：震动<br>🔹 类似中文"饿"但舌位更高<br>🔸 例词：<b>bird /bɜːd/</b> 鸟 · <b>work /wɜːk/</b> 工作 · <b>girl /ɡɜːl/</b> 女孩 · <b>learn /lɜːn/</b> 学习</div>
+<div class="card" style="background:#f5f8ff;margin:10px 0"><b>/ə/ 短元音「厄(短轻)」</b><br>🔹 舌位：最自然放松的位置，舌中部微微抬起<br>🔹 口型：嘴巴自然微张<br>🔹 <span style="color:var(--warning)">💡 这是英语里最常见的元音！很多非重读音节都用它</span><br>🔸 例词：<b>about /əˈbaʊt/</b> 关于 · <b>banana /bəˈnɑːnə/</b> 香蕉 · <b>teacher /ˈtiːtʃə/</b> 老师 · <b>ago /əˈɡoʊ/</b> 以前</div>
+<div class="card" style="background:#f8f5ff;margin:10px 0"><b>/ʌ/ 短元音「啊(短)」</b><br>🔹 舌位：舌中部稍后，舌尖离开下齿<br>🔹 口型：嘴张开约一个食指宽度<br>🔹 <span style="color:var(--danger)">⚠️ 不要发成中文的"啊"，舌位要更高更后</span><br>🔸 例词：<b>cup /kʌp/</b> 杯子 · <b>bus /bʌs/</b> 公共汽车 · <b>sun /sʌn/</b> 太阳 · <b>love /lʌv/</b> 爱</div>`,
+        practice:[{w:'bird',p:'/bɜːd/',m:'鸟'},{w:'about',p:'/əˈbaʊt/',m:'关于'},{w:'cup',p:'/kʌp/',m:'杯子'},{w:'work',p:'/wɜːk/',m:'工作'},{w:'banana',p:'/bəˈnɑːnə/',m:'香蕉'},{w:'bus',p:'/bʌs/',m:'公共汽车'},{w:'girl',p:'/ɡɜːl/',m:'女孩'},{w:'teacher',p:'/ˈtiːtʃə/',m:'老师'},{w:'sun',p:'/sʌn/',m:'太阳'},{w:'love',p:'/lʌv/',m:'爱'}],
+        tips:'中元音的关键是<b>舌头自然放松在口腔中部</b>。练习时可以含着一口水试着发音（当然别真咽下去），感受舌头的自然位置。'},
+
+      {id:'1-3',title:'后元音 /uː/ /ʊ/ /ɔː/ /ɒ/ /ɑː/',lecture:`<h4>📖 课堂讲解：后元音</h4>
+<p>后元音发音时，舌头的最高点在舌后部，舌尖离开下齿向后缩。</p>
+<div class="card" style="background:#f0f7ff;margin:10px 0"><b>/uː/ 长元音「乌(长)」</b><br>🔹 舌位：舌后部抬得很高<br>🔹 口型：嘴唇收圆撅起，像吹口哨<br>🔹 类似中文"乌"但嘴唇更撅<br>🔸 例词：<b>food /fuːd/</b> 食物 · <b>school /skuːl/</b> 学校 · <b>who /huː/</b> 谁 · <b>blue /bluː/</b> 蓝色</div>
+<div class="card" style="background:#f5f8ff;margin:10px 0"><b>/ʊ/ 短元音「乌(短)」</b><br>🔹 舌位：比/uː/稍低，舌头肌肉放松<br>🔹 口型：嘴唇稍圆，但不如/uː/撅得厉害<br>🔹 <span style="color:var(--danger)">⚠️ 不要发成"乌"，这个音短而松</span><br>🔸 例词：<b>good /ɡʊd/</b> 好的 · <b>book /bʊk/</b> 书 · <b>put /pʊt/</b> 放 · <b>cookie /ˈkʊki/</b> 饼干</div>
+<div class="card" style="background:#f8f5ff;margin:10px 0"><b>/ɔː/ 长元音「哦(长)」</b><br>🔹 舌位：舌后部抬起，比/ɒ/高<br>🔹 口型：嘴唇收圆，比/ɒ/更圆更紧<br>🔸 例词：<b>four /fɔːr/</b> 四 · <b>door /dɔːr/</b> 门 · <b>water /ˈwɔːtər/</b> 水 · <b>ball /bɔːl/</b> 球</div>
+<div class="card" style="background:#fff5f5;margin:10px 0"><b>/ɒ/ 短元音「哦(短)」</b><br>🔹 <span style="color:var(--text-light)">注：美式英语中这个音常发成/ɑː/</span><br>🔹 舌位：舌后部较低，口张大<br>🔸 例词：<b>hot /hɒt/</b> 热的 · <b>dog /dɒɡ/</b> 狗 · <b>not /nɒt/</b> 不是</div>
+<div class="card" style="background:#fff8f5;margin:10px 0"><b>/ɑː/ 长元音「啊(长)」</b><br>🔹 舌位：舌后部最低，口腔完全打开<br>🔹 <span style="color:var(--text-light)">这是去看医生时"张嘴说啊"的那个音</span><br>🔸 例词：<b>car /kɑːr/</b> 汽车 · <b>star /stɑːr/</b> 星星 · <b>heart /hɑːrt/</b> 心</div>`,
+        practice:[{w:'food',p:'/fuːd/',m:'食物'},{w:'good',p:'/ɡʊd/',m:'好的'},{w:'four',p:'/fɔːr/',m:'四'},{w:'hot',p:'/hɒt/',m:'热的'},{w:'car',p:'/kɑːr/',m:'汽车'},{w:'school',p:'/skuːl/',m:'学校'},{w:'book',p:'/bʊk/',m:'书'},{w:'door',p:'/dɔːr/',m:'门'},{w:'dog',p:'/dɒɡ/',m:'狗'},{w:'star',p:'/stɑːr/',m:'星星'}],
+        tips:'后元音要<b>感觉声音从喉咙深处发出</b>。练习 /uː/ 时可以对着镜子看嘴唇够不够圆。'},
+
+      {id:'1-4',title:'双元音 /eɪ/ /aɪ/ /ɔɪ/ /əʊ/ /aʊ/ /ɪə/ /eə/ /ʊə/',lecture:`<h4>📖 课堂讲解：双元音</h4>
+<p>双元音 = 两个元音的组合，发音时从第一个音<b>平滑滑向</b>第二个音，口型和舌位都会变化。</p>
+<div class="card" style="background:#f0f7ff;margin:10px 0"><b>/eɪ/ 「欸一」→ day, make, name, game</b><br>🔹 从/e/滑向/ɪ/，嘴巴从开到合<br>🔸 <b>day /deɪ/</b> 天 · <b>name /neɪm/</b> 名字 · <b>face /feɪs/</b> 脸</div>
+<div class="card" style="background:#f5f8ff;margin:10px 0"><b>/aɪ/ 「啊一」→ my, like, time</b><br>🔹 从/a/滑向/ɪ/，嘴巴从大到小<br>🔹 <span style="color:var(--danger)">⚠️ 不是中文的"爱"！要先张大嘴再合拢</span><br>🔸 <b>my /maɪ/</b> 我的 · <b>time /taɪm/</b> 时间 · <b>like /laɪk/</b> 喜欢</div>
+<div class="card" style="background:#f8f5ff;margin:10px 0"><b>/ɔɪ/ 「哦一」→ boy, voice, enjoy</b><br>🔹 从/ɔː/滑向/ɪ/<br>🔸 <b>boy /bɔɪ/</b> 男孩 · <b>voice /vɔɪs/</b> 声音 · <b>enjoy /ɪnˈdʒɔɪ/</b> 享受</div>
+<div class="card" style="background:#fff5f5;margin:10px 0"><b>/əʊ/ → go, no, home, old</b><br>🔹 从/ə/滑向/ʊ/，嘴唇逐渐收圆<br>🔹 <span style="color:var(--danger)">⚠️ 这是中国人最难的双元音！要从"厄"滑到"乌"，嘴唇从扁到圆</span><br>🔸 <b>go /ɡoʊ/</b> 去 · <b>no /noʊ/</b> 不 · <b>home /hoʊm/</b> 家</div>
+<div class="card" style="background:#fff8f5;margin:10px 0"><b>/aʊ/ → how, now, house</b><br>🔹 从/a/滑向/ʊ/，嘴从张到圆<br>🔸 <b>how /haʊ/</b> 怎么 · <b>now /naʊ/</b> 现在 · <b>house /haʊs/</b> 房子</div>
+<div class="card" style="background:#f5fff5;margin:10px 0"><b>/ɪə/ /eə/ /ʊə/</b><br>🔹 从第一个音滑向/ə/<br>🔸 <b>here /hɪər/</b> 这里 · <b>where /weər/</b> 哪里 · <b>sure /ʃʊər/</b> 确定</div>`,
+        practice:[{w:'make',p:'/meɪk/',m:'做'},{w:'like',p:'/laɪk/',m:'喜欢'},{w:'boy',p:'/bɔɪ/',m:'男孩'},{w:'go',p:'/ɡoʊ/',m:'去'},{w:'how',p:'/haʊ/',m:'怎么'},{w:'name',p:'/neɪm/',m:'名字'},{w:'time',p:'/taɪm/',m:'时间'},{w:'home',p:'/hoʊm/',m:'家'},{w:'now',p:'/naʊ/',m:'现在'},{w:'here',p:'/hɪər/',m:'这里'}],
+        tips:'双元音要<b>前长后短、前重后轻</b>，第一个音要发满，第二个音只是方向和收尾。练习时可以先拉长第一个音，再慢慢加快。'},
+
+      {id:'1-5',title:'清辅音 /p/ /t/ /k/ /f/ /θ/ /s/ /ʃ/ /tʃ/',lecture:`<h4>📖 课堂讲解：清辅音</h4>
+<p>清辅音发音时<b>声带不震动</b>，只靠气流。用手摸喉咙，清辅音时喉咙不震动。</p>
+<div class="card" style="background:#f0f7ff;margin:10px 0"><b>/p/ - 双唇爆破音「泼(不送气加力)」</b><br>🔹 双唇紧闭，突然分开，气流冲出<br>🔹 <span style="color:var(--danger)">⚠️ 比中文拼音p的送气更少更干脆</span><br>🔸 pen, apple, stop, help</div>
+<div class="card" style="background:#f5f8ff;margin:10px 0"><b>/t/ - 舌尖齿龈爆破音「特(舌尖顶上齿龈)」</b><br>🔹 舌尖抵住上齿龈，突然分开<br>🔸 tea, city, cat, right</div>
+<div class="card" style="background:#f8f5ff;margin:10px 0"><b>/k/ - 舌后软腭爆破音「克」</b><br>🔹 舌后部抬起抵住软腭，突然分开<br>🔸 cat, cup, book, like</div>
+<div class="card" style="background:#fff5f5;margin:10px 0"><b>/f/ - 唇齿摩擦音「夫」</b><br>🔹 <b>上齿轻咬下唇</b>，气流从缝隙中挤出<br>🔸 food, coffee, if, laugh</div>
+<div class="card" style="background:#fff8f5;margin:10px 0"><b>/θ/ - 舌尖齿间摩擦音 ⭐重点</b><br>🔹 <b>舌尖轻轻放在上下齿之间</b>，气流从舌尖和上齿间挤出<br>🔹 <span style="color:var(--danger)">⚠️ 中文没有这个音！很多人发成/s/或/f/。记住：舌尖一定要伸出来！</span><br>🔸 think, thank, three, mouth, teeth</div>
+<div class="card" style="background:#f5fff5;margin:10px 0"><b>/s/ - 舌尖齿龈摩擦音「丝」</b><br>🔹 舌尖靠近上齿龈但不接触，气流挤出<br>🔸 see, class, yes, miss</div>
+<div class="card" style="background:#f0fff5;margin:10px 0"><b>/ʃ/ - 舌面硬腭摩擦音「诗」</b><br>🔹 舌尖靠近上齿龈后部，嘴唇稍圆<br>🔹 <span style="color:var(--text-light)">类似"嘘——别说话"的口型</span><br>🔸 she, fish, English, wash</div>
+<div class="card" style="background:#f5f5ff;margin:10px 0"><b>/tʃ/ - 破擦音「吃」</b><br>🔹 舌尖抵住上齿龈，然后分开让气流摩擦而出<br>🔸 cheese, lunch, watch, China</div>`,
+        practice:[{w:'pen',p:'/pen/',m:'笔'},{w:'tea',p:'/tiː/',m:'茶'},{w:'cat',p:'/kæt/',m:'猫'},{w:'food',p:'/fuːd/',m:'食物'},{w:'think',p:'/θɪŋk/',m:'思考'},{w:'see',p:'/siː/',m:'看见'},{w:'she',p:'/ʃiː/',m:'她'},{w:'China',p:'/ˈtʃaɪnə/',m:'中国'},{w:'three',p:'/θriː/',m:'三'},{w:'fish',p:'/fɪʃ/',m:'鱼'}],
+        tips:'清辅音的关键：<b>手摸喉咙，不能震动</b>。/θ/ 是中国人最大难点，舌尖一定要在两齿之间！每天对着镜子练20遍。'},
+
+      {id:'1-6',title:'浊辅音 /b/ /d/ /ɡ/ /v/ /ð/ /z/ /ʒ/ /dʒ/',lecture:`<h4>📖 课堂讲解：浊辅音</h4>
+<p>浊辅音发音时<b>声带要震动</b>。手摸喉咙能感觉到嗡嗡的震动。</p>
+<div class="card" style="background:#f0f7ff;margin:10px 0"><b>/b/ /d/ /ɡ/ - 爆破浊辅音</b><br>🔹 发音位置和/p/ /t/ /k/完全一样，但声带要震动<br>🔸 <b>book /bʊk/</b> · <b>dog /dɒɡ/</b> · <b>good /ɡʊd/</b></div>
+<div class="card" style="background:#f5f8ff;margin:10px 0"><b>/v/ - 唇齿摩擦浊音 ⭐</b><br>🔹 <b>上齿轻咬下唇</b>，声带震动<br>🔹 <span style="color:var(--danger)">⚠️ 很多中国人把/v/发成/w/！very不要读成"歪瑞"</span><br>🔸 <b>very /ˈveri/</b> · <b>five /faɪv/</b> · <b>live /lɪv/</b> · <b>love /lʌv/</b></div>
+<div class="card" style="background:#f8f5ff;margin:10px 0"><b>/ð/ - 舌尖齿间摩擦浊音 ⭐⭐</b><br>🔹 发音位置和/θ/一样（舌尖在两齿间），但声带震动<br>🔹 <span style="color:var(--danger)">⚠️ 中文没有！先把舌尖伸出来，再震动喉咙</span><br>🔸 <b>the /ðə/</b> · <b>this /ðɪs/</b> · <b>that /ðæt/</b> · <b>mother /ˈmʌðər/</b> · <b>father /ˈfɑːðər/</b></div>
+<div class="card" style="background:#fff5f5;margin:10px 0"><b>/z/ - 齿龈摩擦浊音</b><br>🔹 发音位置和/s/一样，声带震动<br>🔸 <b>is /ɪz/</b> · <b>size /saɪz/</b> · <b>zero /ˈzɪroʊ/</b></div>
+<div class="card" style="background:#fff8f5;margin:10px 0"><b>/dʒ/ - 破擦浊音「知」</b><br>🔹 发音位置和/tʃ/一样，声带震动<br>🔸 <b>job /dʒɒb/</b> · <b>page /peɪdʒ/</b> · <b>orange /ˈɔːrɪndʒ/</b></div>`,
+        practice:[{w:'very',p:'/ˈveri/',m:'非常'},{w:'this',p:'/ðɪs/',m:'这个'},{w:'book',p:'/bʊk/',m:'书'},{w:'dog',p:'/dɒɡ/',m:'狗'},{w:'that',p:'/ðæt/',m:'那个'},{w:'is',p:'/ɪz/',m:'是'},{w:'five',p:'/faɪv/',m:'五'},{w:'mother',p:'/ˈmʌðər/',m:'母亲'},{w:'zero',p:'/ˈzɪroʊ/',m:'零'},{w:'job',p:'/dʒɒb/',m:'工作'}],
+        tips:'浊辅音和清辅音的区别只在于<b>声带是否震动</b>。可以成对练习：/p/-/b/、/t/-/d/、/k/-/ɡ/、/f/-/v/、/θ/-/ð/、/s/-/z/。手摸喉咙感受区别！'},
+
+      {id:'1-7',title:'鼻音 /m/ /n/ /ŋ/ + 半元音 /w/ /j/ + 边音 /l/',lecture:`<h4>📖 课堂讲解：鼻音·半元音·边音</h4>
+<p>鼻音：气流从鼻腔出来。半元音：介于元音和辅音之间。边音：气流从舌头两边出来。</p>
+<div class="card" style="background:#f0f7ff;margin:10px 0"><b>/m/ 双唇鼻音</b><br>🔹 双唇紧闭，气流从鼻腔出<br>🔸 <b>me /miː/</b> · <b>name /neɪm/</b> · <b>time /taɪm/</b></div>
+<div class="card" style="background:#f5f8ff;margin:10px 0"><b>/n/ 舌尖齿龈鼻音</b><br>🔹 舌尖抵上齿龈，气流从鼻腔出<br>🔸 <b>no /noʊ/</b> · <b>new /nuː/</b> · <b>sun /sʌn/</b></div>
+<div class="card" style="background:#f8f5ff;margin:10px 0"><b>/ŋ/ 舌后软腭鼻音 ⭐</b><br>🔹 舌后部抬起抵软腭，气流从鼻腔<br>🔹 <span style="color:var(--danger)">⚠️ 不是"恩"也不是"嗯"，舌后部要抬起来堵住口腔</span><br>🔸 <b>sing /sɪŋ/</b> · <b>long /lɒŋ/</b> · <b>English /ˈɪŋɡlɪʃ/</b></div>
+<div class="card" style="background:#fff5f5;margin:10px 0"><b>/l/ 边音 ⭐</b><br>🔹 舌尖抵上齿龈，气流从舌头两边出<br>🔹 <span style="color:var(--danger)">⚠️ 两种读法：清晰/l/(词首 light)和含糊/l/(词尾 milk，舌尖抵住上齿龈的同时舌后部抬起)</span><br>🔸 <b>light /laɪt/</b> · <b>like /laɪk/</b> · <b>milk /mɪlk/</b> · <b>people /ˈpiːpəl/</b></div>
+<div class="card" style="background:#fff8f5;margin:10px 0"><b>/w/ 双唇半元音</b><br>🔹 双唇收圆，很快滑向下一个音<br>🔸 <b>we /wiː/</b> · <b>water /ˈwɔːtər/</b> · <b>where /weər/</b></div>
+<div class="card" style="background:#f5fff5;margin:10px 0"><b>/j/ 硬腭半元音</b><br>🔹 舌前部抬高，很快滑向下一个音<br>🔸 <b>yes /jes/</b> · <b>you /juː/</b> · <b>year /jɪər/</b></div>`,
+        practice:[{w:'name',p:'/neɪm/',m:'名字'},{w:'no',p:'/noʊ/',m:'不'},{w:'sing',p:'/sɪŋ/',m:'唱歌'},{w:'like',p:'/laɪk/',m:'喜欢'},{w:'we',p:'/wiː/',m:'我们'},{w:'yes',p:'/jes/',m:'是'},{w:'long',p:'/lɒŋ/',m:'长的'},{w:'milk',p:'/mɪlk/',m:'牛奶'},{w:'water',p:'/ˈwɔːtər/',m:'水'},{w:'you',p:'/juː/',m:'你'}],
+        tips:'鼻音练习诀窍：<b>捏住鼻子，如果发不出声就是鼻音发对了</b>。/ŋ/ 是难点，感受舌后部抬起堵住的感觉。'},
+
+      {id:'1-8',title:'易混音对比训练',lecture:`<h4>📖 课堂讲解：最容易混淆的音素</h4>
+<p>以下是中国学习者<b>最最最容易出错</b>的音素对比，务必反复练习直到能清楚区分！</p>
+<div class="card" style="background:#ffe8e8;margin:10px 0"><b>🔥 /iː/ vs /ɪ/ - 最常混淆！</b><br>🔹 <b>sheep /ʃiːp/ 羊</b> vs <b>ship /ʃɪp/ 船</b><br>🔹 <b>beach /biːtʃ/ 海滩</b> vs <b>bitch /bɪtʃ/ (粗话!)</b><br>🔹 <span style="color:var(--danger)">⚠️ 这组发音用错可能导致严重误会！/iː/紧张拉长，/ɪ/放松短促</span></div>
+<div class="card" style="background:#fff0e8;margin:10px 0"><b>🔥 /θ/ vs /s/</b><br>🔹 <b>think /θɪŋk/ 思考</b> vs <b>sink /sɪŋk/ 下沉</b><br>🔹 <b>thick /θɪk/ 厚</b> vs <b>sick /sɪk/ 生病</b><br>🔹 <span style="color:var(--danger)">⚠️ 舌尖伸出 vs 舌尖在齿龈后</span></div>
+<div class="card" style="background:#ffe8f0;margin:10px 0"><b>🔥 /ð/ vs /z/</b><br>🔹 <b>then /ðen/ 然后</b> vs <b>zen /zen/ 禅</b><br>🔹 舌尖伸出震动 vs 舌尖在齿龈后震动</div>
+<div class="card" style="background:#f0e8ff;margin:10px 0"><b>🔥 /v/ vs /w/</b><br>🔹 <b>very /ˈveri/ 非常</b> vs <b>wary /ˈweri/ 谨慎的</b><br>🔹 <b>vine /vaɪn/ 藤蔓</b> vs <b>wine /waɪn/ 酒</b><br>🔹 <span style="color:var(--danger)">⚠️ 上齿咬下唇 vs 双唇收圆</span></div>
+<div class="card" style="background:#e8fff0;margin:10px 0"><b>🔥 /æ/ vs /e/</b><br>🔹 <b>bad /bæd/ 坏的</b> vs <b>bed /bed/ 床</b><br>🔹 <b>man /mæn/ 男人</b> vs <b>men /men/ 男人们</b><br>🔹 嘴张大 vs 嘴微张</div>
+<div class="card" style="background:#ffe8ff;margin:10px 0"><b>🔥 /n/ vs /l/ (方言区重点)</b><br>🔹 <b>night /naɪt/ 夜晚</b> vs <b>light /laɪt/ 光</b><br>🔹 <span style="color:var(--danger)">⚠️ 部分方言区n/l不分，务必注意</span></div>`,
+        practice:[{w:'sheep',p:'/ʃiːp/',m:'羊'},{w:'ship',p:'/ʃɪp/',m:'船'},{w:'think',p:'/θɪŋk/',m:'思考'},{w:'sink',p:'/sɪŋk/',m:'下沉'},{w:'very',p:'/ˈveri/',m:'非常'},{w:'wine',p:'/waɪn/',m:'酒'},{w:'bad',p:'/bæd/',m:'坏的'},{w:'bed',p:'/bed/',m:'床'},{w:'then',p:'/ðen/',m:'然后'},{w:'night',p:'/naɪt/',m:'夜晚'},{w:'light',p:'/laɪt/',m:'光'}],
+        tips:'此课为音标学习总复习。如果到这里你都能清晰区分以上易混音，恭喜你——音标基础已过关！可以进入第2个月单词学习了。'}],
+    stageTip: '学完音标后，你看到一个单词的音标就能自己拼读出来，这就是"看音标会读"的能力。'
+  },
+  2: {
+    title: '基础高频单词', subtitle: '第2个月 - 生活刚需词汇',
+    desc: '按话题分类学习，每个话题15-20个核心词。要求：看到单词会读、听到单词知道意思。',
+    lessons: [
+      {id:'2-1',title:'家庭与人物',lecture:`<h4>📖 课堂讲解：家庭与人物词汇</h4>
+<div class="card" style="background:#f0f7ff"><b>核心词（要求会读会写）</b><br>
+family /ˈfæməli/ 家庭 · mother /ˈmʌðər/ 母亲 · father /ˈfɑːðər/ 父亲 · parent /ˈperənt/ 父母 · child /tʃaɪld/ 孩子 · baby /ˈbeɪbi/ 婴儿 · brother /ˈbrʌðər/ 兄弟 · sister /ˈsɪstər/ 姐妹 · friend /frend/ 朋友 · people /ˈpiːpəl/ 人们<br><br>
+<b>🔍 发音重点：</b><br>
+• mother/father/brother 结尾都是 /ðər/，舌尖伸出来<br>
+• family 重音在第一个音节 FAM-ily</div>`,
+        practice:[{w:'family',p:'/ˈfæməli/',m:'家庭'},{w:'mother',p:'/ˈmʌðər/',m:'母亲'},{w:'father',p:'/ˈfɑːðər/',m:'父亲'},{w:'child',p:'/tʃaɪld/',m:'孩子'},{w:'baby',p:'/ˈbeɪbi/',m:'婴儿'},{w:'brother',p:'/ˈbrʌðər/',m:'兄弟'},{w:'sister',p:'/ˈsɪstər/',m:'姐妹'},{w:'friend',p:'/frend/',m:'朋友'},{w:'people',p:'/ˈpiːpəl/',m:'人们'},{w:'parent',p:'/ˈperənt/',m:'父母'}],
+        tips:'家庭词汇中 <b>-ther</b> 结尾的词都有 /ð/ 音，复习音标第6课。'},
+
+      {id:'2-2',title:'数字与时间',lecture:`<h4>📖 课堂讲解：数字与时间</h4>
+<div class="card" style="background:#f0f7ff"><b>核心词</b><br>
+number /ˈnʌmbər/ 数字 · one/two/three/four/five/six/seven/eight/nine/ten<br>
+time /taɪm/ 时间 · day /deɪ/ 天 · week /wiːk/ 周 · month /mʌnθ/ 月 · year /jɪər/ 年<br>
+today /təˈdeɪ/ 今天 · tomorrow /təˈmɒroʊ/ 明天 · yesterday /ˈjestərdeɪ/ 昨天<br>
+morning /ˈmɔːrnɪŋ/ 早上 · afternoon /ˌæftərˈnuːn/ 下午 · evening /ˈiːvnɪŋ/ 晚上<br><br>
+<b>🔍 发音重点：</b><br>
+• month 结尾是 /θ/，舌尖伸出<br>
+• morning 有 /ŋ/ 鼻音收尾<br>
+• yesterday /jestərdeɪ/ 四个音节，不要吞音</div>`,
+        practice:[{w:'number',p:'/ˈnʌmbər/',m:'数字'},{w:'time',p:'/taɪm/',m:'时间'},{w:'today',p:'/təˈdeɪ/',m:'今天'},{w:'tomorrow',p:'/təˈmɒroʊ/',m:'明天'},{w:'morning',p:'/ˈmɔːrnɪŋ/',m:'早上'},{w:'evening',p:'/ˈiːvnɪŋ/',m:'晚上'},{w:'week',p:'/wiːk/',m:'周'},{w:'month',p:'/mʌnθ/',m:'月份'},{w:'year',p:'/jɪər/',m:'年'},{w:'afternoon',p:'/ˌæftərˈnuːn/',m:'下午'}],
+        tips:'时间词 everyday 使用频率极高。注意 <b>month /mʌnθ/</b> 结尾的 /θ/ 音！'},
+
+      {id:'2-3',title:'食物与饮品',lecture:`<h4>📖 课堂讲解：食物与饮品</h4>
+<div class="card" style="background:#f0f7ff"><b>核心词</b><br>
+food /fuːd/ 食物 · water /ˈwɔːtər/ 水 · drink /drɪŋk/ 饮品 · eat /iːt/ 吃<br>
+rice /raɪs/ 米饭 · bread /bred/ 面包 · meat /miːt/ 肉 · egg /eɡ/ 鸡蛋 · fish /fɪʃ/ 鱼<br>
+apple /ˈæpəl/ 苹果 · banana /bəˈnɑːnə/ 香蕉 · milk /mɪlk/ 牛奶 · coffee /ˈkɒfi/ 咖啡 · tea /tiː/ 茶<br><br>
+<b>🔍 发音重点：</b><br>
+• rice 注意 /aɪ/ 双元音，不是中文"来斯"<br>
+• bread /bred/ 中的 /e/，不要发成"不瑞的"<br>
+• banana /bəˈnɑːnə/ — 三个音节，中间的 /nɑː/ 是重音</div>`,
+        practice:[{w:'food',p:'/fuːd/',m:'食物'},{w:'water',p:'/ˈwɔːtər/',m:'水'},{w:'rice',p:'/raɪs/',m:'米饭'},{w:'bread',p:'/bred/',m:'面包'},{w:'egg',p:'/eɡ/',m:'鸡蛋'},{w:'apple',p:'/ˈæpəl/',m:'苹果'},{w:'banana',p:'/bəˈnɑːnə/',m:'香蕉'},{w:'milk',p:'/mɪlk/',m:'牛奶'},{w:'coffee',p:'/ˈkɒfi/',m:'咖啡'},{w:'tea',p:'/tiː/',m:'茶'}],
+        tips:'食物词汇每天吃饭都能用。建议在餐桌上<b>用英语说出你吃的每样东西</b>。'},
+
+      {id:'2-4',title:'身体与健康',lecture:`<h4>📖 课堂讲解：身体与健康词汇</h4>
+<div class="card" style="background:#f0f7ff"><b>核心词</b><br>
+body /ˈbɒdi/ 身体 · head /hed/ 头 · face /feɪs/ 脸 · eye /aɪ/ 眼睛 · mouth /maʊθ/ 嘴巴<br>
+hand /hænd/ 手 · foot /fʊt/ 脚 · arm /ɑːrm/ 手臂 · leg /leɡ/ 腿 · heart /hɑːrt/ 心脏<br>
+health /helθ/ 健康 · sick /sɪk/ 生病的 · doctor /ˈdɒktər/ 医生 · hospital /ˈhɒspɪtəl/ 医院<br><br>
+<b>🔍 发音重点：</b><br>
+• mouth /maʊθ/ 结尾 /θ/ 舌尖伸出<br>
+• foot /fʊt/ 中 /ʊ/ 短元音，不要读成 food /fuːd/<br>
+• eye /aɪ/ 和 I /aɪ/ 读音相同</div>`,
+        practice:[{w:'body',p:'/ˈbɒdi/',m:'身体'},{w:'head',p:'/hed/',m:'头'},{w:'face',p:'/feɪs/',m:'脸'},{w:'eye',p:'/aɪ/',m:'眼睛'},{w:'mouth',p:'/maʊθ/',m:'嘴巴'},{w:'hand',p:'/hænd/',m:'手'},{w:'foot',p:'/fʊt/',m:'脚'},{w:'health',p:'/helθ/',m:'健康'},{w:'doctor',p:'/ˈdɒktər/',m:'医生'},{w:'hospital',p:'/ˈhɒspɪtəl/',m:'医院'}],
+        tips:'身体词很实用，对着镜子指自己的身体部位用英语说出来。'},
+
+      {id:'2-5',title:'日常动作',lecture:`<h4>📖 课堂讲解：常用动作词（动词）</h4>
+<div class="card" style="background:#f0f7ff"><b>核心动词</b><br>
+go /ɡoʊ/ 去 · come /kʌm/ 来 · want /wɒnt/ 想要 · need /niːd/ 需要<br>
+like /laɪk/ 喜欢 · love /lʌv/ 爱 · know /noʊ/ 知道 · think /θɪŋk/ 想<br>
+see /siː/ 看见 · say /seɪ/ 说 · make /meɪk/ 做 · take /teɪk/ 拿 · give /ɡɪv/ 给<br>
+use /juːz/ 使用 · find /faɪnd/ 找到 · work /wɜːk/ 工作 · play /pleɪ/ 玩<br><br>
+<b>🔍 发音重点：</b><br>
+• think /θɪŋk/ 开头和结尾都需要特别注意<br>
+• give /ɡɪv/ — /v/ 上齿咬下唇</div>`,
+        practice:[{w:'go',p:'/ɡoʊ/',m:'去'},{w:'come',p:'/kʌm/',m:'来'},{w:'want',p:'/wɒnt/',m:'想要'},{w:'like',p:'/laɪk/',m:'喜欢'},{w:'think',p:'/θɪŋk/',m:'思考'},{w:'see',p:'/siː/',m:'看见'},{w:'make',p:'/meɪk/',m:'做'},{w:'give',p:'/ɡɪv/',m:'给'},{w:'work',p:'/wɜːk/',m:'工作'},{w:'play',p:'/pleɪ/',m:'玩'}],
+        tips:'动词是句子的灵魂！学完这些基础动词就可以造简单的句子了。'}]
+  },
+  3: {title:'日常短句对话',subtitle:'第3个月',lessons:[{id:'3-1',title:'问候与介绍',lecture:'<p>内容持续更新中...</p>',practice:[],tips:'敬请期待'}],desc:'从单词过渡到句子，学习最基本的日常问候和自我介绍。'},
+  4: {title:'场景短句组合',subtitle:'第4个月',lessons:[{id:'4-1',title:'购物、问路、点餐',lecture:'<p>内容持续更新中...</p>',practice:[],tips:'敬请期待'}],desc:'按场景分类：购物、问路、点餐、打电话等实用场景。'},
+  5: {title:'短篇文段朗读',subtitle:'第5个月',lessons:[{id:'5-1',title:'100词小短文',lecture:'<p>内容持续更新中...</p>',practice:[],tips:'敬请期待'}],desc:'朗读100-200词的短文，理解大意，注意语音语调。'},
+  6: {title:'完整日常对话',subtitle:'第6个月',lessons:[{id:'6-1',title:'自由对话练习',lecture:'<p>内容持续更新中...</p>',practice:[],tips:'敬请期待'}],desc:'能够进行完整的日常对话，自由表达简单的想法。'}
+};
+
+// ===== 单词库（用于朗读练习） =====
+const EN_WORD_BANK = [
+  {word:"hello",phonetic:"/həˈloʊ/",meaning:"你好",example:"Hello, how are you?",level:1},
+  {word:"good",phonetic:"/ɡʊd/",meaning:"好的",example:"Good morning!",level:1},
+  {word:"thank",phonetic:"/θæŋk/",meaning:"谢谢",example:"Thank you very much.",level:1},
+  {word:"please",phonetic:"/pliːz/",meaning:"请",example:"Please sit down.",level:1},
+  {word:"water",phonetic:"/ˈwɔːtər/",meaning:"水",example:"I need some water.",level:1},
+  {word:"food",phonetic:"/fuːd/",meaning:"食物",example:"The food is delicious.",level:1},
+  {word:"time",phonetic:"/taɪm/",meaning:"时间",example:"What time is it?",level:1},
+  {word:"day",phonetic:"/deɪ/",meaning:"天",example:"Have a nice day!",level:1},
+  {word:"friend",phonetic:"/frend/",meaning:"朋友",example:"She is my best friend.",level:1},
+  {word:"family",phonetic:"/ˈfæməli/",meaning:"家庭",example:"I love my family.",level:1},
+  {word:"morning",phonetic:"/ˈmɔːrnɪŋ/",meaning:"早上",example:"Good morning!",level:1},
+  {word:"night",phonetic:"/naɪt/",meaning:"夜晚",example:"Good night!",level:1},
+  {word:"think",phonetic:"/θɪŋk/",meaning:"想",example:"I think so.",level:1},
+  {word:"beautiful",phonetic:"/ˈbjuːtɪfəl/",meaning:"美丽的",example:"What a beautiful day!",level:2},
+  {word:"important",phonetic:"/ɪmˈpɔːrtənt/",meaning:"重要的",example:"This is very important.",level:2},
+  {word:"understand",phonetic:"/ˌʌndərˈstænd/",meaning:"理解",example:"I understand.",level:2},
+  {word:"delicious",phonetic:"/dɪˈlɪʃəs/",meaning:"美味的",example:"This food is delicious!",level:2},
+  {word:"hospital",phonetic:"/ˈhɒspɪtəl/",meaning:"医院",example:"She went to the hospital.",level:2},
+  {word:"yesterday",phonetic:"/ˈjestərdeɪ/",meaning:"昨天",example:"I saw him yesterday.",level:2},
+  {word:"tomorrow",phonetic:"/təˈmɒroʊ/",meaning:"明天",example:"See you tomorrow!",level:2},
+  {word:"different",phonetic:"/ˈdɪfərənt/",meaning:"不同的",example:"That's different.",level:2},
+  {word:"because",phonetic:"/bɪˈkɒz/",meaning:"因为",example:"Because I said so.",level:2},
+  {word:"together",phonetic:"/təˈɡeðər/",meaning:"一起",example:"Let's go together.",level:2},
+  {word:"experience",phonetic:"/ɪkˈspɪriəns/",meaning:"经验",example:"I have experience.",level:3},
+  {word:"opportunity",phonetic:"/ˌɒpərˈtjuːnəti/",meaning:"机会",example:"This is a great opportunity.",level:3},
+  {word:"environment",phonetic:"/ɪnˈvaɪrənmənt/",meaning:"环境",example:"Protect the environment.",level:3},
+  {word:"comfortable",phonetic:"/ˈkʌmfərtəbəl/",meaning:"舒适的",example:"I feel comfortable.",level:3},
+  {word:"conversation",phonetic:"/ˌkɒnvərˈseɪʃən/",meaning:"对话",example:"We had a nice conversation.",level:3},
+  {word:"immediately",phonetic:"/ɪˈmiːdiətli/",meaning:"立即",example:"Come immediately.",level:3},
+  {word:"surprise",phonetic:"/sərˈpraɪz/",meaning:"惊喜",example:"What a surprise!",level:3},
+  {word:"remember",phonetic:"/rɪˈmembər/",meaning:"记住",example:"I remember you.",level:3},
+  {word:"always",phonetic:"/ˈɔːlweɪz/",meaning:"总是",example:"I always love you.",level:2},
+  {word:"never",phonetic:"/ˈnevər/",meaning:"从不",example:"I never give up.",level:2},
+  {word:"sometimes",phonetic:"/ˈsʌmtaɪmz/",meaning:"有时",example:"Sometimes I cook.",level:2},
+  {word:"usually",phonetic:"/ˈjuːʒuəli/",meaning:"通常",example:"I usually walk.",level:2},
+  {word:"often",phonetic:"/ˈɒfən/",meaning:"经常",example:"I often read books.",level:2},
+  {word:"first",phonetic:"/fɜːrst/",meaning:"第一",example:"This is my first time.",level:1},
+  {word:"last",phonetic:"/lɑːst/",meaning:"最后",example:"At last!",level:1},
+  {word:"next",phonetic:"/nekst/",meaning:"下一个",example:"Next, please.",level:1},
+  {word:"every",phonetic:"/ˈevri/",meaning:"每个",example:"Every day is new.",level:1},
+  {word:"many",phonetic:"/ˈmeni/",meaning:"许多",example:"Many people like it.",level:1},
+  {word:"much",phonetic:"/mʌtʃ/",meaning:"很多",example:"Thank you so much.",level:1},
+  {word:"more",phonetic:"/mɔːr/",meaning:"更多",example:"I want more.",level:1},
+  {word:"enough",phonetic:"/ɪˈnʌf/",meaning:"足够",example:"That's enough.",level:2},
+  {word:"really",phonetic:"/ˈrɪəli/",meaning:"真的",example:"Really?",level:1},
+  {word:"very",phonetic:"/ˈveri/",meaning:"非常",example:"Very good!",level:1},
+  {word:"only",phonetic:"/ˈoʊnli/",meaning:"只有",example:"Only one.",level:1},
+  {word:"also",phonetic:"/ˈɔːlsoʊ/",meaning:"也",example:"I also like it.",level:1},
+  {word:"another",phonetic:"/əˈnʌðər/",meaning:"另一个",example:"Give me another.",level:2}
+];
+
+// ===== 短句库 =====
+const EN_SENTENCES = [
+  ["How are you?","/haʊ ɑːr juː/","你好吗？",1],
+  ["Nice to meet you.","/naɪs tuː miːt juː/","很高兴见到你。",1],
+  ["What is your name?","/wɒt ɪz jɔːr neɪm/","你叫什么名字？",1],
+  ["Where are you from?","/weər ɑːr juː frʌm/","你从哪里来？",1],
+  ["I don't understand.","/aɪ doʊnt ˌʌndərˈstænd/","我不明白。",2],
+  ["Could you help me?","/kʊd juː help miː/","你能帮我吗？",2],
+  ["What time is it?","/wɒt taɪm ɪz ɪt/","几点了？",1],
+  ["How much is this?","/haʊ mʌtʃ ɪz ðɪs/","这个多少钱？",2],
+  ["I would like a coffee.","/aɪ wʊd laɪk ə ˈkɒfi/","我想要一杯咖啡。",3],
+  ["Where is the bus stop?","/weər ɪz ðə bʌs stɒp/","公交车站在哪里？",3]
+];
+
+// ===== 课程导航 =====
+var enViewingStage = 1;
+var enViewingLessonId = null;
+
+function switchEnglishTab(tab) {
+  appData.english.currentEnglishTab = tab;
+  document.querySelectorAll('#englishTabs .swimfit-tab').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-esub="${tab}"]`)?.classList.add('active');
+  document.querySelectorAll('#page-english .swimfit-sub').forEach(s => s.classList.remove('active'));
+  const sub = document.getElementById('english-' + tab);
+  if (sub) { sub.classList.add('active'); sub.style.display = 'block'; }
+  if (tab === 'plan') renderEnglishPlan();
+  if (tab === 'course') enRenderCourse();
+  if (tab === 'dash') renderEnglishDash();
+  if (tab === 'badges') renderEnglishBadges();
+  saveData();
+}
+
+// ===== 学习规划 =====
+function renderEnglishPlan() {
+  var d = appData.english;
+  if (!d.startDate) { d.startDate = new Date().toISOString().split('T')[0]; saveData(); }
+  document.getElementById('en-daily-time').value = d.dailyTime;
+  document.getElementById('en-remind-time').value = d.remindTime;
+  document.getElementById('en-remind-repeat').value = d.remindRepeat;
+  document.getElementById('en-start-date').textContent = d.startDate;
+  document.getElementById('en-manual-stage').value = d.currentStage;
+
+  var totalCompleted = 0, totalLessons = 0;
+  for (var s = 1; s <= 6; s++) {
+    var courses = EN_COURSES[s];
+    if (courses && courses.lessons) {
+      totalLessons += courses.lessons.length;
+      courses.lessons.forEach(function(l) {
+        if (d.lessonProgress && d.lessonProgress[l.id] && d.lessonProgress[l.id].completed) totalCompleted++;
+      });
+    }
+    if (d.stageProgress[s] === undefined) d.stageProgress[s] = 0;
+  }
+  var overallPct = totalLessons > 0 ? Math.round(totalCompleted / totalLessons * 100) : 0;
+  document.getElementById('en-overall-percent').textContent = overallPct + '%';
+  document.getElementById('en-overall-bar').style.width = overallPct + '%';
+
+  var endDate = '';
+  if (d.startDate) {
+    var sd = new Date(d.startDate);
+    sd.setMonth(sd.getMonth() + 6);
+    endDate = sd.toISOString().split('T')[0];
+  }
+  document.getElementById('en-end-date').textContent = endDate || '--';
+
+  var stages = [
+    {n:1,icon:'🎵',title:'48个国际音标',desc:'发音基础，分清易混音'},
+    {n:2,icon:'📝',title:'基础高频单词',desc:'2000个生活刚需词入门'},
+    {n:3,icon:'💬',title:'日常短句对话',desc:'短句自由朗读，纠正语调'},
+    {n:4,icon:'🎭',title:'场景短句组合',desc:'简单问答朗读练习'},
+    {n:5,icon:'📖',title:'短篇文段朗读',desc:'100-200词短文'},
+    {n:6,icon:'🗣️',title:'完整日常对话',desc:'自由短句输出'}
+  ];
+  var grid = document.getElementById('en-stage-grid');
+  grid.innerHTML = stages.map(function(st) {
+    var isActive = st.n === d.currentStage;
+    var stageLessons = EN_COURSES[st.n] ? (EN_COURSES[st.n].lessons || []).length : 0;
+    var stageDone = 0;
+    if (d.lessonProgress) {
+      (EN_COURSES[st.n]?.lessons || []).forEach(function(l) {
+        if (d.lessonProgress[l.id] && d.lessonProgress[l.id].completed) stageDone++;
+      });
+    }
+    var pct = stageLessons > 0 ? Math.round(stageDone / stageLessons * 100) : 0;
+    return '<div class="card" style="' + (isActive ? 'border-left:4px solid var(--accent-dark);background:var(--accent-light)' : '') + ';cursor:pointer" onclick="enGoToStage(' + st.n + ')">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center">' +
+      '<span style="font-weight:600;font-size:14px">' + st.icon + ' 第' + st.n + '个月：' + st.title + '</span>' +
+      '<span style="font-size:12px;color:var(--text-light)">' + stageDone + '/' + stageLessons + '课</span>' +
+      '</div>' +
+      '<div style="font-size:12px;color:var(--text-light);margin:4px 0">' + st.desc + '</div>' +
+      '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+      '</div>';
+  }).join('');
+}
+
+function enGoToStage(stageNum) {
+  appData.english.currentStage = stageNum;
+  saveData();
+  renderEnglishPlan();
+  switchEnglishTab('course');
+  enSwitchCourseStage(stageNum);
+}
+
+function enSaveSettings() {
+  appData.english.dailyTime = parseInt(document.getElementById('en-daily-time').value);
+  appData.english.remindTime = document.getElementById('en-remind-time').value;
+  appData.english.remindRepeat = document.getElementById('en-remind-repeat').value;
+  saveData();
+  enScheduleRemind();
+  showToast('⚙️ 设置已保存');
+}
+
+function enAdjustStage() {
+  var v = parseInt(document.getElementById('en-manual-stage').value);
+  appData.english.currentStage = v;
+  saveData();
+  renderEnglishPlan();
+  showToast('📅 已切换到第' + v + '个月');
+}
+
+// ===== 课程中心 =====
+function enSwitchCourseStage(stageNum) {
+  enViewingStage = stageNum;
+  document.querySelectorAll('#en-course-stage-filter .sf-filter-btn').forEach(b => b.classList.remove('active'));
+  var btn = document.querySelector('#en-course-stage-filter [data-stage="' + stageNum + '"]');
+  if (btn) btn.classList.add('active');
+  enRenderCourse();
+}
+
+function enRenderCourse() {
+  if (!appData.english.lessonProgress) appData.english.lessonProgress = {};
+  var lp = appData.english.lessonProgress;
+  var stage = EN_COURSES[enViewingStage];
+  if (!stage) { document.getElementById('en-lesson-list').innerHTML = '<p style="text-align:center;color:var(--text-light);padding:20px">暂无课程内容</p>'; return; }
+
+  var lessons = stage.lessons || [];
+  var totalCompleted = 0;
+  lessons.forEach(function(l) { if (lp[l.id] && lp[l.id].completed) totalCompleted++; });
+
+  var html = '<div class="card"><div style="font-weight:600;font-size:16px;margin-bottom:4px">📚 ' + stage.title + '</div>';
+  html += '<div style="font-size:13px;color:var(--text-light);margin-bottom:8px">' + stage.subtitle + ' · ' + totalCompleted + '/' + lessons.length + ' 课已完成</div>';
+  if (stage.desc) html += '<div style="font-size:12px;color:var(--text-light);background:var(--bg);padding:8px;border-radius:8px">💡 ' + stage.desc + '</div>';
+  html += '</div>';
+
+  html += '<div style="display:grid;gap:8px;margin-top:8px">';
+  lessons.forEach(function(les, idx) {
+    var done = lp[les.id] && lp[les.id].completed;
+    var score = lp[les.id] ? (lp[les.id].score || 0) : 0;
+    html += '<div class="card" style="cursor:pointer;' + (done ? 'border-left:4px solid var(--success)' : '') + '" onclick="enOpenLesson(\'' + les.id + '\')">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center">' +
+      '<span>' + (done ? '✅ ' : '📖 ') + '<b>第' + (idx+1) + '课：' + les.title + '</b></span>' +
+      (done ? '<span style="color:var(--success);font-size:12px">得分 ' + score + '</span>' : '<span style="color:var(--text-light);font-size:12px">未学</span>') +
+      '</div></div>';
+  });
+  html += '</div>';
+
+  document.getElementById('en-lesson-list').innerHTML = html;
+  document.getElementById('en-lesson-detail').style.display = 'none';
+  document.getElementById('en-lesson-list').style.display = 'block';
+}
+
+function enOpenLesson(lessonId) {
+  if (!appData.english.lessonProgress) appData.english.lessonProgress = {};
+  var lp = appData.english.lessonProgress;
+
+  // Find the lesson
+  var lesson = null, stageNum = 0;
+  for (var s = 1; s <= 6; s++) {
+    var found = (EN_COURSES[s]?.lessons || []).find(function(l) { return l.id === lessonId; });
+    if (found) { lesson = found; stageNum = s; break; }
+  }
+  if (!lesson) return;
+
+  document.getElementById('en-lesson-list').style.display = 'none';
+  var detail = document.getElementById('en-lesson-detail');
+  detail.style.display = 'block';
+
+  var html = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">';
+  html += '<button class="btn btn-sm btn-outline" onclick="enCloseLesson()">← 返回课程列表</button>';
+  html += '<span style="font-size:12px;color:var(--text-light)">' + EN_COURSES[stageNum].subtitle + '</span>';
+  html += '</div>';
+  html += '<h3 style="margin:0">📖 第' + stageNum + '阶段 · ' + lesson.title + '</h3></div>';
+
+  // Lecture content
+  html += '<div class="card" style="line-height:1.8;font-size:14px">' + lesson.lecture + '</div>';
+
+  // Practice section
+  if (lesson.practice && lesson.practice.length > 0) {
+    html += '<div class="card"><div style="font-weight:600;margin-bottom:10px">✏️ 课后练习单词（点击发音+跟读）</div>';
+    html += '<div style="display:grid;gap:6px">';
+    lesson.practice.forEach(function(item, idx) {
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px;background:var(--bg);border-radius:8px">' +
+        '<div><b>' + item.w + '</b> <span style="color:var(--text-light);font-size:12px">' + item.p + '</span></div>' +
+        '<div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--text-light)">' + item.m + '</span>' +
+        '<button class="btn btn-sm btn-outline" onclick="enSpeakWord(\'' + item.w + '\')" title="播放发音">🔊</button></div>' +
+        '</div>';
+    });
+    html += '</div></div>';
+  }
+
+  // Tips
+  if (lesson.tips) {
+    html += '<div class="card" style="background:#fffdf5;border-left:4px solid var(--warning)"><div style="font-weight:600;margin-bottom:4px">💡 老师提醒</div><div style="font-size:13px">' + lesson.tips + '</div></div>';
+  }
+
+  // Complete button
+  var isCompleted = lp[lessonId] && lp[lessonId].completed;
+  html += '<div class="card" style="text-align:center">';
+  if (isCompleted) {
+    html += '<div style="color:var(--success);font-weight:600;margin-bottom:8px">✅ 本课已完成 · 得分：' + (lp[lessonId].score || 0) + '</div>';
+    html += '<button class="btn btn-outline" onclick="enRelearnLesson(\'' + lessonId + '\')">🔄 重新学习</button>';
+  } else {
+    html += '<div style="margin-bottom:8px">学完本课内容后，点击下方按钮完成课程</div>';
+    html += '<button class="btn btn-primary" onclick="enCompleteLesson(\'' + lessonId + '\')">✅ 标记为已完成（打卡+10分）</button>';
+  }
+  html += '</div>';
+
+  detail.innerHTML = html;
+  enViewingLessonId = lessonId;
+}
+
+function enCloseLesson() {
+  document.getElementById('en-lesson-detail').style.display = 'none';
+  document.getElementById('en-lesson-list').style.display = 'block';
+  enViewingLessonId = null;
+}
+
+function enCompleteLesson(lessonId) {
+  if (!appData.english.lessonProgress) appData.english.lessonProgress = {};
+  appData.english.lessonProgress[lessonId] = { completed: true, score: 10, date: new Date().toISOString().split('T')[0] };
+
+  var today = new Date().toISOString().split('T')[0];
+  var d = appData.english;
+  if (d.lastStudyDate !== today) {
+    if (d.lastStudyDate && new Date(d.lastStudyDate).getTime() > new Date(today).getTime() - 86400000 * 2) {
+      d.streak++;
+    } else {
+      d.streak = 1;
+    }
+    d.lastStudyDate = today;
+  }
+  d.totalMinutes += d.dailyTime;
+  saveData();
+  renderEnglishPlan();
+  enRenderCourse();
+  enOpenLesson(lessonId); // Refresh to show completed
+  checkEnglishAchievements();
+  showToast('🎉 恭喜完成一课！+10分，继续加油！');
+}
+
+function enRelearnLesson(lessonId) {
+  if (!appData.english.lessonProgress) appData.english.lessonProgress = {};
+  appData.english.lessonProgress[lessonId].completed = false;
+  saveData();
+  enOpenLesson(lessonId);
+  showToast('📖 已重置，请重新学习');
+}
+
+// ===== 发音功能 =====
+function enSpeakWord(word) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(word);
+    u.lang = 'en-US';
+    u.rate = appData.english.speed || 1;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+// ===== 通知提醒 =====
+function enRequestNotify() {
+  if (!('Notification' in window)) { showToast('❌ 浏览器不支持通知'); return; }
+  Notification.requestPermission().then(function(p) {
+    if (p === 'granted') {
+      appData.english.notificationsEnabled = true;
+      saveData();
+      enScheduleRemind();
+      showToast('🔔 通知已开启');
+    } else { showToast('❌ 请在浏览器设置中允许通知'); }
+  });
+}
+
+function enScheduleRemind() {
+  var d = appData.english;
+  if (!d.notificationsEnabled || !d.remindTime) return;
+  var now = new Date();
+  var parts = d.remindTime.split(':');
+  var target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(parts[0]), parseInt(parts[1]));
+  if (target <= now) target.setDate(target.getDate() + 1);
+
+  if (d._remindTimer) clearTimeout(d._remindTimer);
+  if (d.remindRepeat === 'weekday' && (target.getDay() === 0 || target.getDay() === 6)) {
+    target.setDate(target.getDate() + (target.getDay() === 0 ? 1 : 2));
+  }
+
+  d._remindTimer = setTimeout(function() {
+    new Notification('📖 英语学习时间到了！', { body: '今天的目标是' + d.dailyTime + '分钟，打开课程中心开始学习吧~', icon: '📖' });
+    enScheduleRemind();
+  }, target.getTime() - now.getTime());
+}
+
+// ===== 朗读练习（录音纠错——保留原有逻辑） =====
+var enRecordState = { recording: false, mediaRecorder: null, chunks: [], animId: null, currentText: 'hello' };
+
+function enNextText() {
+  var mode = appData.english.recordMode || 'word';
+  var diff = appData.english.recordDiff || 'easy';
+  if (mode === 'word') {
+    var words = EN_WORD_BANK.filter(function(w) { return diff === 'easy' ? w.level === 1 : diff === 'medium' ? w.level === 2 : w.level === 3; });
+    if (words.length === 0) words = EN_WORD_BANK;
+    var w = words[Math.floor(Math.random() * words.length)];
+    enRecordState.currentText = w.word;
+    document.getElementById('en-record-text').textContent = w.word + ' ' + w.phonetic + ' — ' + w.meaning;
+  } else if (mode === 'sentence') {
+    var sents = EN_SENTENCES.filter(function(s) { return diff === 'easy' ? s[3] === 1 : diff === 'medium' ? s[3] === 2 : s[3] === 3; });
+    if (sents.length === 0) sents = EN_SENTENCES;
+    var s = sents[Math.floor(Math.random() * sents.length)];
+    enRecordState.currentText = s[0];
+    document.getElementById('en-record-text').textContent = s[0] + ' — ' + s[2];
+  } else {
+    enRecordState.currentText = 'How are you doing today?';
+    document.getElementById('en-record-text').textContent = 'How are you doing today?';
+  }
+}
+
+function enToggleRecord() {
+  if (enRecordState.recording) { enStopRecord(); return; }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showToast('❌ 浏览器不支持录音，请使用Chrome或Edge浏览器');
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    enRecordState.chunks = [];
+    enRecordState.mediaRecorder = new MediaRecorder(stream);
+    enRecordState.mediaRecorder.ondataavailable = function(e) { enRecordState.chunks.push(e.data); };
+    enRecordState.mediaRecorder.onstop = enAnalyzeRecord;
+    enRecordState.mediaRecorder.start();
+    enRecordState.recording = true;
+    document.getElementById('en-record-btn').style.background = '#e53935';
+    document.getElementById('en-record-hint').textContent = '正在录音…再次点击结束';
+    enAnimateWave();
+  }).catch(function() {
+    showToast('❌ 麦克风权限被拒绝，请在浏览器设置中允许访问麦克风');
+  });
+}
+
+function enStopRecord() {
+  enRecordState.recording = false;
+  document.getElementById('en-record-btn').style.background = 'var(--danger)';
+  document.getElementById('en-record-hint').textContent = '分析中…';
+  if (enRecordState.animId) { cancelAnimationFrame(enRecordState.animId); enRecordState.animId = null; }
+  if (enRecordState.mediaRecorder && enRecordState.mediaRecorder.state !== 'inactive') {
+    enRecordState.mediaRecorder.stop();
+    enRecordState.mediaRecorder.stream.getTracks().forEach(function(t) { t.stop(); });
+  }
+}
+
+function enAnalyzeRecord() {
+  var score = Math.floor(Math.random() * 30) + 65; // Simulated AI scoring (65-95)
+  var text = enRecordState.currentText;
+  var detail = '';
+
+  // Simulate detailed feedback based on the text
+  var issues = [];
+  if (text.indexOf('th') >= 0 && Math.random() > 0.5) issues.push('🔴 <b>音素错误：</b>/θ/ 或 /ð/ 发音不准。舌尖需要放在上下齿之间，轻咬舌尖再发气。');
+  if (/(ea|ee|oo)/.test(text) && Math.random() > 0.4) issues.push('🟡 <b>元音长度：</b>长元音和短元音区分不够。如 /iː/ 要拉长，/ɪ/ 要短促。');
+  if (text.split(' ').length > 3 && Math.random() > 0.5) issues.push('🟠 <b>连读遗漏：</b>有些地方应该连读但断开读了。试着把词尾辅音和下一个词首元音连起来。');
+  if (text.length > 10 && Math.random() > 0.6) issues.push('🔵 <b>语调偏差：</b>整体语调偏平。陈述句应该降调，一般疑问句应该升调。');
+  if (issues.length === 0) {
+    issues.push('🟢 <b>整体表现不错！</b>发音基本准确，继续保持练习节奏。');
+  }
+
+  document.getElementById('en-score').textContent = score;
+  document.getElementById('en-correction-detail').innerHTML = issues.map(function(i) { return '<div style="margin:6px 0;padding:8px;background:var(--bg);border-radius:6px;font-size:13px">' + i + '</div>'; }).join('');
+  document.getElementById('en-correction-box').style.display = 'block';
+  document.getElementById('en-record-hint').textContent = '轻按开始，朗读后再次点击结束';
+
+  appData.english.recordCount++;
+  appData.english.correctedCount++;
+  var today = new Date().toISOString().split('T')[0];
+  if (!appData.english.accuracyHistory) appData.english.accuracyHistory = {};
+  if (!appData.english.accuracyHistory[today]) appData.english.accuracyHistory[today] = [];
+  appData.english.accuracyHistory[today].push(score);
+  if (score >= 85) appData.english.totalMinutes += 2;
+  saveData();
+  checkEnglishAchievements();
+}
+
+function enPlaySlow() {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(enRecordState.currentText);
+    u.lang = 'en-US';
+    u.rate = 0.5;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+function enRetry() {
+  document.getElementById('en-correction-box').style.display = 'none';
+  enNextText();
+}
+
+function enAddWrong() {
+  if (!appData.english.wrongBook) appData.english.wrongBook = [];
+  appData.english.wrongBook.push({ text: enRecordState.currentText, date: new Date().toISOString().split('T')[0] });
+  saveData();
+  enRenderWrongBook();
+  showToast('📌 已加入错题夹');
+}
+
+function enRenderWrongBook() {
+  var wb = appData.english.wrongBook || [];
+  document.getElementById('en-wrong-count').textContent = wb.length;
+  var list = document.getElementById('en-wrong-list');
+  if (wb.length === 0) {
+    list.innerHTML = '<p style="color:var(--text-light);text-align:center;padding:16px;font-size:13px">暂无错题</p>';
+    return;
+  }
+  list.innerHTML = wb.slice(-10).reverse().map(function(item, i) {
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px">' +
+      '<span>' + item.text + '</span><span style="color:var(--text-light);font-size:11px">' + item.date + '</span>' +
+      '<button class="btn btn-sm btn-outline" onclick="enDelWrong(' + i + ')" style="font-size:11px">✕</button></div>';
+  }).join('');
+}
+
+function enDelWrong(idx) {
+  appData.english.wrongBook.splice(appData.english.wrongBook.length - 1 - idx, 1);
+  saveData();
+  enRenderWrongBook();
+}
+
+function enAnimateWave() {
+  var canvas = document.getElementById('en-wave-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  var w = canvas.width, h = canvas.height;
+  var t = Date.now();
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = 'rgba(66,165,245,0.1)';
+    for (var x = 0; x < w; x += 2) {
+      var y = Math.sin(x * 0.02 + t * 0.005) * 20 + Math.sin(x * 0.05 + t * 0.008) * 10 + h / 2;
+      ctx.fillRect(x, y, 2, h - y);
+    }
+    for (var x = 0; x < w; x += 2) {
+      var y2 = Math.sin(x * 0.02 + t * 0.005 + 1) * 20 + Math.sin(x * 0.05 + t * 0.008 + 1) * 10 + h / 2;
+      ctx.fillStyle = 'rgba(66,165,245,0.2)';
+      ctx.fillRect(x, y2, 2, 1);
+    }
+    t = Date.now();
+    if (enRecordState.recording) enRecordState.animId = requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ===== 数据看板 =====
+function renderEnglishDash() {
+  var d = appData.english;
+  document.getElementById('en-stat-streak').textContent = d.streak || 0;
+  var completedLessons = 0;
+  if (d.lessonProgress) {
+    for (var k in d.lessonProgress) { if (d.lessonProgress[k].completed) completedLessons++; }
+  }
+  document.getElementById('en-stat-lessons').textContent = completedLessons;
+  var totalWords = d.masteredWords ? d.masteredWords.length : 0;
+  document.getElementById('en-stat-words').textContent = totalWords;
+
+  var totalAcc = 0, totalCount = 0;
+  if (d.accuracyHistory) {
+    for (var date in d.accuracyHistory) {
+      d.accuracyHistory[date].forEach(function(v) { totalAcc += v; totalCount++; });
+    }
+  }
+  var avgAcc = totalCount > 0 ? Math.round(totalAcc / totalCount) : 0;
+  document.getElementById('en-stat-acc').textContent = avgAcc + '%';
+  document.getElementById('en-stat-hours').textContent = Math.round((d.totalMinutes || 0) / 60 * 10) / 10 + 'h';
+
+  // Accuracy chart
+  var canvas = document.getElementById('en-acc-chart');
+  if (canvas) {
+    var ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    var dates = [];
+    if (d.accuracyHistory) {
+      dates = Object.keys(d.accuracyHistory).sort().slice(-30);
+    }
+    ctx.clearRect(0, 0, canvas.width, 200);
+    if (dates.length > 1) {
+      var maxScore = 100, stepX = canvas.width / (dates.length - 1);
+      ctx.strokeStyle = '#42a5f5';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      dates.forEach(function(date, i) {
+        var avg = d.accuracyHistory[date].reduce(function(a, b) { return a + b; }, 0) / d.accuracyHistory[date].length;
+        ctx.lineTo(i * stepX, 180 - avg * 1.6);
+      });
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = '#999';
+      ctx.font = '14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('完成更多练习后显示趋势图', canvas.width / 2, 100);
+    }
+  }
+}
+
+// ===== 成就徽章 =====
+function renderEnglishBadges() {
+  var badges = [
+    {id:'start',icon:'🌱',name:'学习开始',desc:'完成第一课'},
+    {id:'phoneme',icon:'🎵',name:'音标达人',desc:'完成全部8课音标'},
+    {id:'7day',icon:'🔥',name:'连续7天',desc:'连续学习7天'},
+    {id:'30day',icon:'💎',name:'连续30天',desc:'连续学习30天'},
+    {id:'50words',icon:'📚',name:'50词',desc:'掌握50个单词'},
+    {id:'100words',icon:'🎓',name:'100词',desc:'掌握100个单词'},
+    {id:'perfect',icon:'⭐',name:'满分朗读',desc:'朗读得分≥95'},
+    {id:'stage3',icon:'💬',name:'进入短句',desc:'完成第2阶段'},
+    {id:'allstage',icon:'👑',name:'全部通关',desc:'完成全部6个阶段'}
+  ];
+  var a = appData.english.achievements || {};
+  var html = badges.map(function(b) {
+    var earned = !!a[b.id];
+    return '<div class="card" style="text-align:center;' + (earned ? '' : 'opacity:0.4;filter:grayscale(1)') + '">' +
+      '<div style="font-size:32px">' + b.icon + '</div>' +
+      '<div style="font-weight:600;font-size:13px;margin:4px 0">' + b.name + '</div>' +
+      '<div style="font-size:11px;color:var(--text-light)">' + b.desc + '</div>' +
+      (earned ? '<div style="color:var(--success);font-size:12px;margin-top:4px">✅ 已解锁</div>' : '<div style="color:#ccc;font-size:12px;margin-top:4px">🔒 未解锁</div>') +
+      '</div>';
+  }).join('');
+  document.getElementById('en-badge-grid').innerHTML = html;
+}
+
+function checkEnglishAchievements() {
+  var d = appData.english;
+  if (!d.achievements) d.achievements = {};
+  var a = d.achievements;
+
+  // Check: first lesson completed
+  var hasCompleted = false, completedCount = 0, phonemeDone = 0;
+  if (d.lessonProgress) {
+    for (var k in d.lessonProgress) {
+      if (d.lessonProgress[k].completed) {
+        if (!hasCompleted) hasCompleted = true;
+        completedCount++;
+        if (k.indexOf('1-') === 0) phonemeDone++;
+      }
+    }
+  }
+  if (hasCompleted && !a.start) { a.start = true; showToast('🏆 成就解锁：学习开始！'); }
+  if (phonemeDone >= 8 && !a.phoneme) { a.phoneme = true; showToast('🏆 成就解锁：音标达人！'); }
+  if (d.streak >= 7 && !a['7day']) { a['7day'] = true; showToast('🏆 成就解锁：连续7天！'); }
+  if (d.streak >= 30 && !a['30day']) { a['30day'] = true; showToast('🏆 成就解锁：连续30天！'); }
+  if (completedCount >= 15 && !a.stage3) { a.stage3 = true; showToast('🏆 成就解锁：进入短句阶段！'); }
+  if (completedCount >= 24 && !a.allstage) { a.allstage = true; showToast('🏆 成就解锁：全部通关！'); }
+
+  // Check accuracy >= 95
+  if (d.accuracyHistory) {
+    var hasPerfect = false;
+    for (var dt in d.accuracyHistory) {
+      if (d.accuracyHistory[dt].some(function(v) { return v >= 95; })) { hasPerfect = true; break; }
+    }
+    if (hasPerfect && !a.perfect) { a.perfect = true; showToast('🏆 成就解锁：满分朗读！'); }
+  }
+  saveData();
+}
+
+function enExport() {
+  var data = { date: new Date().toISOString(), data: appData.english };
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'english-learning-data.json';
+  a.click(); URL.revokeObjectURL(url);
+  showToast('📥 学习数据已导出');
+}
+
+// ===== 初始化 =====
+(function(){
+  document.querySelectorAll('#en-record-mode .sf-filter-btn').forEach(function(b) {
+    b.onclick = function() {
+      document.querySelectorAll('#en-record-mode .sf-filter-btn').forEach(function(p) { p.classList.remove('active'); });
+      this.classList.add('active');
+      appData.english.recordMode = this.dataset.mode;
+      saveData();
+      enNextText();
+    };
+  });
+  document.querySelectorAll('#en-record-diff .sf-filter-btn').forEach(function(b) {
+    b.onclick = function() {
+      document.querySelectorAll('#en-record-diff .sf-filter-btn').forEach(function(p) { p.classList.remove('active'); });
+      this.classList.add('active');
+      appData.english.recordDiff = this.dataset.diff;
+      saveData();
+      enNextText();
+    };
+  });
+  enNextText();
+})();
 // ==================== 数据导出/导入（跨设备同步） ====================
 function exportAllData() {
   const blob = new Blob([JSON.stringify(appData, null, 2)], { type: 'application/json' });
