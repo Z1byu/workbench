@@ -38,7 +38,7 @@
       "reminder": true,
       "delayCount": 0,
       "lastResetDate": "2026-08-08",
-      "notified": false
+      "notified": true
     }
   ],
   "life": [
