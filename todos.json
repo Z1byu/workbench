@@ -146,7 +146,7 @@
       "reminder": true,
       "delayCount": 0,
       "lastResetDate": "2026-08-21",
-      "notified": false
+      "notified": true
     },
     {
       "id": 303,
